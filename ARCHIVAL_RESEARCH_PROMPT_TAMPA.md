@@ -1,8 +1,8 @@
 # ARCHIVAL DATA RESEARCH PROMPT — Downtown Tampa
 # For use in a separate session with web search enabled.
-# Project: Downtown Tampa urban history data-journalism site
-# Template parity: iranwar ARCHIVAL_RESEARCH_PROMPT.md
-# Branch: copilot/copy-downtown-tampa-history-again
+# Project: "Downtown Tampa: A Civic Development Autopsy"
+# Repository: fritzhand/History-of-tampa
+# Template parity: iranwar ARCHIVAL_RESEARCH_PROMPT.md (kept in this repo as the template reference)
 
 ---
 
@@ -71,6 +71,12 @@ Study area (working definition):
 - Need: Historic streetcar era figures if published; modern TECO Line annual ridership
 - URLs: MPO documents library, HART open reports
 
+**E2. Downtown employment / daytime population**
+
+- Target: Census LEHD / OnTheMap; Tampa Downtown Partnership State of Downtown reports
+- URL: https://onthemap.ces.census.gov/
+- Need: Jobs by NAICS sector in the downtown study area, 2002–latest, to anchor "office canyon" vs mixed-use eras
+
 ---
 
 ### TIER 2: SPATIAL HISTORY (Maps)
@@ -84,8 +90,8 @@ Study area (working definition):
 
 **G. USGS topo and aerials**
 
-- Target: USGS Historical Topographic Map Explorer; USF aerial photograph collections
-- Need: Years covering downtown; download or viewer URLs; georef status
+- Target: USGS Historical Topographic Map Explorer; USF aerial photograph collections; UF / FDOT aerial archives; USGS EarthExplorer; Florida Memory maps
+- Need: Years covering downtown (1940s, 1960s pre/post interstate, 1980s, 2000s frames); download or viewer URLs; georef status
 
 **H. Historic street grid / CRA boundaries**
 
@@ -188,6 +194,14 @@ NOTES:
 
 - Need: Official project descriptions, acreage, unit counts, approval dates from city or developer filings cited by city
 
+**T2. Major project costs (capital waves)**
+
+- Water Street Tampa program investment ($3.5–4B range — find the primary SPP statement or City/CRA document with date)
+- Tampa Convention Center construction cost and opening (1990)
+- Ice Palace / Amalie Arena cost and opening (1996); Florida Aquarium (1995)
+- Tampa Riverwalk cumulative public investment; Tampa Bay Hotel (1891) cost and room count
+- Franklin Street Mall: opening year, reopening to cars, retail vacancy narratives with citations
+
 **U. Hotel rooms & residential unit inventory downtown**
 
 - Target: Tourist development reports; city economic development dashboards; CRA annual reports
@@ -211,6 +225,18 @@ NOTES:
 
 - Target: City parks/recreation or downtown partnership reports
 - Need: Opening segments, miles, years
+
+---
+
+### TIER 7: CULTURAL & INSTITUTIONAL TIMELINE (index only — verify each claim)
+
+**Y. Authoritative timeline pages**
+
+- https://tampabayhistorycenter.org/ (Tampa Bay History Center timeline / exhibits)
+- https://www.tampa.gov/info/tampa-history
+- https://www.tampasdowntown.com/about-us/history/
+- https://www.plantmuseum.com/
+- https://en.wikipedia.org/wiki/Timeline_of_Tampa,_Florida (use only as an index — never cite it; verify each claim against a primary source)
 
 ---
 
@@ -277,3 +303,15 @@ Return results in this consumption order so `data.js` can be filled fast:
 10. Everything else  
 
 End with a **source roll** (institution → base URL) suitable for the site footer.
+
+---
+
+## IMPLEMENTATION HOOKS IN THIS REPO
+
+After research, update:
+
+- `js/data.js` — replace `estimate: true` rows with cited official series; every `source` carries `verificationStatus` and `accessType`
+- `mediaAssets` — only rights-cleared images with stable URLs, license, rights holder, and credit line
+- `landUseShare` / `disruptionIndex` / `commercialIntensity` — replace conceptual models with GIS- or archive-derived stats, or mark `DERIVED` with the inputs named
+- Chart source footers in `index.html` — add deep links to the specific dated documents
+- `PROGRESS.md` — log which metrics moved from PENDING to CONFIRMED
