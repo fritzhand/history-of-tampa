@@ -179,12 +179,93 @@ function buildPhaseLegend() {
   if (!c) return;
   Object.entries(PC).forEach(([phase, color]) => {
     const light = color === V.v8 || color === V.v9;
-    const el = document.createElement('span');
+    const el = document.createElement('a');
     el.className = 'phase-pill';
+    el.dataset.phase = phase;
+    el.href = '#scrollytelling';
+    el.setAttribute('role', 'link');
+    el.setAttribute('tabindex', '0');
+    el.title = `Jump to the ${phase.toUpperCase()} era in the timeline`;
     el.style.cssText = `background:${color};color:${light ? '#000' : '#fff'}`;
     el.innerHTML = `<span class="dot" style="background:${light ? '#000' : '#fff'}"></span>${phase.toUpperCase()}`;
+    el.addEventListener('click', e => { e.preventDefault(); scrollToPhase(phase); });
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToPhase(phase); }
+    });
     c.appendChild(el);
   });
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function navHeight() {
+  return document.getElementById('main-nav')?.offsetHeight || 56;
+}
+
+function legendHeight() {
+  return document.getElementById('phase-legend')?.offsetHeight || 46;
+}
+
+/* Publish live nav + legend heights so sticky offsets adapt (CSS vars). */
+function setLayoutVars() {
+  document.documentElement.style.setProperty('--nav-h', navHeight() + 'px');
+  document.documentElement.style.setProperty('--legend-h', legendHeight() + 'px');
+}
+
+/* Resolve an era to its first timeline step; eras without a dedicated step
+   fall back to the nearest step by era order. */
+function stepForPhase(phase) {
+  const exact = document.querySelector(`.scroll-step[data-phase="${phase}"]`);
+  if (exact) return exact;
+  const order = Object.keys(PC);
+  const want  = order.indexOf(phase);
+  if (want === -1) return null;
+  let best = null, bestDist = Infinity;
+  document.querySelectorAll('.scroll-step').forEach(s => {
+    const oi = order.indexOf(s.dataset.phase);
+    if (oi === -1) return;
+    const dist = Math.abs(oi - want);
+    if (dist < bestDist) { best = s; bestDist = dist; }
+  });
+  return best;
+}
+
+function scrollToPhase(phase) {
+  const target = stepForPhase(phase) || document.getElementById('scrollytelling');
+  if (!target) return;
+  const isStep = target.classList.contains('scroll-step');
+  const mapH   = (isStep && window.innerWidth <= 900) ? (document.querySelector('.sticky-figure')?.offsetHeight || 0) : 0;
+  const y = target.getBoundingClientRect().top + window.scrollY - navHeight() - legendHeight() - mapH - 16;
+  /* Pin the destination step through the scroll so an intermediate step
+     can't win the observer race mid-flight. */
+  if (isStep) lockScrollyStep(target);
+  window.scrollTo({ top: Math.max(y, 0), behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+}
+
+/* Highlight the pill for the active era; on a horizontally scrolling legend
+   (mobile) bring it into view. Also mirror the era into the nav indicator. */
+function highlightPhasePill(phase) {
+  const scroller = document.getElementById('phase-legend');
+  document.querySelectorAll('#phase-pills-container .phase-pill').forEach(p => {
+    const on = p.dataset.phase === phase;
+    p.classList.toggle('is-current', on);
+    if (on && scroller && scroller.scrollWidth > scroller.clientWidth + 4) {
+      const cRect = scroller.getBoundingClientRect();
+      const pRect = p.getBoundingClientRect();
+      const left  = scroller.scrollLeft + (pRect.left - cRect.left) - (cRect.width / 2) + (pRect.width / 2);
+      scroller.scrollTo({ left: Math.max(left, 0), behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    }
+  });
+  const ind = document.getElementById('nav-phase-indicator');
+  if (ind) {
+    const color = PC[phase];
+    const light = color === V.v8 || color === V.v9;
+    ind.innerHTML = color
+      ? `<span class="nav-phase-pill" style="background:${color};color:${light ? '#000' : '#fff'}">${phase.toUpperCase()}</span>`
+      : '';
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -258,6 +339,7 @@ function buildScrollSteps() {
     const el = document.createElement('div');
     el.className = 'scroll-step';
     el.dataset.idx = idx;
+    el.dataset.phase = step.phase || '';
     el.style.borderLeftColor = color;
     el.innerHTML = `
       <div class="step-phase-date" style="color:${color}">
@@ -277,6 +359,45 @@ function buildScrollSteps() {
   });
 }
 
+/* Programmatic scrolls (era pills) freeze the observer and pin the destination
+   step, otherwise "last intersecting step wins" can settle the highlight on
+   the wrong step for the viewable area. The target is re-asserted when the
+   scroll settles (scrollend, with a timeout fallback). */
+let setActiveStep    = null;
+let _scrollyObserver = null;
+let _navScrollLock   = false;
+let _navLockTimer    = null;
+let _navLockRelease  = null;
+
+function lockScrollyStep(target) {
+  _navScrollLock = true;
+  if (target && typeof setActiveStep === 'function') setActiveStep(target);
+  if (_navLockRelease) window.removeEventListener('scrollend', _navLockRelease);
+  clearTimeout(_navLockTimer);
+  _navLockRelease = () => {
+    clearTimeout(_navLockTimer);
+    window.removeEventListener('scrollend', _navLockRelease);
+    _navLockRelease = null;
+    const cur = document.querySelector('.scroll-step.is-active');
+    if (target && cur !== target && typeof setActiveStep === 'function') setActiveStep(target);
+    _navScrollLock = false;
+  };
+  window.addEventListener('scrollend', _navLockRelease);
+  _navLockTimer = setTimeout(_navLockRelease, 1600);
+}
+
+/* Active zone for the observer. On mobile it sits BELOW the sticky map so a
+   step scrolling behind the map does not count as active. */
+function scrollyRootMargin() {
+  if (window.innerWidth <= 900) {
+    const fig    = document.querySelector('.sticky-figure');
+    const top    = navHeight() + legendHeight() + (fig?.offsetHeight || 0);
+    const bottom = Math.max(window.innerHeight - top - Math.round(window.innerHeight * 0.22), 60);
+    return `-${top}px 0px -${bottom}px 0px`;
+  }
+  return '-8% 0px -28% 0px';
+}
+
 function initScrollytelling() {
   const steps = document.querySelectorAll('.scroll-step');
   if (!steps.length) return;
@@ -286,25 +407,35 @@ function initScrollytelling() {
   const oPop      = document.getElementById('map-overlay-pop');
   const oPort     = document.getElementById('map-overlay-port');
 
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const idx  = +entry.target.dataset.idx;
-      const step = (D().scrollSteps || [])[idx];
-      if (!step) return;
+  setActiveStep = target => {
+    const idx  = +target.dataset.idx;
+    const step = (D().scrollSteps || [])[idx];
+    if (!step) return;
+    steps.forEach(s => s.classList.remove('is-active'));
+    target.classList.add('is-active');
+    highlightPhasePill(step.phase);
+    activateMapStep(step);
+    if (oDate)     oDate.textContent     = `${step.date} · ${(step.phase||'').toUpperCase()}`;
+    if (oHeadline) oHeadline.textContent = step.headline;
+    if (oPop)      oPop.textContent      = step.metric_pop;
+    if (oPort)     oPort.textContent     = step.metric_port;
+  };
 
-      steps.forEach(s => s.classList.remove('is-active'));
-      entry.target.classList.add('is-active');
-      activateMapStep(step);
+  const build = () => {
+    if (_scrollyObserver) _scrollyObserver.disconnect();
+    _scrollyObserver = new IntersectionObserver(entries => {
+      if (_navScrollLock) return;
+      entries.forEach(entry => { if (entry.isIntersecting) setActiveStep(entry.target); });
+    }, { threshold: 0, rootMargin: scrollyRootMargin() });
+    steps.forEach(s => _scrollyObserver.observe(s));
+  };
+  build();
 
-      if (oDate)     oDate.textContent     = `${step.date} · ${(step.phase||'').toUpperCase()}`;
-      if (oHeadline) oHeadline.textContent = step.headline;
-      if (oPop)      oPop.textContent      = step.metric_pop;
-      if (oPort)     oPort.textContent     = step.metric_port;
-    });
-  }, { threshold:0.42, rootMargin:'-8% 0px -28% 0px' });
-
-  steps.forEach(s => io.observe(s));
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => { setLayoutVars(); build(); }, 200);
+  }, { passive: true });
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1170,6 +1301,7 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', () => {
   initProgressBar();
   buildPhaseLegend();
+  setLayoutVars();
 
   initScrollMap();
   initSandboxMap();

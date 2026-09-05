@@ -245,6 +245,10 @@ a:hover { color: var(--v7); }
 
 /* ─── PHASE LEGEND ─── */
 #phase-legend {
+  position: -webkit-sticky;
+  position: sticky;
+  top: var(--nav-h, 56px);
+  z-index: 800;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
   padding: 12px 24px;
@@ -273,8 +277,15 @@ a:hover { color: var(--v7); }
   padding: 4px 10px;
   border-radius: 12px;
   white-space: nowrap;
-  cursor: default;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 0 0 0 transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  opacity: 0.85;
 }
+.phase-pill:hover { transform: translateY(-1px); opacity: 1; color: inherit; }
+.phase-pill.is-current { opacity: 1; box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px #ffffff; }
+.phase-pill:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }
 
 .phase-pill .dot {
   width: 6px; height: 6px;
@@ -338,8 +349,8 @@ a:hover { color: var(--v7); }
 .sticky-figure {
   position: -webkit-sticky;
   position: sticky;
-  top: 56px; /* Below nav */
-  height: calc(100vh - 56px);
+  top: calc(var(--nav-h, 56px) + var(--legend-h, 46px)); /* below nav + sticky legend */
+  height: calc(100vh - var(--nav-h, 56px) - var(--legend-h, 46px));
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border);
@@ -1033,12 +1044,17 @@ input[type="range"].crisis-slider::-moz-range-thumb {
   }
 
   .sticky-figure {
-    position: relative;
-    top: 0;
-    height: 50vh;
+    position: -webkit-sticky;
+    position: sticky;
+    top: calc(var(--nav-h, 56px) + var(--legend-h, 46px));
+    height: 42vh;
+    z-index: 5;
     border-right: none;
     border-bottom: 1px solid var(--border);
+    background: var(--bg-base);
   }
+  .map-step-overlay { min-height: 0; padding: 8px 12px; }
+  .map-step-headline { -webkit-line-clamp: 1; }
 
   .scroll-steps { padding: 32px 20px; }
   .scroll-step  { min-height: 50vh; }
