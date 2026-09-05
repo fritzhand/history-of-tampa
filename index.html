@@ -3,29 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The 2026 Iran War: A Geoeconomic Autopsy · Stepwell Centre</title>
-  <meta name="description" content="112 days of conflict, a closed Strait of Hormuz, and 22,500 stranded mariners — a data journalism autopsy of the 2026 Iran War's geoeconomic consequences." />
-  <meta property="og:title" content="The 2026 Iran War: A Geoeconomic Autopsy" />
-  <meta property="og:description" content="Stepwell Centre for Asian Futures · Ahmedabad University" />
+  <title>Downtown Tampa: A Civic Development Autopsy</title>
+  <meta name="description" content="200 years of downtown Tampa — from Fort Brooke to Water Street — told with open historical data, maps, and archival imagery." />
+  <meta property="og:title" content="Downtown Tampa: A Civic Development Autopsy" />
+  <meta property="og:description" content="A data journalism autopsy of downtown Tampa's development, displacement, and waterfront rebirth." />
   <meta property="og:type" content="article" />
 
-  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
-  <!-- Project styles -->
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-  <!-- ── SCROLL PROGRESS ── -->
   <div id="progress-bar"></div>
 
-  <!-- ── NAVIGATION ── -->
   <nav id="main-nav">
-    <a class="nav-logo" href="https://ahduni.edu.in/academics/schools-centres/stepwell-centre-for-asian-futures/" target="_blank" rel="noopener" title="Stepwell Centre for Asian Futures">
+    <a class="nav-logo" href="https://www.floridamemory.com/" target="_blank" rel="noopener" title="Florida Memory · State Archives">
       <svg class="nav-logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="4"  y="26" width="24" height="3" rx="1" fill="#1f9e89"/>
         <rect x="7"  y="21" width="18" height="3" rx="1" fill="#26828e"/>
@@ -34,78 +29,69 @@
         <rect x="14" y="6"  width="4"  height="3" rx="1" fill="#482878"/>
       </svg>
       <div class="nav-logo-text">
-        <span class="nav-logo-primary">Stepwell Centre</span>
-        <span class="nav-logo-secondary">for Asian Futures · Ahmedabad University</span>
+        <span class="nav-logo-primary">Open Civic Archive</span>
+        <span class="nav-logo-secondary">Downtown Tampa · 1824–2024</span>
       </div>
     </a>
     <div class="nav-divider"></div>
-    <span class="nav-project-title">The 2026 Iran War: A Geoeconomic Autopsy</span>
+    <span class="nav-project-title">Downtown Tampa: A Civic Development Autopsy</span>
     <div class="nav-right" id="nav-phase-indicator"></div>
   </nav>
 
-  <!-- ══════════════════════════════════════════
-       HERO
-  ══════════════════════════════════════════ -->
+  <!-- HERO -->
   <section id="hero">
     <div class="hero-inner">
-      <p class="hero-eyebrow">Geoeconomic Autopsy &nbsp;·&nbsp; 28 Feb – 20 Jun 2026</p>
-      <h1 class="hero-title">The 2026<br>Iran War</h1>
-      <p class="hero-subtitle">How 112 days of conflict, a closed Strait of Hormuz, and 22,500 stranded mariners rewrote global energy markets — and what it meant for India.</p>
+      <p class="hero-eyebrow">Civic Development Autopsy &nbsp;·&nbsp; 1824 – 2024</p>
+      <h1 class="hero-title">Downtown<br>Tampa</h1>
+      <p class="hero-subtitle">How a fort, a railroad, a cigar boom, interstate clearance, and a waterfront remade the civic core of Tampa Bay — told with open historical data and archival imagery.</p>
       <div class="hero-stats">
         <div>
-          <div class="hero-stat-number" style="color:#fde725">$166.96</div>
-          <div class="hero-stat-label">/bbl &nbsp;·&nbsp; Oman Crude Peak<br>All-time high — Mar 19, 2026</div>
+          <div class="hero-stat-number" style="color:#fde725">200</div>
+          <div class="hero-stat-label">years from Fort Brooke<br>to Water Street</div>
         </div>
         <div>
-          <div class="hero-stat-number" style="color:#b5de2b">22,500</div>
-          <div class="hero-stat-label">mariners stranded at peak<br>May 6, 2026 (US CENTCOM)</div>
+          <div class="hero-stat-number" style="color:#b5de2b">~15.5k</div>
+          <div class="hero-stat-label">downtown-core residents<br>2023 estimate (from ~1.8k in 1980)</div>
         </div>
         <div>
-          <div class="hero-stat-number" style="color:#6ece58">$20B</div>
-          <div class="hero-stat-label">sold by RBI in single week<br>March 7–14 intervention</div>
+          <div class="hero-stat-number" style="color:#6ece58">$3.5B+</div>
+          <div class="hero-stat-label">Water Street program capital<br>Strategic Property Partners</div>
         </div>
         <div>
-          <div class="hero-stat-number" style="color:#1f9e89">~100</div>
-          <div class="hero-stat-label">Hormuz dark days<br>of 112-day conflict</div>
+          <div class="hero-stat-number" style="color:#1f9e89">384k</div>
+          <div class="hero-stat-label">City of Tampa population<br>2020 U.S. Census</div>
         </div>
       </div>
     </div>
     <div class="hero-viridis-bar"></div>
   </section>
 
-  <!-- ── PHASE LEGEND ── -->
   <div id="phase-legend">
-    <div class="phase-legend-inner" id="phase-pills-container">
-      <!-- Injected by app.js -->
-    </div>
+    <div class="phase-legend-inner" id="phase-pills-container"></div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       SECTION 1: SCROLLYTELLING MAP
-  ══════════════════════════════════════════ -->
+  <!-- SECTION 1: SCROLLYTELLING MAP -->
   <section id="scrollytelling">
     <div class="scroll-outer">
       <div class="section-wrapper" style="padding-bottom:32px">
         <p class="section-eyebrow">Phase 01 / Event Map</p>
         <h2 class="section-title">The Operational Timeline</h2>
-        <p class="section-subtitle">Scroll through 15 key events. The map follows each strike, closure, and diplomatic breakthrough across the 112-day arc.</p>
+        <p class="section-subtitle">Scroll through 15 key spatial moments. The map follows each founding, boom, clearance, and waterfront breakthrough across two centuries.</p>
       </div>
 
       <div class="scroll-section">
-        <!-- Sticky left: Leaflet map -->
         <div class="sticky-figure">
           <div id="scroll-map-container"></div>
           <div class="map-step-overlay">
-            <div class="map-step-date" id="map-overlay-date">Feb 28, 2026 · OUTBREAK</div>
+            <div class="map-step-date" id="map-overlay-date">1824 · FORTRESS</div>
             <div class="map-step-headline" id="map-overlay-headline">Scroll to begin the timeline →</div>
             <div class="map-metrics">
-              <div class="map-metric">🛢 Brent: <span id="map-overlay-brent">$74.2</span></div>
-              <div class="map-metric">🛢 Oman: <span id="map-overlay-oman">$73.8</span></div>
+              <div class="map-metric">Population: <span id="map-overlay-pop">—</span></div>
+              <div class="map-metric">Port index: <span id="map-overlay-port">0</span></div>
             </div>
           </div>
         </div>
 
-        <!-- Scrolling right: narrative steps (injected by app.js) -->
         <div class="scroll-steps">
           <div id="scroll-steps-container"></div>
         </div>
@@ -113,112 +99,111 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════
-       SECTION 2: ENERGY MARKETS
-  ══════════════════════════════════════════ -->
+  <!-- SECTION 2: POPULATION & ERA -->
   <section class="chart-section-bg">
     <div class="section-wrapper">
-      <p class="section-eyebrow">Energy Markets</p>
-      <h2 class="section-title">Crude Benchmarks &amp; Hormuz Transit Flow</h2>
+      <p class="section-eyebrow">Demography &amp; Time</p>
+      <h2 class="section-title">City Growth vs. Downtown Hollow &amp; Return</h2>
 
       <div class="chart-card reveal-on-scroll">
         <div class="chart-card-title">
-          <span class="icon" style="background:#fde725"></span>
-          Crude Benchmark Divergence — Brent · WTI · Oman/DME (USD/bbl)
+          <span class="icon" style="background:#1f9e89"></span>
+          City of Tampa Population — Decennial Census (1850–2020)
         </div>
-        <p class="chart-desc">Oman/Dubai Mercantile Exchange (DME) — the key Asian benchmark — diverged sharply from WTI as Hormuz closure created a physical scarcity premium for barrels already east of the blockade. Oman peaked at $166.96 on March 19 on a Chinese panic bid. WTI peaked at $96.84 on March 8.</p>
-        <div class="canvas-wrap" style="height:300px"><canvas id="chart-oil-prices"></canvas></div>
-        <p class="chart-source">Sources: EIA Daily Spot Price Series · Reuters · Bloomberg · Argus Media · <a href="https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=PET&s=RBRTE&f=D" target="_blank">EIA/Brent</a> · <a href="https://www.argusmedia.com/en/news-and-insights/latest-market-news/oman-crude-all-time-high-2026-03-19" target="_blank">Argus (Oman ATH)</a></p>
+        <p class="chart-desc">Municipal population jumps track railroads, cigars, the 1920s land boom, wartime industry, and large mid-century annexations (especially the 1960 count). Citywide growth can mask downtown residential collapse.</p>
+        <div class="canvas-wrap" style="height:300px"><canvas id="chart-city-pop"></canvas></div>
+        <p class="chart-source">Sources: <a href="https://www.census.gov/programs-surveys/decennial-census.html" target="_blank">U.S. Census Bureau</a> · <a href="https://data.census.gov/profile/Tampa_city,_Florida?g=160XX00US1271000" target="_blank">data.census.gov · Tampa city</a></p>
       </div>
 
-      <div class="chart-card reveal-on-scroll">
-        <div class="chart-card-title">
-          <span class="icon" style="background:#26828e"></span>
-          Strait of Hormuz — Daily Tanker Transits (Feb 28 – Mar 24, 2026)
+      <div class="chart-grid-2">
+        <div class="chart-card reveal-on-scroll">
+          <div class="chart-card-title">Downtown-Core Residential Population</div>
+          <p class="chart-desc">Core residents peak in the streetcar era, trough under urban renewal, then rebound with Harbour Island, Channel District lofts, and Water Street. Pre-2010 points include labeled estimates.</p>
+          <div class="canvas-wrap" style="height:260px"><canvas id="chart-dt-residents"></canvas></div>
+          <p class="chart-source"><a href="https://www.tampasdowntown.com/" target="_blank">Tampa Downtown Partnership</a> · Census tract aggregates · planning literature estimates</p>
         </div>
-        <p class="chart-desc">Pre-conflict baseline: ~94 ships/day (IMF PortWatch AIS data) · ~100/day (EIA/Lloyd's List). Following IRGC closure March 2, Clarksons Research confirmed average of just 4 transits/day through week ending March 23. Indian LPG carriers briefly permitted March 13 (S&P Global). Color: <span style="color:#1f9e89">■</span> Unrestricted &nbsp;<span style="color:#6ece58">■</span> Permitted &nbsp;<span style="color:#fde725">■</span> Restricted &nbsp;<span style="color:#440154">■</span> Near-zero</p>
-        <div class="canvas-wrap" style="height:260px"><canvas id="chart-hormuz-bar"></canvas></div>
-        <p class="chart-source">Sources: <a href="https://www.vortexa.com/" target="_blank">Vortexa</a> · <a href="https://www.spglobal.com/commodityinsights/en/" target="_blank">S&P Global</a> · <a href="https://windward.ai/" target="_blank">Windward Maritime AI</a> · <a href="https://www.argusmedia.com/en/news-and-insights/latest-market-news/2804704-at-least-three-vessels-exit-strait-of-hormuz" target="_blank">Argus Media (Mar 22)</a> · <a href="https://www.bloomberg.com/news/articles/2026-03-24/chinese-owned-tanker-transits-hormuz-along-iranian-coastal-route" target="_blank">Bloomberg (Mar 24)</a> · <a href="https://portwatch.imf.org/pages/chokepoint6" target="_blank">IMF PortWatch</a> · <a href="https://www.ukmto.org/" target="_blank">UKMTO</a> · <a href="https://www.clarksons.com/services/research/" target="_blank">Clarksons Research (avg 4/day week to Mar 23)</a></p>
+        <div class="chart-card reveal-on-scroll">
+          <div class="chart-card-title">Era Durations — 200 Years of Civic Phases</div>
+          <p class="chart-desc">Fortress and suburban/renewal stretches are long; the classical metropolis peak is brief. Waterfront recovery is still young.</p>
+          <div class="canvas-wrap" style="height:260px"><canvas id="chart-eras"></canvas></div>
+          <p class="chart-source">Periodization synthesized from City of Tampa, TDP, NPS Ybor, and Florida Memory timelines</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════
-       SECTION 3: INDIA IMPORT STRUCTURE (SANKEYS)
-  ══════════════════════════════════════════ -->
+  <!-- SECTION 3: ECONOMIC BASE SANKEYS -->
   <section>
     <div class="section-wrapper">
-      <p class="section-eyebrow">India's Energy Exposure</p>
-      <h2 class="section-title">Crude Import Routes &amp; Global Cargo Flows</h2>
+      <p class="section-eyebrow">Economic Base</p>
+      <h2 class="section-title">What Paid for Downtown — 1925 vs 2023</h2>
 
       <div class="chart-card reveal-on-scroll">
-        <div class="chart-card-title">India Crude Imports — Source, Route and Commodity Type</div>
-        <p class="chart-desc">Approximately 4.8–5.0 mb/d total net imports &nbsp;·&nbsp; ~56% of crude + ~80% of LPG transits Hormuz &nbsp;·&nbsp; Russia share fell from ~1.7 mb/d (2025) to ~1.0 mb/d amid US tariff pressure</p>
+        <div class="chart-card-title">Economic Base Flows — Sector → District → Outcome</div>
+        <p class="chart-desc">1925: cigars, phosphate, rail, and Main Street retail. 2023: office/knowledge, hospitality, residential rents, healthcare/education, sports, and a seaward port.</p>
         <div class="sankey-toggle">
-          <button class="sankey-btn active" id="sankey-india-normal-btn">Normal Routing (56% Via Hormuz)</button>
-          <button class="sankey-btn crisis" id="sankey-india-crisis-btn">Crisis Routing (Hormuz Blocked)</button>
+          <button class="sankey-btn active" id="sankey-economy-1925-btn">1925 Classical Peak</button>
+          <button class="sankey-btn crisis" id="sankey-economy-2023-btn">2023 Waterfront Mix</button>
         </div>
-        <div id="sankey-india-wrap" style="width:100%;overflow-x:auto">
-          <svg id="sankey-india-svg" style="min-width:680px;height:380px;width:100%"></svg>
+        <div id="sankey-economy-wrap" style="width:100%;overflow-x:auto">
+          <svg id="sankey-economy-svg" style="min-width:680px;height:380px;width:100%"></svg>
         </div>
-        <p class="chart-source">Sources: <a href="https://kpler.com/" target="_blank">Kpler</a> · The Print · The Diplomat · <a href="https://ppac.gov.in/content/212_1_PricesPetroleum.aspx" target="_blank">PPAC (Ministry of Petroleum)</a> · Morgan Stanley India (Mar 2026)</p>
+        <p class="chart-source">Sources: <a href="https://www.nps.gov/ybor/index.htm" target="_blank">NPS Ybor City</a> · <a href="https://www.porttb.com/" target="_blank">Port Tampa Bay</a> · <a href="https://www.tampasdowntown.com/" target="_blank">Tampa Downtown Partnership</a> · <a href="https://www.waterstreettampa.com/" target="_blank">Water Street Tampa</a></p>
       </div>
 
       <div class="chart-card reveal-on-scroll">
-        <div class="chart-card-title">Global Cargo Flows — What Passes Through Hormuz and Where It Goes</div>
-        <p class="chart-desc">Pre-conflict volumes. ~20–25% of global crude, 20% of global LNG, 8% of global LPG transits Hormuz. "BLOCKED Mar 1 – present" label reflects crisis-period status.</p>
-        <div id="sankey-global-wrap" style="width:100%;overflow-x:auto">
-          <svg id="sankey-global-svg" style="min-width:680px;height:360px;width:100%"></svg>
+        <div class="chart-card-title">Redevelopment Pathways — From Clearance &amp; Industry to Mixed-Use</div>
+        <p class="chart-desc">Conceptual flow of how industrial edges, renewal parcels, parking craters, and surviving landmarks feed today's towers, parks, hospitality, and remaining gaps.</p>
+        <div id="sankey-landuse-wrap" style="width:100%;overflow-x:auto">
+          <svg id="sankey-landuse-svg" style="min-width:680px;height:360px;width:100%"></svg>
         </div>
-        <p class="chart-source">Sources: <a href="https://www.eia.gov/international/analysis/special-topics/World_Oil_Transit_Chokepoints" target="_blank">EIA World Oil Transit Chokepoints</a> · <a href="https://kpler.com/" target="_blank">Kpler</a> · <a href="https://www.spglobal.com/commodityinsights/en/" target="_blank">S&P Global</a> · <a href="https://www.vortexa.com/" target="_blank">Vortexa</a> · IEA (2025/early 2026) · <a href="https://www.visualcapitalist.com/charted-oil-trade-through-the-strait-of-hormuz-by-country/" target="_blank">Visual Capitalist</a></p>
+        <p class="chart-source">Conceptual model — refine with <a href="https://opendata.tampa.gov/" target="_blank">City of Tampa Open Data</a> parcel GIS</p>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════
-       SECTION 4: INTERACTIVE SANDBOX
-  ══════════════════════════════════════════ -->
+  <!-- SECTION 4: INTERACTIVE SANDBOX -->
   <section id="sandbox" class="chart-section-bg">
     <div class="section-wrapper">
       <p class="section-eyebrow">Phase 02 / Interactive Sandbox</p>
-      <h2 class="section-title">Scrub the Crisis Timeline</h2>
-      <p class="section-subtitle">Drag the slider to see how every key metric evolved from Feb 28 to Jun 20. The map updates to show the operational status of the Strait.</p>
+      <h2 class="section-title">Scrub 200 Years of Downtown</h2>
+      <p class="section-subtitle">Drag the slider from Fort Brooke (1824) to the present. Metrics update to the nearest available series point; the map era color tracks the civic phase.</p>
 
       <div class="slider-wrapper">
         <div class="slider-header">
-          <span class="slider-date-label" id="slider-date-label">📅 Feb 28 &nbsp;·&nbsp; Day 0</span>
-          <span class="hormuz-badge open" id="hormuz-badge">HORMUZ: OPEN</span>
+          <span class="slider-date-label" id="slider-date-label">📅 1824 &nbsp;·&nbsp; Year 0</span>
+          <span class="hormuz-badge open" id="era-badge">ERA: FORTRESS</span>
         </div>
-        <input type="range" class="crisis-slider" id="crisis-slider" min="0" max="112" value="0" step="1" aria-label="Crisis timeline day" />
+        <input type="range" class="crisis-slider" id="era-slider" min="0" max="200" value="0" step="1" aria-label="Downtown Tampa timeline year offset" />
         <div class="slider-ticks">
-          <span>Feb 28</span><span>Mar 19 (Peak)</span><span>Apr 7 (CF)</span><span>Jun 20 (End)</span>
+          <span>1824 Fort</span><span>1926 Peak</span><span>1967 Renewal</span><span>2018 Water St.</span>
         </div>
       </div>
 
       <div class="stat-cards">
         <div class="stat-card" style="border-left-color:#6ece58">
-          <div class="stat-card-value" id="stat-brent" style="color:#6ece58">$74.2</div>
-          <div class="stat-card-label">/bbl &nbsp;·&nbsp; Brent Crude</div>
+          <div class="stat-card-value" id="stat-city-pop" style="color:#6ece58">—</div>
+          <div class="stat-card-label">City population</div>
         </div>
         <div class="stat-card" style="border-left-color:#fde725">
-          <div class="stat-card-value" id="stat-oman" style="color:#fde725">$73.8</div>
-          <div class="stat-card-label">/bbl &nbsp;·&nbsp; Oman/GME Crude</div>
+          <div class="stat-card-value" id="stat-dt-pop" style="color:#fde725">—</div>
+          <div class="stat-card-label">Downtown-core residents</div>
         </div>
         <div class="stat-card" style="border-left-color:#1f9e89">
-          <div class="stat-card-value" id="stat-wti" style="color:#1f9e89">$70.1</div>
-          <div class="stat-card-label">/bbl &nbsp;·&nbsp; WTI Crude</div>
+          <div class="stat-card-value" id="stat-port" style="color:#1f9e89">—</div>
+          <div class="stat-card-label">Port activity index</div>
         </div>
         <div class="stat-card" style="border-left-color:#3e4989">
-          <div class="stat-card-value" id="stat-fx" style="color:#3e4989">$730.0B</div>
-          <div class="stat-card-label">India FX Reserves (USD)</div>
+          <div class="stat-card-value" id="stat-cigar" style="color:#3e4989">—</div>
+          <div class="stat-card-label">Cigar production</div>
         </div>
         <div class="stat-card" style="border-left-color:#31688e">
-          <div class="stat-card-value" id="stat-ships" style="color:#31688e">0</div>
-          <div class="stat-card-label">vessels &nbsp;·&nbsp; Ships Stranded</div>
+          <div class="stat-card-value" id="stat-commerce" style="color:#31688e">—</div>
+          <div class="stat-card-label">Commercial intensity</div>
         </div>
         <div class="stat-card" style="border-left-color:#b5de2b">
-          <div class="stat-card-value" id="stat-mariners" style="color:#b5de2b">0</div>
-          <div class="stat-card-label">stranded &nbsp;·&nbsp; Mariners</div>
+          <div class="stat-card-value" id="stat-hotels" style="color:#b5de2b">—</div>
+          <div class="stat-card-label">Hotel rooms (core)</div>
         </div>
       </div>
 
@@ -226,204 +211,180 @@
         <div>
           <div id="sandbox-map-container"></div>
           <div class="sandbox-event-card">
-            <div class="sandbox-event-headline" id="sandbox-event-headline">Pre-conflict baseline · Feb 28, 2026</div>
-            <div class="sandbox-event-body" id="sandbox-event-body">Drag the slider above to explore how all metrics evolved across the 112-day conflict. The map updates to show operational status of the Strait of Hormuz and active strike locations.</div>
+            <div class="sandbox-event-headline" id="sandbox-event-headline">Pre-urban baseline · 1824</div>
+            <div class="sandbox-event-body" id="sandbox-event-body">Drag the slider above to explore how population, port activity, industry, and capital evolved across two centuries of downtown Tampa.</div>
           </div>
         </div>
         <div>
           <div class="chart-card" style="margin-bottom:16px">
-            <div class="chart-card-title">Crude Benchmark Divergence — All Three Benchmarks</div>
-            <div class="canvas-wrap" style="height:260px"><canvas id="chart-sandbox-oil"></canvas></div>
+            <div class="chart-card-title">City vs Downtown Residents</div>
+            <div class="canvas-wrap" style="height:260px"><canvas id="chart-sandbox-dual"></canvas></div>
           </div>
           <div class="chart-card" style="margin-bottom:0">
-            <div class="chart-card-title">Mariners &amp; Vessels Stranded — Cumulative Count</div>
-            <div class="canvas-wrap" style="height:180px"><canvas id="chart-mariners-sb"></canvas></div>
+            <div class="chart-card-title">Capital Waves ($B)</div>
+            <div class="canvas-wrap" style="height:180px"><canvas id="chart-sandbox-capital"></canvas></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════
-       SECTION 5: INDIA MACRO EXPOSURE
-  ══════════════════════════════════════════ -->
+  <!-- SECTION 5: INDUSTRY & COMMERCE -->
   <section>
     <div class="section-wrapper">
-      <p class="section-eyebrow">India Macroeconomic Exposure</p>
-      <h2 class="section-title">Reserves, Rates &amp; Fiscal Stress</h2>
+      <p class="section-eyebrow">Industry, Port &amp; Main Street</p>
+      <h2 class="section-title">Cigars, Phosphate, and Commercial Intensity</h2>
+
+      <div class="chart-card reveal-on-scroll">
+        <div class="chart-card-title">
+          <span class="icon" style="background:#fde725"></span>
+          Port Activity Index vs Cigar Production
+        </div>
+        <p class="chart-desc">Cigar millions peak in the early 20th century and collapse by mid-century. Port activity remains a durable bay economy but migrates operationally seaward of the walkable CBD.</p>
+        <div class="canvas-wrap" style="height:300px"><canvas id="chart-port-cigar"></canvas></div>
+        <p class="chart-source"><a href="https://www.nps.gov/ybor/index.htm" target="_blank">NPS Ybor City</a> · <a href="https://www.porttb.com/" target="_blank">Port Tampa Bay</a> · <a href="https://www.floridamemory.com/" target="_blank">Florida Memory</a></p>
+      </div>
 
       <div class="chart-grid-2">
         <div class="chart-card reveal-on-scroll">
-          <div class="chart-card-title">India Foreign Exchange Reserves — RBI Intervention Window (USD Bn)</div>
-          <p class="chart-desc">RBI sold $18–20B in single week (Mar 7–14) defending the rupee. Trough at $697B (May 16). Partial recovery post-MoU.</p>
-          <div class="canvas-wrap" style="height:240px"><canvas id="chart-fx-reserves"></canvas></div>
-          <p class="chart-source"><a href="https://www.rbi.org.in/scripts/WSSViewDetail.aspx" target="_blank">RBI Weekly Statistical Supplement</a> (published every Friday) · <a href="https://www.reuters.com/markets/currencies/rbi-intervention-record-sale-2026-03-12/" target="_blank">Reuters (Mar 12)</a></p>
+          <div class="chart-card-title">Commercial Intensity Index (100 = 1925 peak)</div>
+          <p class="chart-desc">Franklin Street's classical peak, suburban siphon, renewal trough, and waterfront-era rebound.</p>
+          <div class="canvas-wrap" style="height:260px"><canvas id="chart-commercial"></canvas></div>
+          <p class="chart-source">Sanborn / LOC · TDP histories · local commercial literature</p>
         </div>
         <div class="chart-card reveal-on-scroll">
-          <div class="chart-card-title">USD/INR Exchange Rate — RBI Reference Rate (₹ per $1)</div>
-          <p class="chart-desc">RBI reference rate published daily at 12:00 IST. Conflict-period peak: <strong style="color:#b5de2b">₹96.844/$1 on May 20, 2026</strong> (confirmed via CEIC/RBI Reference Rate Archive). Jun 22 close: ₹94.494; Jun 23: ₹94.706. Note: earlier figure of ₹93.33 (Mar 19) was not the peak — the rupee continued depreciating through May.</p>
-          <div class="canvas-wrap" style="height:240px"><canvas id="chart-fx-rate"></canvas></div>
-          <p class="chart-source"><a href="https://www.rbi.org.in/scripts/WSSViewDetail.aspx" target="_blank">RBI Reference Rate</a> · <a href="https://www.mufg.jp/english/" target="_blank">MUFG FX Research (Mar 12)</a> · Goldman Sachs India</p>
+          <div class="chart-card-title">Downtown Hotel Room Stock</div>
+          <p class="chart-desc">From the Tampa Bay Hotel to land-boom palaces, mid-century demolition, convention rebuild, and Water Street hospitality.</p>
+          <div class="canvas-wrap" style="height:260px"><canvas id="chart-hotels"></canvas></div>
+          <p class="chart-source"><a href="https://www.plantmuseum.com/" target="_blank">Henry B. Plant Museum</a> · TDP · SPP</p>
         </div>
-
-        <div class="chart-card reveal-on-scroll">
-          <div class="chart-card-title">Current Account Deficit (CAD) — Oil Price Sensitivity (% of GDP)</div>
-          <p class="chart-desc">Every $10/bbl sustained rise widens CAD by ~50 bps (Morgan Stanley Oil Sensitivity Model). Goldman Sachs revised FY 25/26 CAD to −1.2% on March 19. MUFG stress test at $120 oil gives −2.8%.</p>
-          <div class="canvas-wrap" style="height:260px"><canvas id="chart-cad"></canvas></div>
-          <p class="chart-source"><a href="https://www.reuters.com/markets/asia/goldman-sachs-cuts-india-gdp-forecast-6-5-2026-03-19/" target="_blank">Goldman Sachs India (Mar 19)</a> · Morgan Stanley India Oil Sensitivity Model · <a href="https://www.mufg.jp/english/" target="_blank">MUFG FX Research (Mar 12)</a> · <a href="https://www.indiabudget.gov.in/" target="_blank">Ministry of Finance · Union Budget 2025–26</a></p>
-        </div>
-        <div class="chart-card reveal-on-scroll">
-          <div class="chart-card-title">Lloyd's War Risk Premium — % of Vessel Value Per Voyage</div>
-          <p class="chart-desc">Unit: AWRP (Additional War Risk Premium) as % of Hull &amp; Machinery value per 7-day transit. Pre-conflict baseline: 0.10–0.15%. <strong style="color:#b5de2b">Confirmed peak: 2.5% in early March</strong> (insurance executives, Asia Pacific Maritime conference, Singapore, March 27 — S&P Global). For a $138M H&M VLCC this adds $10–14M per voyage. Red Sea precedent: 26+ months and still elevated (Drewry).</p>
-          <div class="canvas-wrap" style="height:260px"><canvas id="chart-war-risk"></canvas></div>
-          <p class="chart-source"><a href="https://www.lloydslist.com/ll/sector/tankers/article803421.ece" target="_blank">Lloyd's Joint War Committee</a> · P&I Clubs · Drewry Shipping Consultants</p>
-        </div>
-      </div>
-
-      <div class="chart-card reveal-on-scroll" style="margin-top:0">
-        <div class="chart-card-title">Humanitarian Crisis — Mariners &amp; Vessels Stranded in Persian Gulf</div>
-        <p class="chart-desc">IMO confirmed ~20,000 mariners stranded April 21. General Dan Caine confirmed 22,500 on 1,550+ vessels May 6. DG Shipping India: 847 Indian nationals among those trapped.</p>
-        <div class="canvas-wrap" style="height:260px"><canvas id="chart-mariners"></canvas></div>
-        <p class="chart-source"><a href="https://www.imo.org/en/MediaCentre/PressBriefings/pages/mariners-persian-gulf-2026-04-21.aspx" target="_blank">IMO (Apr 21 official)</a> · <a href="https://www.reuters.com/world/middle-east/gen-caine-22500-mariners-trapped-hormuz-2026-05-06/" target="_blank">US CENTCOM / Gen. Caine (May 6)</a> · Lloyd's List Intelligence · Kpler</p>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════
-       SECTION 6: EMERGING MARKET VULNERABILITY
-  ══════════════════════════════════════════ -->
+  <!-- SECTION 6: CAPITAL & LAND USE -->
   <section class="chart-section-bg">
     <div class="section-wrapper">
-      <p class="section-eyebrow">Emerging Market Debt Vulnerability</p>
-      <h2 class="section-title">Current Account Deficit Widening &amp; EMBI Spread Shock</h2>
+      <p class="section-eyebrow">Capital Formation &amp; Urban Form</p>
+      <h2 class="section-title">Where Money and Land Went</h2>
 
       <div class="chart-grid-2">
         <div class="chart-card reveal-on-scroll">
-          <div class="chart-card-title">CAD Widening from $107 vs $75 Oil (% of GDP)</div>
-          <p class="chart-desc">Stacked bars: pre-conflict Current Account Deficit (CAD) baseline + additional oil shock hit. Countries ranked by total exposure. Nigeria is a net oil exporter — partial exposure via refinery deficit.</p>
-          <div class="canvas-wrap" style="height:340px"><canvas id="chart-cad-widening"></canvas></div>
-          <p class="chart-source"><a href="https://www.imf.org/en/Publications/GFSR" target="_blank">IMF GFSR Oct 2025</a> · <a href="https://www.oecd.org/en/publications/oecd-global-debt-report-2025_61aea749-en.html" target="_blank">OECD Global Debt Report 2025</a> · Morgan Stanley EM Debt Monitor Q3 2025 · World Bank IDS 2024</p>
+          <div class="chart-card-title">Major Development Capital Waves ($B)</div>
+          <p class="chart-desc">Water Street dwarfs prior private waves. Public interstate/renewal capital was transformative in form but not always in livability.</p>
+          <div class="canvas-wrap" style="height:280px"><canvas id="chart-capital"></canvas></div>
+          <p class="chart-source"><a href="https://www.waterstreettampa.com/" target="_blank">Strategic Property Partners</a> · City of Tampa · TDP</p>
         </div>
         <div class="chart-card reveal-on-scroll">
-          <div class="chart-card-title">JP Morgan EMBI Spreads — Pre-Conflict vs Post-Shock (basis points)</div>
-          <p class="chart-desc">Sovereign debt spread widening reflects repricing of external financing risk. Pakistan and Sri Lanka — already at distressed levels — face potential debt restructuring. India's investment-grade rating provides meaningful buffer.</p>
-          <div class="canvas-wrap" style="height:340px"><canvas id="chart-embi"></canvas></div>
-          <p class="chart-source"><a href="https://www.imf.org/en/Publications/GFSR" target="_blank">IMF GFSR</a> · JP Morgan EMBI+ Index · S&P / Fitch sovereign ratings · <a href="https://www.worldbank.org/en/publication/global-economic-prospects" target="_blank">World Bank Global Economic Prospects</a></p>
+          <div class="chart-card-title">Core Land-Use Share Over Time (%)</div>
+          <p class="chart-desc">Vacant/parking expands through renewal decades; residential returns in the 21st century while industrial exits the walkable core.</p>
+          <div class="canvas-wrap" style="height:280px"><canvas id="chart-landuse"></canvas></div>
+          <p class="chart-source">Generalized model — <a href="https://opendata.tampa.gov/" target="_blank">opendata.tampa.gov</a> for parcel refinement</p>
         </div>
+      </div>
+
+      <div class="chart-card reveal-on-scroll">
+        <div class="chart-card-title">Neighborhood Disruption Index (0–100)</div>
+        <p class="chart-desc">Physical disruption peaks for Central Avenue / The Scrub and Ybor during interstate and urban renewal years. South waterfront disruption in 2020 reflects intentional master-planned rebuild (Water Street), not mid-century clearance trauma — different cause, still high change.</p>
+        <div class="canvas-wrap" style="height:320px"><canvas id="chart-disruption"></canvas></div>
+        <p class="chart-source">Synthesized from HUD renewal histories, FDOT interstate impacts, USF special collections, and modern redevelopment footprints</p>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════
-       SECTION 7: REMITTANCES
-  ══════════════════════════════════════════ -->
+  <!-- SECTION 7: PHOTO ARCHIVE -->
   <section>
     <div class="section-wrapper">
-      <p class="section-eyebrow">India–Gulf Remittances</p>
-      <h2 class="section-title">Sub-National Exposure &amp; Long-Run Trend</h2>
-      <p class="section-subtitle">Total remittances $118.7B (FY 23/24). Gulf-to-India flows fell ~68% during peak blockade. Kerala — where remittances exceed 36% of State Domestic Product — bore the heaviest subnational shock.</p>
-
-      <div class="chart-grid-2">
-        <div class="chart-card reveal-on-scroll">
-          <div class="chart-card-title">State-wise Share of India's Total Remittances — FY 23/24 (%)</div>
-          <p class="chart-desc">Maharashtra and Kerala together account for ~40% of all remittances. Kerala's SDP-relative exposure (36.2%) is the highest in the country.</p>
-          <div class="canvas-wrap" style="height:320px"><canvas id="chart-state-bars"></canvas></div>
-          <p class="chart-source"><a href="https://www.rbi.org.in/Scripts/AnnualReportPublications.aspx" target="_blank">RBI 6th Round Remittances Survey (FY 23/24)</a> · Kerala Migration Survey (Centre for Development Studies, Trivandrum, 2024) · MoSPI</p>
-        </div>
-        <div class="chart-card reveal-on-scroll">
-          <div class="chart-card-title">India Remittances Trend — Total &amp; GCC Share (USD Bn, FY 10/11 – FY 23/24)</div>
-          <p class="chart-desc">Total remittances more than doubled from $53.9B to $118.7B over 13 years. GCC share rose from $24.8B to $40.2B — the most crisis-exposed corridor.</p>
-          <div class="canvas-wrap" style="height:320px"><canvas id="chart-rem-trend"></canvas></div>
-          <p class="chart-source"><a href="https://www.worldbank.org/en/topic/migrationremittancesdiasporaissues/brief/migration-remittances-data" target="_blank">World Bank Migration &amp; Remittances Data</a> · <a href="https://www.rbi.org.in/Scripts/AnnualReportPublications.aspx" target="_blank">RBI Annual Reports</a></p>
-        </div>
-      </div>
+      <p class="section-eyebrow">Open Archival Imagery</p>
+      <h2 class="section-title">Historical Pictures &amp; Primary Visual Sources</h2>
+      <p class="section-subtitle">Prefer public-domain and openly licensed collections. Florida Memory (State Archives of Florida), Library of Congress, Wikimedia Commons, NPS, and USF Digital Collections are first-line sources.</p>
+      <div class="photo-grid" id="photo-archive-grid"></div>
+      <p class="chart-source" style="margin-top:16px">
+        Primary portals:
+        <a href="https://www.floridamemory.com/discover/photographs/" target="_blank">Florida Memory Photographs</a> ·
+        <a href="https://www.loc.gov/collections/sanborn-maps/" target="_blank">LOC Sanborn Maps</a> ·
+        <a href="https://commons.wikimedia.org/wiki/Category:Tampa,_Florida" target="_blank">Wikimedia · Tampa</a> ·
+        <a href="https://www.nps.gov/ybor/index.htm" target="_blank">NPS Ybor City</a> ·
+        <a href="https://digital.lib.usf.edu/" target="_blank">USF Digital Collections</a>
+      </p>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════
-       SECTION 8: GEOPOLITICAL COST MATRIX
-  ══════════════════════════════════════════ -->
+  <!-- SECTION 8: DISTRICT IMPACT MATRIX -->
   <section class="chart-section-bg">
     <div class="section-wrapper">
-      <p class="section-eyebrow">Geopolitical Cost Matrix</p>
-      <h2 class="section-title">Who Paid What — Country-Level Impact</h2>
+      <p class="section-eyebrow">District Impact Matrix</p>
+      <h2 class="section-title">Who Gained, Who Was Cleared, Who Was Rebuilt</h2>
 
       <div class="chart-card reveal-on-scroll" style="padding:0;overflow:hidden">
         <div style="overflow-x:auto">
           <table class="geo-table">
             <thead>
               <tr>
-                <th>Country</th>
+                <th>District</th>
                 <th>Role</th>
                 <th>Cost &amp; Impact Summary</th>
                 <th>Net</th>
               </tr>
             </thead>
-            <tbody id="geo-table-body"><!-- Injected by app.js --></tbody>
+            <tbody id="geo-table-body"></tbody>
           </table>
         </div>
         <div style="padding:12px 20px">
-          <p class="chart-source">Sources: <a href="https://www.reuters.com/world/us/us-war-cost-iran-2026-03-12/" target="_blank">Reuters (US costs)</a> · <a href="https://www.reuters.com/business/energy/qatarenergy-force-majeure-ras-laffan-2026-03-04/" target="_blank">QatarEnergy (Ras Laffan)</a> · <a href="https://www.aljazeera.com/news/2026/3/19/iran-south-pars-damage" target="_blank">Al Jazeera (Iran damage)</a> · RAND · Chatham House · CSIS · <a href="https://ppac.gov.in/" target="_blank">PPAC</a> · Goldman Sachs India · MEA</p>
+          <p class="chart-source">Sources: City of Tampa · Tampa Downtown Partnership · NPS Ybor · USF Special Collections · HUD urban renewal literature · FDOT/FHWA interstate histories · Strategic Property Partners</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════
-       FOOTER / RESOLUTION
-  ══════════════════════════════════════════ -->
+  <!-- FOOTER -->
   <footer id="resolution-footer">
     <div class="footer-inner">
-      <p class="footer-eyebrow">Resolution &nbsp;·&nbsp; June 20, 2026</p>
-      <h3 class="footer-title">Islamabad Memorandum &nbsp;·&nbsp; The Aftermath</h3>
+      <p class="footer-eyebrow">Continuity &nbsp;·&nbsp; 2024 horizon</p>
+      <h3 class="footer-title">River, Port, Grid &nbsp;·&nbsp; The Unfinished Core</h3>
 
       <div class="footer-stats">
         <div class="footer-stat" style="border-color:#1f9e89">
-          <div class="footer-stat-value" style="color:#1f9e89">~$81/bbl</div>
-          <div class="footer-stat-delta">down from $134.6 peak (−40%)</div>
-          <div class="footer-stat-label">Brent at resolution</div>
+          <div class="footer-stat-value" style="color:#1f9e89">~15.5k</div>
+          <div class="footer-stat-delta">up from ~1.8k (1980 est.)</div>
+          <div class="footer-stat-label">Downtown-core residents</div>
         </div>
         <div class="footer-stat" style="border-color:#35b779">
-          <div class="footer-stat-value" style="color:#35b779">$12B</div>
-          <div class="footer-stat-delta">precondition for talks</div>
-          <div class="footer-stat-label">Frozen assets released</div>
+          <div class="footer-stat-value" style="color:#35b779">$3.5B+</div>
+          <div class="footer-stat-delta">Water Street program scale</div>
+          <div class="footer-stat-label">Modern private capital</div>
         </div>
         <div class="footer-stat" style="border-color:#6ece58">
-          <div class="footer-stat-value" style="color:#6ece58">11</div>
-          <div class="footer-stat-delta">India-bound, June 20 alone</div>
-          <div class="footer-stat-label">First Hormuz transits</div>
+          <div class="footer-stat-value" style="color:#6ece58">2.6 mi</div>
+          <div class="footer-stat-delta">continuous public waterfront</div>
+          <div class="footer-stat-label">Tampa Riverwalk</div>
         </div>
         <div class="footer-stat" style="border-color:#b5de2b">
-          <div class="footer-stat-value" style="color:#b5de2b">112 days</div>
-          <div class="footer-stat-delta">Feb 28 – Jun 20, 2026</div>
-          <div class="footer-stat-label">Duration of conflict</div>
+          <div class="footer-stat-value" style="color:#b5de2b">200 yrs</div>
+          <div class="footer-stat-delta">1824 – 2024</div>
+          <div class="footer-stat-label">Arc of this autopsy</div>
         </div>
       </div>
 
       <div class="footer-credits">
-        <strong style="color:#666">Research &amp; Analysis:</strong> Sahasrik Ragani &nbsp;·&nbsp;
-        <a href="https://ahduni.edu.in/academics/schools-centres/stepwell-centre-for-asian-futures/" target="_blank">Stepwell Centre for Asian Futures, Ahmedabad University</a><br>
+        <strong style="color:#666">Project:</strong> Downtown Tampa Civic Development Autopsy &nbsp;·&nbsp;
+        Structured as an open-data sibling to the iranwar geoeconomic autopsy format<br>
         <strong style="color:#666">Data Sources:</strong>
-        EIA &nbsp;·&nbsp; RBI Weekly Statistical Supplement &nbsp;·&nbsp; PPAC (GoI) &nbsp;·&nbsp;
-        IMO &nbsp;·&nbsp; Vortexa &nbsp;·&nbsp; Kpler &nbsp;·&nbsp; Clarksons Research &nbsp;·&nbsp;
-        Lloyd's List &nbsp;·&nbsp; S&P Global Commodity Insights &nbsp;·&nbsp;
-        Goldman Sachs India &nbsp;·&nbsp; MUFG FX Research &nbsp;·&nbsp;
-        JP Morgan EMBI &nbsp;·&nbsp; IMF GFSR &nbsp;·&nbsp; World Bank &nbsp;·&nbsp;
-        OPEC Annual Statistical Bulletin &nbsp;·&nbsp; Argus Media &nbsp;·&nbsp;
-        Reuters &nbsp;·&nbsp; Bloomberg &nbsp;·&nbsp; AP &nbsp;·&nbsp; Al Jazeera &nbsp;·&nbsp;
-        US CENTCOM &nbsp;·&nbsp; IAEA &nbsp;·&nbsp; Visual Capitalist &nbsp;·&nbsp; IMF PortWatch &nbsp;·&nbsp; UKMTO<br>
-        <strong style="color:#666">Built with:</strong> Leaflet.js &nbsp;·&nbsp; Chart.js &nbsp;·&nbsp; D3.js &nbsp;·&nbsp; CartoDB Dark Matter tiles<br>
-        <span style="color:#2a2a2a">All data presented without interpretation. Analysis provided by domain experts. This project is affiliated with the Stepwell Centre for Asian Futures panel event series.</span>
+        U.S. Census Bureau &nbsp;·&nbsp; Florida Memory (State Archives of Florida) &nbsp;·&nbsp;
+        Library of Congress Sanborn Maps &nbsp;·&nbsp; NPS Ybor City &nbsp;·&nbsp;
+        Port Tampa Bay &nbsp;·&nbsp; City of Tampa Open Data &nbsp;·&nbsp;
+        Tampa Downtown Partnership &nbsp;·&nbsp; Henry B. Plant Museum &nbsp;·&nbsp;
+        USF Digital Collections &nbsp;·&nbsp; Wikimedia Commons &nbsp;·&nbsp;
+        Strategic Property Partners / Water Street Tampa &nbsp;·&nbsp;
+        Tampa Bay History Center timelines<br>
+        <strong style="color:#666">Built with:</strong> Leaflet.js &nbsp;·&nbsp; Chart.js &nbsp;·&nbsp; CartoDB Dark Matter tiles<br>
+        <span style="color:#2a2a2a">Estimates are labeled. Prefer primary institutional sources. See ARCHIVAL_RESEARCH_PROMPT.md for the next research pass.</span>
       </div>
     </div>
   </footer>
 
-  <!-- ── SCRIPTS (load order matters) ── -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
 

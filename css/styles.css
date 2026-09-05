@@ -1,7 +1,7 @@
 /* ══════════════════════════════════════════════════════════════════
-   IRAN WAR 2026: A GEOECONOMIC AUTOPSY
-   styles.css — Dark Viridis Theme
-   Stepwell Centre for Asian Futures · Ahmedabad University
+   DOWNTOWN TAMPA: A CIVIC DEVELOPMENT AUTOPSY
+   styles.css — Dark Viridis Theme (shared visual language)
+   Open civic / historical data journalism
    ══════════════════════════════════════════════════════════════════ */
 
 /* ─── CSS CUSTOM PROPERTIES ─── */
@@ -1082,4 +1082,82 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .scroll-step { opacity: 1 !important; transform: none !important; }
+}
+
+
+/* ─── PHOTO ARCHIVE ─── */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.photo-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  color: inherit;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.photo-card:hover {
+  border-color: var(--v5);
+  transform: translateY(-2px);
+  color: inherit;
+}
+.photo-thumb-wrap {
+  aspect-ratio: 16/10;
+  background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+  overflow: hidden;
+  position: relative;
+}
+.photo-thumb-wrap.photo-fallback::after {
+  content: 'Open archive link →';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.photo-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.9) contrast(1.05);
+}
+.photo-meta { padding: 14px 16px 16px; }
+.photo-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.photo-year {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--v5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.photo-caption {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.photo-credit {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.4px;
 }
