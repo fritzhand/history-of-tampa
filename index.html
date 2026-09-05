@@ -259,6 +259,16 @@
           <p class="chart-source"><a href="https://www.plantmuseum.com/" target="_blank">Henry B. Plant Museum</a> · TDP · SPP</p>
         </div>
       </div>
+
+      <div class="chart-card reveal-on-scroll" id="transit-card" hidden>
+        <div class="chart-card-title">
+          <span class="icon" style="background:#26828e"></span>
+          Streetcar Ridership — Historic Network vs. TECO Line
+        </div>
+        <p class="chart-desc" id="streetcar-chart-desc">Tampa's original electric streetcar network carried the streetcar-era downtown until its closure; the TECO Line heritage streetcar reconnected Ybor City, the Channel District, and downtown. Annual riders per system, from transit-agency and archival records.</p>
+        <div class="canvas-wrap" style="height:280px"><canvas id="chart-streetcar"></canvas></div>
+        <p class="chart-source" id="streetcar-chart-source"></p>
+      </div>
     </div>
   </section>
 
@@ -288,6 +298,44 @@
         <p class="chart-desc">Physical disruption peaks for Central Avenue / The Scrub and Ybor during interstate and urban renewal years. South waterfront disruption in 2020 reflects intentional master-planned rebuild (Water Street), not mid-century clearance trauma — different cause, still high change.</p>
         <div class="canvas-wrap" style="height:320px"><canvas id="chart-disruption"></canvas></div>
         <p class="chart-source">Synthesized from HUD renewal histories, FDOT interstate impacts, USF special collections, and modern redevelopment footprints</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6b: CLEARANCE & DISPLACEMENT (rendered only when data exists) -->
+  <section id="displacement" hidden>
+    <div class="section-wrapper">
+      <p class="section-eyebrow">Clearance &amp; Displacement</p>
+      <h2 class="section-title">What Urban Renewal and the Interstates Removed</h2>
+      <p class="section-subtitle">Redevelopment investment is paired here with the households, businesses, and acres it displaced. Figures come from federal, city, and scholarly records; every row carries its source and verification status.</p>
+
+      <div class="chart-card reveal-on-scroll">
+        <div class="chart-card-title">
+          <span class="icon" style="background:#c0392b"></span>
+          Households Displaced and Units Demolished, by Project
+        </div>
+        <p class="chart-desc">Families displaced and housing units removed per project, where a primary or scholarly-cited figure exists. Projects without a published count appear in the table only.</p>
+        <div class="canvas-wrap" style="height:300px"><canvas id="chart-displacement"></canvas></div>
+        <p class="chart-source" id="displacement-chart-source"></p>
+      </div>
+
+      <div class="chart-card reveal-on-scroll" style="padding:0;overflow:hidden">
+        <div style="overflow-x:auto">
+          <table class="geo-table">
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Years</th>
+                <th>Acres</th>
+                <th>Units</th>
+                <th>Families</th>
+                <th>Businesses</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody id="displacement-table-body"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </section>
@@ -337,6 +385,37 @@
     </div>
   </section>
 
+  <!-- SECTION 9: SOURCE AUDIT -->
+  <section id="sources">
+    <div class="section-wrapper">
+      <p class="section-eyebrow">Source Audit</p>
+      <h2 class="section-title">Every Number, Its Institution, Its Status</h2>
+      <p class="section-subtitle" id="source-audit-summary">Loading citation audit…</p>
+
+      <div class="chart-card reveal-on-scroll" style="padding:0;overflow:hidden">
+        <div style="overflow-x:auto">
+          <table class="geo-table">
+            <thead>
+              <tr>
+                <th>Institution</th>
+                <th>Data points</th>
+                <th>Confirmed</th>
+                <th>Pending</th>
+                <th>Derived</th>
+                <th>Access</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody id="source-roll-body"></tbody>
+          </table>
+        </div>
+        <div style="padding:12px 20px">
+          <p class="chart-source">CONFIRMED = the cited page states the figure. PENDING = right institution, figure not yet read there. DERIVED = editorial reconstruction with its inputs named in the note. Hunt list: <a href="ARCHIVAL_RESEARCH_PROMPT_TAMPA.md" target="_blank">ARCHIVAL_RESEARCH_PROMPT_TAMPA.md</a> · Rights: <a href="CONTENT_LICENSE.md" target="_blank">CONTENT_LICENSE.md</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer id="resolution-footer">
     <div class="footer-inner">
@@ -377,7 +456,8 @@
         USF Digital Collections &nbsp;·&nbsp; Wikimedia Commons &nbsp;·&nbsp;
         Strategic Property Partners / Water Street Tampa &nbsp;·&nbsp;
         Tampa Bay History Center timelines<br>
-        <strong style="color:#666">Built with:</strong> Leaflet.js &nbsp;·&nbsp; Chart.js &nbsp;·&nbsp; CartoDB Dark Matter tiles<br>
+        <strong style="color:#666">Built with:</strong> Leaflet.js &nbsp;·&nbsp; Chart.js &nbsp;·&nbsp; Esri World Dark Gray Canvas tiles<br>
+        <strong style="color:#666">Rights:</strong> data CC BY 4.0 · embedded images are public-domain or Creative Commons, credited on each card — see <a href="CONTENT_LICENSE.md" target="_blank">CONTENT_LICENSE.md</a><br>
         <span style="color:#2a2a2a">Estimates are labeled. Prefer primary institutional sources. See ARCHIVAL_RESEARCH_PROMPT_TAMPA.md for the next research pass.</span>
       </div>
     </div>

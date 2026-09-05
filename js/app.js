@@ -81,6 +81,13 @@ function mkScale(overrides = {}) {
   };
 }
 
+/* Linear year axis: no thousands separators on years ("1,900" → "1900"). */
+function yearScale(overrides = {}) {
+  const s = mkScale({ type:'linear', title:{ display:true, text:'Year', color:'#444', font:{ size:10 }}, ...overrides });
+  s.ticks = { ...s.ticks, callback: v => String(v) };
+  return s;
+}
+
 function fmtNum(n) {
   if (n == null || Number.isNaN(n)) return '—';
   if (Math.abs(n) >= 1000000) return (n/1e6).toFixed(1) + 'M';
@@ -609,7 +616,7 @@ function initPortCigarChart() {
         legend: { labels: { color:'#666', boxWidth:20 } }
       },
       scales: {
-        x: mkScale({ type: 'linear', title: { display:true, text:'Year', color:'#444', font:{ size:10 }}}),
+        x: yearScale(),
         y: mkScale({ title: { display:true, text:'Port index', color:'#444', font:{ size:10 }}}),
         y1: mkScale({
           position: 'right',
@@ -779,7 +786,7 @@ function initEraChart() {
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: series.map(d => d.era),
+      labels: series.map(d => String(d.era).split('\n')),
       datasets: [{
         label: 'Years in era',
         data: series.map(d => d.years),
@@ -836,7 +843,7 @@ function initSandboxDualChart() {
         legend: { labels: { color:'#666', boxWidth:16, font:{ size:10 }}}
       },
       scales: {
-        x: mkScale({ type:'linear', title:{ display:true, text:'Year', color:'#444', font:{ size:10 }}}),
+        x: yearScale(),
         y: mkScale({ title:{ display:true, text:'City pop', color:'#444', font:{ size:10 }}}),
         y1: mkScale({
           position:'right', grid:{ drawOnChartArea:false },
@@ -968,6 +975,182 @@ function renderStatBlocks() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   12c. CLEARANCE & DISPLACEMENT (plan Phase C3)
+   `displacement`: [{ project, years, acresCleared, housingUnitsDemolished,
+   familiesDisplaced, businessesDisplaced, note, source }]
+   The section stays hidden until the data section exists.
+═══════════════════════════════════════════════════════════════ */
+function initDisplacementSection() {
+  const section = document.getElementById('displacement');
+  if (!section) return;
+  const rows = D().displacement || [];
+  if (!rows.length) { section.hidden = true; return; }
+  section.hidden = false;
+
+  const num = v => (v == null || v === '') ? '—' : (typeof v === 'number' ? v.toLocaleString() : esc(v));
+  const tbody = document.getElementById('displacement-table-body');
+  if (tbody) {
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td class="country-cell" style="white-space:normal;max-width:300px">${esc(r.project)}
+          ${r.note ? `<div style="font-weight:400;font-size:11px;color:#777;line-height:1.4;margin-top:4px">${esc(r.note)}</div>` : ''}</td>
+        <td style="white-space:nowrap">${esc(r.years || '')}</td>
+        <td>${num(r.acresCleared)}</td>
+        <td>${num(r.housingUnitsDemolished)}</td>
+        <td>${num(r.familiesDisplaced)}</td>
+        <td>${num(r.businessesDisplaced)}</td>
+        <td style="font-family:var(--font-mono);font-size:10px;max-width:240px;white-space:normal">${sourceHtml(r.source)}</td>
+      </tr>`).join('');
+  }
+
+  const ctx = document.getElementById('chart-displacement');
+  const charted = rows.filter(r => r.familiesDisplaced != null || r.housingUnitsDemolished != null);
+  if (ctx && charted.length) {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: charted.map(r => r.project),
+        datasets: [
+          { label: 'Families / households displaced', data: charted.map(r => r.familiesDisplaced ?? null),
+            backgroundColor: '#c0392bcc', borderColor: '#c0392b', borderWidth: 1.5, borderRadius: 3, borderSkipped: false },
+          { label: 'Housing units demolished', data: charted.map(r => r.housingUnitsDemolished ?? null),
+            backgroundColor: V.v1 + 'cc', borderColor: V.v1, borderWidth: 1.5, borderRadius: 3, borderSkipped: false }
+        ]
+      },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: {
+          tooltip: { ...TIP, callbacks: { footer: items => pointFooter(charted[items[0].dataIndex]) }},
+          legend: { labels: { color:'#666', boxWidth:14, font:{ size:10 }}}
+        },
+        scales: {
+          x: mkScale({ min:0, title:{ display:true, text:'Count', color:'#444', font:{ size:10 }}}),
+          y: mkScale({ ticks:{ font:{ size:9 }}})
+        }
+      }
+    });
+  } else if (ctx) {
+    ctx.closest('.chart-card').hidden = true;
+  }
+
+  const src = document.getElementById('displacement-chart-source');
+  if (src) {
+    const insts = [...new Set(rows.map(r => r.source && r.source.institution).filter(Boolean))];
+    src.innerHTML = 'Sources: ' + insts.map(esc).join(' · ');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   12d. STREETCAR RIDERSHIP (plan Phase C1 transit series)
+   `streetcarRidership`: [{ year, riders, system, note, source }]
+═══════════════════════════════════════════════════════════════ */
+function initStreetcarChart() {
+  const card = document.getElementById('transit-card');
+  const ctx  = document.getElementById('chart-streetcar');
+  if (!card || !ctx) return;
+  const rows = D().streetcarRidership || [];
+  if (!rows.length) { card.hidden = true; return; }
+  card.hidden = false;
+
+  const sys = r => r.system || 'Streetcar';
+  const systems = [...new Set(rows.map(sys))];
+  const colors  = [V.v4, V.v9, V.v6, V.v2];
+  const bySystem = Object.fromEntries(systems.map(s => [s, rows.filter(r => sys(r) === s).sort((a, b) => a.year - b.year)]));
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: systems.map((s, i) => ({
+        label: s,
+        data: bySystem[s].map(r => ({ x: r.year, y: r.riders })),
+        borderColor: colors[i % colors.length], backgroundColor: 'transparent',
+        borderWidth: 2.5, pointRadius: 4, tension: 0.25, parsing: false
+      }))
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        tooltip: { ...TIP, callbacks: {
+          label: c => ` ${fmtNum(c.parsed.y)} riders`,
+          footer: items => pointFooter(bySystem[systems[items[0].datasetIndex]][items[0].dataIndex])
+        }},
+        legend: { labels: { color:'#666', boxWidth:16, font:{ size:10 }}}
+      },
+      scales: {
+        x: yearScale(),
+        y: mkScale({ min:0, title:{ display:true, text:'Annual riders', color:'#444', font:{ size:10 }}, ticks:{ callback: v => fmtNum(v) }})
+      }
+    }
+  });
+
+  const src = document.getElementById('streetcar-chart-source');
+  if (src) {
+    const insts = [...new Set(rows.map(r => r.source && r.source.institution).filter(Boolean))];
+    src.innerHTML = 'Sources: ' + insts.map(esc).join(' · ');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   12e. SOURCE AUDIT (plan Phase E citation audit, rendered live)
+   Walks every `source` object in tampaData and tallies institutions
+   by verification status.
+═══════════════════════════════════════════════════════════════ */
+function buildSourceRoll() {
+  const tbody   = document.getElementById('source-roll-body');
+  const summary = document.getElementById('source-audit-summary');
+  if (!tbody) return;
+
+  const byInst = new Map();
+  const counts = { CONFIRMED:0, PENDING:0, DERIVED:0 };
+  let total = 0, uncited = 0;
+
+  const add = src => {
+    if (!src) return;
+    if (Array.isArray(src)) { src.forEach(add); return; }
+    if (typeof src === 'string') { uncited++; return; }
+    total++;
+    const st = src.verificationStatus || 'PENDING';
+    counts[st] = (counts[st] || 0) + 1;
+    const k = src.institution || 'Unknown';
+    const e = byInst.get(k) || { n:0, CONFIRMED:0, PENDING:0, DERIVED:0, url:'', access:new Set() };
+    e.n++; e[st] = (e[st] || 0) + 1;
+    if (src.accessType) e.access.add(src.accessType);
+    if (!e.url && src.url) e.url = src.url;
+    byInst.set(k, e);
+  };
+  const walk = (o, depth) => {
+    if (!o || depth > 4) return;
+    if (Array.isArray(o)) { o.forEach(x => walk(x, depth + 1)); return; }
+    if (typeof o !== 'object') return;
+    if ('source' in o) add(o.source);
+    for (const [k, v] of Object.entries(o)) if (k !== 'source' && v && typeof v === 'object') walk(v, depth + 1);
+  };
+  walk(D(), 0);
+
+  const rows = [...byInst.entries()].sort((a, b) => b[1].n - a[1].n);
+  tbody.innerHTML = rows.map(([inst, e]) => `
+    <tr>
+      <td class="country-cell" style="white-space:normal">${esc(inst)}</td>
+      <td>${e.n}</td>
+      <td>${e.CONFIRMED ? `<span class="net-badge net-gain">${e.CONFIRMED}</span>` : '—'}</td>
+      <td>${e.PENDING ? `<span class="net-badge net-mixed">${e.PENDING}</span>` : '—'}</td>
+      <td>${e.DERIVED ? `<span class="net-badge net-moderate">${e.DERIVED}</span>` : '—'}</td>
+      <td><span class="role-badge">${[...e.access].join(' / ') || '—'}</span></td>
+      <td>${e.url ? `<a href="${esc(e.url)}" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:10px">open ↗</a>` : '—'}</td>
+    </tr>`).join('');
+
+  if (summary) {
+    const pct = total ? Math.round(100 * counts.CONFIRMED / total) : 0;
+    summary.innerHTML =
+      `${total.toLocaleString()} cited data points across ${rows.length} institutions — ` +
+      `<strong style="color:var(--v6)">${counts.CONFIRMED} confirmed (${pct}%)</strong>, ` +
+      `<strong style="color:var(--v8)">${counts.PENDING} pending</strong>, ` +
+      `<strong style="color:#a29bfe">${counts.DERIVED} derived</strong>` +
+      (uncited ? `, ${uncited} free-text citations still awaiting source objects` : '') + '.';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
    RESIZE
 ═══════════════════════════════════════════════════════════════ */
 let _rsTimer;
@@ -1021,6 +1204,9 @@ document.addEventListener('DOMContentLoaded', () => {
   buildDistrictTable();
   buildMediaGrid();
   renderStatBlocks();
+  initDisplacementSection();
+  initStreetcarChart();
+  buildSourceRoll();
 
   /* No half-primed first step: the overlay shows the "scroll to begin"
      call-to-action over an overview map, and the observer activates the
