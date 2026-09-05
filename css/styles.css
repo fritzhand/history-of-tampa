@@ -1067,6 +1067,10 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 
 @media (max-width: 600px) {
   :root { --section-pad: 48px 16px; }
+  /* single scrolling row of era pills; the active pill is scrolled into view */
+  #phase-legend { padding: 10px 16px; scrollbar-width: none; }
+  #phase-legend::-webkit-scrollbar { display: none; }
+  .phase-legend-inner { flex-wrap: nowrap; width: max-content; }
   .hero-stats { grid-template-columns: 1fr 1fr; }
   .stat-cards { grid-template-columns: 1fr 1fr; }
   .footer-stats { grid-template-columns: 1fr 1fr; }
