@@ -1161,3 +1161,69 @@ input[type="range"].crisis-slider::-moz-range-thumb {
   color: var(--text-muted);
   letter-spacing: 0.4px;
 }
+
+/* ─── CITATION BADGES & SOURCE LINES ─── */
+.src-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-left: 2px;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+}
+.src-confirmed { color: var(--v6); border-color: #1a5a1a; background: #0a2a0a; }
+.src-pending   { color: var(--v8); border-color: #3a3a00; background: #1a1a00; }
+.src-derived   { color: #a29bfe;   border-color: #2a2a4a; background: #1a1a2a; }
+
+.step-source a,
+.map-popup-source a { color: var(--v4); text-decoration: underline; }
+.map-popup-source { line-height: 1.7; }
+
+.hero-stat-source,
+.footer-stat-source {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+.hero-stat-source a,
+.footer-stat-source a { color: var(--text-muted); text-decoration: underline; }
+.hero-stat-source a:hover,
+.footer-stat-source a:hover { color: var(--v5); }
+
+/* ─── MEDIA CARDS (rights-cleared imagery) ─── */
+a.photo-thumb-wrap { display: block; }
+.photo-era {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+  color: #000;
+  text-transform: uppercase;
+}
+.photo-license {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--v4);
+  margin-top: 4px;
+  letter-spacing: 0.4px;
+  line-height: 1.6;
+}
+.photo-links {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+.photo-links a { color: var(--v5); text-decoration: underline; margin-right: 10px; }

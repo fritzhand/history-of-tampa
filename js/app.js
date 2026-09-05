@@ -88,6 +88,70 @@ function fmtNum(n) {
   return String(n);
 }
 
+/* Basemap — key-free dark raster (Esri World Dark Gray Canvas).
+   CARTO's basemaps.cartocdn.com now watermarks anonymous tiles with
+   "API KEY REQUIRED", so the original dark_all layer is unusable
+   without registering a key. Esri's canvas needs only attribution. */
+const BASEMAP = {
+  base:  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+  label: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+  attribution: 'Tiles &copy; <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a> &mdash; Esri, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+  maxNativeZoom: 16,
+  maxZoom: 18
+};
+
+function addBasemap(map) {
+  L.tileLayer(BASEMAP.base, {
+    attribution: BASEMAP.attribution,
+    maxNativeZoom: BASEMAP.maxNativeZoom, maxZoom: BASEMAP.maxZoom
+  }).addTo(map);
+  L.tileLayer(BASEMAP.label, {
+    maxNativeZoom: BASEMAP.maxNativeZoom, maxZoom: BASEMAP.maxZoom, opacity: 0.85
+  }).addTo(map);
+}
+
+/* Citation helpers.
+   A `source` may be a legacy string, one source object
+   { institution, date, url, note, verificationStatus, accessType },
+   or an array of source objects. */
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+}
+
+function statusBadge(status) {
+  if (!status) return '';
+  const s = String(status).toUpperCase();
+  return `<span class="src-badge src-${s.toLowerCase()}" title="Verification status: ${s}">${s}</span>`;
+}
+
+function sourceHtml(src, { badge = true } = {}) {
+  if (!src) return '';
+  if (Array.isArray(src)) return src.map(s => sourceHtml(s, { badge })).filter(Boolean).join(' · ');
+  if (typeof src === 'string') return esc(src);
+  const label = esc(src.institution || src.label || src.url || 'Source');
+  const link  = src.url
+    ? `<a href="${esc(src.url)}" target="_blank" rel="noopener">${label}</a>`
+    : label;
+  const date  = src.date ? ` (${esc(src.date)})` : '';
+  return link + date + (badge ? ' ' + statusBadge(src.verificationStatus) : '');
+}
+
+/* Tooltip footer lines for one data point: note, estimate / status flag,
+   and the citing institution. Chart.js accepts an array of lines. */
+function pointFooter(d) {
+  if (!d) return '';
+  const lines = [];
+  const note = d.note || (d.source && d.source.note);
+  if (note) lines.push(note);
+  const status = d.source && d.source.verificationStatus;
+  const flags = [d.estimate ? 'estimate' : null, status && status !== 'CONFIRMED' ? status : null].filter(Boolean);
+  if (flags.length) lines.push('Status: ' + flags.join(' · '));
+  if (d.source && d.source.institution) {
+    lines.push('Source: ' + d.source.institution + (d.source.date ? ', ' + d.source.date : ''));
+  }
+  return lines;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    2. PROGRESS BAR
 ═══════════════════════════════════════════════════════════════ */
@@ -134,10 +198,7 @@ function initScrollMap() {
     dragging:false, touchZoom:false, doubleClickZoom:false, keyboard:false
   });
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution:'&copy; <a href="https://openstreetmap.org">OSM</a> &copy; <a href="https://carto.com">CARTO</a>',
-    subdomains:'abcd', maxZoom:18
-  }).addTo(scrollMap);
+  addBasemap(scrollMap);
 
   (D().mapEvents || []).forEach(ev => {
     const color = PC[ev.phase] || V.v3;
@@ -149,7 +210,7 @@ function initScrollMap() {
       `<div class="map-popup-date">${ev.date} · ${(ev.phase||'').toUpperCase()}</div>` +
       `<div class="map-popup-title">${ev.title}</div>` +
       `<div class="map-popup-body">${ev.body}</div>` +
-      `<div class="map-popup-source">${ev.source}</div>`,
+      `<div class="map-popup-source">${sourceHtml(ev.source)}</div>`,
       { maxWidth:280 }
     ).addTo(scrollMap);
     scrollMkrs[ev.id] = { m, color };
@@ -203,7 +264,7 @@ function buildScrollSteps() {
         ${step.metric_note ? `<div class="step-metric-chip"><em style="color:#888">${step.metric_note}</em></div>` : ''}
       </div>
       <p class="step-source">
-        ${((D().mapEvents||[]).find(e => e.id === step.eventId)||{}).source || ''}
+        ${sourceHtml(((D().mapEvents||[]).find(e => e.id === step.eventId)||{}).source)}
       </p>`;
     container.appendChild(el);
   });
@@ -255,10 +316,7 @@ function initSandboxMap() {
     zoomControl:true, scrollWheelZoom:false
   });
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution:'&copy; <a href="https://openstreetmap.org">OSM</a> &copy; <a href="https://carto.com">CARTO</a>',
-    subdomains:'abcd', maxZoom:18
-  }).addTo(sandboxMap);
+  addBasemap(sandboxMap);
 
   (D().mapEvents || []).forEach(ev => {
     const color = PC[ev.phase] || V.v3;
@@ -268,7 +326,8 @@ function initSandboxMap() {
     }).bindPopup(
       `<div class="map-popup-date">${ev.date} · ${(ev.phase||'').toUpperCase()}</div>` +
       `<div class="map-popup-title">${ev.title}</div>` +
-      `<div class="map-popup-body">${ev.body}</div>`,
+      `<div class="map-popup-body">${ev.body}</div>` +
+      `<div class="map-popup-source">${sourceHtml(ev.source)}</div>`,
       { maxWidth:260 }
     ).addTo(sandboxMap);
   });
@@ -472,7 +531,7 @@ function initCityPopChart() {
       plugins: {
         tooltip: { ...TIP, callbacks: {
           label: c => ` ${fmtNum(c.parsed.y)}`,
-          footer: items => series[items[0].dataIndex]?.note || series[items[0].dataIndex]?.source?.note || ''
+          footer: items => pointFooter(series[items[0].dataIndex])
         }},
         legend: { display: false }
       },
@@ -504,7 +563,7 @@ function initDowntownResidentsChart() {
       plugins: {
         tooltip: { ...TIP, callbacks: {
           label: c => ` ${fmtNum(c.parsed.y)}${series[c.dataIndex]?.estimate ? ' (est.)' : ''}`,
-          footer: items => series[items[0].dataIndex]?.note || ''
+          footer: items => pointFooter(series[items[0].dataIndex])
         }},
         legend: { display: false }
       },
@@ -544,7 +603,9 @@ function initPortCigarChart() {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        tooltip: { ...TIP },
+        tooltip: { ...TIP, callbacks: {
+          footer: items => pointFooter((items[0].datasetIndex === 0 ? port : cig)[items[0].dataIndex])
+        }},
         legend: { labels: { color:'#666', boxWidth:20 } }
       },
       scales: {
@@ -579,7 +640,7 @@ function initCommercialChart() {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        tooltip: { ...TIP, callbacks: { footer: items => series[items[0].dataIndex]?.note || '' }},
+        tooltip: { ...TIP, callbacks: { footer: items => pointFooter(series[items[0].dataIndex]) }},
         legend: { display: false }
       },
       scales: {
@@ -611,7 +672,7 @@ function initCapitalChart() {
       plugins: {
         tooltip: { ...TIP, callbacks: {
           label: c => ` $${c.parsed.y.toFixed(2)}B`,
-          footer: items => series[items[0].dataIndex]?.label || ''
+          footer: items => [series[items[0].dataIndex]?.label || '', ...pointFooter(series[items[0].dataIndex])].filter(Boolean)
         }},
         legend: { display: false }
       },
@@ -641,7 +702,7 @@ function initHotelChart() {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        tooltip: { ...TIP, callbacks: { footer: items => series[items[0].dataIndex]?.note || '' }},
+        tooltip: { ...TIP, callbacks: { footer: items => pointFooter(series[items[0].dataIndex]) }},
         legend: { display: false }
       },
       scales: {
@@ -769,7 +830,9 @@ function initSandboxDualChart() {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        tooltip: { ...TIP },
+        tooltip: { ...TIP, callbacks: {
+          footer: items => pointFooter((items[0].datasetIndex === 0 ? city : dt)[items[0].dataIndex])
+        }},
         legend: { labels: { color:'#666', boxWidth:16, font:{ size:10 }}}
       },
       scales: {
@@ -835,30 +898,73 @@ function buildDistrictTable() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   12. PHOTO ARCHIVE
+   12. MEDIA ARCHIVE (rights-cleared imagery)
+   Reads `mediaAssets` (plan §4 schema: id, year, title, thumbUrl,
+   fullUrl, lat, lng, era, license, rightsHolder, sourceUrl,
+   upstreamUrl, creditLine, verificationStatus) and falls back to the
+   legacy `photoArchive` shape { title, year, credit, url, thumb, caption }.
 ═══════════════════════════════════════════════════════════════ */
-function buildPhotoArchive() {
+function buildMediaGrid() {
   const grid = document.getElementById('photo-archive-grid');
   if (!grid) return;
-  (D().photoArchive || []).forEach(photo => {
-    const card = document.createElement('a');
+  const assets = (D().mediaAssets && D().mediaAssets.length) ? D().mediaAssets : (D().photoArchive || []);
+
+  assets.forEach(a => {
+    const thumb   = a.thumbUrl || a.thumb || '';
+    const page    = a.sourceUrl || a.url || '#';
+    const full    = a.fullUrl || page;
+    const credit  = a.creditLine || a.credit || '';
+    const eraColor = PC[a.era];
+    const card = document.createElement('div');
     card.className = 'photo-card';
-    card.href = photo.url;
-    card.target = '_blank';
-    card.rel = 'noopener';
     card.innerHTML = `
-      <div class="photo-thumb-wrap">
-        <img class="photo-thumb" src="${photo.thumb}" alt="${photo.title}" loading="lazy"
+      <a class="photo-thumb-wrap" href="${esc(full)}" target="_blank" rel="noopener" title="Open full-size image">
+        <img class="photo-thumb" src="${esc(thumb)}" alt="${esc(a.title)}" loading="lazy"
              onerror="this.style.display='none'; this.parentElement.classList.add('photo-fallback');" />
-      </div>
+      </a>
       <div class="photo-meta">
-        <div class="photo-title">${photo.title}</div>
-        <div class="photo-year">${photo.year}</div>
-        <div class="photo-caption">${photo.caption}</div>
-        <div class="photo-credit">${photo.credit}</div>
+        <div class="photo-title">${esc(a.title)}</div>
+        <div class="photo-year">${esc(a.year)}${eraColor ? `<span class="photo-era" style="background:${eraColor}">${esc(a.era)}</span>` : ''}</div>
+        <div class="photo-caption">${esc(a.caption || '')}</div>
+        <div class="photo-credit">${esc(credit)}</div>
+        ${a.license ? `<div class="photo-license">${esc(a.license)}${a.rightsHolder ? ' · ' + esc(a.rightsHolder) : ''} ${statusBadge(a.verificationStatus)}</div>` : ''}
+        <div class="photo-links">
+          <a href="${esc(page)}" target="_blank" rel="noopener">Source page</a>
+          ${a.upstreamUrl ? `<a href="${esc(a.upstreamUrl)}" target="_blank" rel="noopener">${esc(a.upstreamArchive || 'Archive record')}</a>` : ''}
+        </div>
       </div>`;
     grid.appendChild(card);
   });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   12b. HERO & FOOTER STAT BLOCKS (data-driven, cited)
+   `heroStats` / `footerStats`: [{ value, label, sublabel, color, source }].
+   The plan's rule is that hero numbers are CONFIRMED only; anything
+   else is rendered with its status badge so the caveat is visible.
+═══════════════════════════════════════════════════════════════ */
+function renderStatBlocks() {
+  const hero = document.querySelector('.hero-stats');
+  const hs = D().heroStats;
+  if (hero && Array.isArray(hs) && hs.length) {
+    hero.innerHTML = hs.map(s => `
+      <div>
+        <div class="hero-stat-number" style="color:${esc(s.color || V.v5)}">${esc(s.value)}</div>
+        <div class="hero-stat-label">${s.label}${s.sublabel ? '<br>' + s.sublabel : ''}</div>
+        ${s.source ? `<div class="hero-stat-source">${sourceHtml(s.source)}</div>` : ''}
+      </div>`).join('');
+  }
+  const foot = document.querySelector('.footer-stats');
+  const fs = D().footerStats;
+  if (foot && Array.isArray(fs) && fs.length) {
+    foot.innerHTML = fs.map(s => `
+      <div class="footer-stat" style="border-color:${esc(s.color || V.v5)}">
+        <div class="footer-stat-value" style="color:${esc(s.color || V.v5)}">${esc(s.value)}</div>
+        <div class="footer-stat-delta">${s.sublabel || ''}</div>
+        <div class="footer-stat-label">${s.label}</div>
+        ${s.source ? `<div class="footer-stat-source">${sourceHtml(s.source)}</div>` : ''}
+      </div>`).join('');
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -913,11 +1019,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initSandboxCapitalChart();
 
   buildDistrictTable();
-  buildPhotoArchive();
+  buildMediaGrid();
+  renderStatBlocks();
 
-  const firstStep = document.querySelector('.scroll-step');
-  if (firstStep && D().scrollSteps?.length) {
-    firstStep.classList.add('is-active');
-    activateMapStep(D().scrollSteps[0]);
-  }
+  /* No half-primed first step: the overlay shows the "scroll to begin"
+     call-to-action over an overview map, and the observer activates the
+     first real step when it scrolls into the reading zone. */
 });
