@@ -277,21 +277,21 @@ window.tampaData = {
 
   cigarProduction: [
     { year: 1886, millions: 1, note: "Ybor City founded; Vicente Martinez-Ybor factory opens",
-      source: { date: "1886", institution: "Ybor City Museum Society / NPS", url: "https://www.nps.gov/ybor/index.htm", verificationStatus: "PENDING", accessType: "FREE" } },
+      source: { date: "1990", institution: "National Park Service, Ybor City Historic District NHL nomination", url: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text", verificationStatus: "PENDING", accessType: "FREE" } },
     { year: 1895, millions: 50, note: "Rapid factory expansion; immigrant labor corridor",
       source: { date: "1895", institution: "Florida Memory / Ybor histories", url: "https://www.floridamemory.com/", verificationStatus: "PENDING", accessType: "FREE" } },
     { year: 1900, millions: 100, note: "Tampa emerges as a world cigar capital",
-      source: { date: "1900", institution: "NPS Ybor City NHL documentation", url: "https://www.nps.gov/ybor/index.htm", verificationStatus: "PENDING", accessType: "FREE" } },
+      source: { date: "1990", institution: "National Park Service, Ybor City Historic District NHL nomination", url: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text", verificationStatus: "PENDING", accessType: "FREE" } },
     { year: 1920, millions: 500, note: "Peak industrial era; ~10,000+ cigar workers regionally",
-      source: { date: "1920", institution: "NPS / local labor histories", url: "https://www.nps.gov/ybor/index.htm", verificationStatus: "PENDING", accessType: "FREE" } },
+      source: { date: "2026-09-06", institution: "National Park Service, Teaching with Historic Places lesson 51: Ybor City", url: "https://www.nps.gov/teachers/classrooms/upload/TWHP-Lessons_51ybor.pdf", verificationStatus: "PENDING", accessType: "FREE" } },
     { year: 1929, millions: 450, note: "Mechanization + Depression begin long decline",
       source: { date: "1929", institution: "Ybor City Museum Society", url: "https://www.ybormuseum.org/", verificationStatus: "PENDING", accessType: "FREE" } },
     { year: 1940, millions: 200, note: "Mechanized production; hand-rolled craft shrinks",
       source: { date: "1940", institution: "Florida Memory", url: "https://www.floridamemory.com/", verificationStatus: "PENDING", accessType: "FREE" } },
     { year: 1960, millions: 50, note: "Industry largely collapsed; urban renewal hits Ybor fabric",
-      source: { date: "1960", institution: "NPS / City of Tampa", url: "https://www.nps.gov/ybor/index.htm", verificationStatus: "PENDING", accessType: "FREE" } },
+      source: { date: "2026-09-06", institution: "City of Tampa, Ybor City CRA history", url: "https://www.tampa.gov/CRAs/ybor-city/history", verificationStatus: "PENDING", accessType: "FREE" } },
     { year: 1980, millions: 5, note: "Heritage industry residual; tourism economy rises",
-      source: { date: "1980", institution: "Ybor City Development Corporation histories", url: "https://www.yborcityonline.com/", verificationStatus: "PENDING", accessType: "FREE" } },
+      source: { date: "2026-09-06", institution: "City of Tampa, Ybor City CRA history", url: "https://www.tampa.gov/CRAs/ybor-city/history", verificationStatus: "PENDING", accessType: "FREE" } },
     { year: 2000, millions: 2, note: "Boutique / heritage production",
       source: { date: "2000", institution: "Ybor City Museum Society", url: "https://www.ybormuseum.org/", verificationStatus: "PENDING", accessType: "FREE" } },
     { year: 2020, millions: 1, note: "Specialty craft remnant + tourism narrative",
@@ -595,7 +595,7 @@ window.tampaData = {
         source: 8 }
     ],
     sourceNote: "Synthesized economic-base model from NPS Ybor docs, Port Tampa Bay histories, Florida Memory commercial surveys",
-    sourceUrl: "https://www.nps.gov/ybor/index.htm"
+    sourceUrl: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text"
   },
 
   sankeyEconomy2023: {

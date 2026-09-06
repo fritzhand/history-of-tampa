@@ -48,6 +48,21 @@ removed or replaced with a link-out while it is reviewed.
 - Libraries: Leaflet (BSD-2), Chart.js (MIT), loaded from public CDNs.
 - Fonts: Space Grotesk and Space Mono (SIL Open Font License) via Google Fonts.
 
+## A note on hot-linking
+
+Thumbnails are loaded directly from `upload.wikimedia.org` with
+`loading="lazy"`, which is within Wikimedia's terms for a credited,
+low-volume site. Two consequences worth knowing:
+
+- `tools/check-links.mjs` requests all 42 images in one pass and trips
+  Wikimedia's rate limit (HTTP 429). That is the audit going too fast, not a
+  broken image; the checker retries and reports those separately from dead
+  links.
+- If this site ever draws real traffic, mirror the public-domain and CC0
+  files into `assets/images/` (recording provenance here) rather than
+  continuing to hot-link. CC BY-SA files may also be mirrored, with the
+  license and author preserved.
+
 ## Media roll
 
 Generated with `node tools/media-roll.mjs` from `mediaAssets` in `js/data.js`.
