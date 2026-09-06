@@ -12,7 +12,9 @@ An open-data, scrollytelling data-journalism site on **200 years of downtown Tam
 | Charts | Chart.js — population, port/cigars, capital, land use, disruption |
 | Flow diagrams | Custom SVG sankeys — 1925 vs 2023 economy; redevelopment pathways |
 | District impact matrix | HTML table of winners / losses / rebuild outcomes |
-| Open photo archive | Rights-aware archival image cards |
+| Open photo archive | 42 rights-cleared archival images, 1837–2024, each credited |
+| Live source audit | Every institution, its data points, and their verification status |
+| Light / dark theme | Toggle in the nav, remembered between visits |
 | Research backlog | `ARCHIVAL_RESEARCH_PROMPT_TAMPA.md` for the next evidence pass |
 
 ## Run locally
@@ -30,16 +32,33 @@ Map tiles, fonts, and CDN libraries need network access.
 
 ```
 index.html                          # Page sections & chart mounts
-css/styles.css                      # Dark viridis theme + photo grid
-js/data.js                          # window.tampaData (cited series)
-js/app.js                           # maps, charts, slider, sankeys, table
+css/styles.css                      # Viridis theme, light + dark
+js/data.js                          # window.tampaData (cited series, media, sources)
+js/app.js                           # maps, charts, slider, sankeys, tables, theme
+tools/validate-data.mjs             # citation schema check + status counts
+tools/check-links.mjs               # requests every source URL, reports dead ones
+tools/media-roll.mjs                # regenerates the CONTENT_LICENSE media table
+tools/migrate-sources.py            # one-off schema migration (kept for reference)
 DOWNTOWN_TAMPA_PLAN.md              # Implementation strategy, schema, phases, checklist
 ARCHIVAL_RESEARCH_PROMPT_TAMPA.md   # Tampa source-hunting brief (canonical)
 ARCHIVAL_RESEARCH_PROMPT.md         # iranwar research prompt, kept as the template reference
-PROGRESS.md                         # Done / not-done checkpoint for resuming work
+PROGRESS.md                         # What is done, what is not, what is next
+CONTENT_LICENSE.md                  # Data license, media rights policy, media roll
 LICENSE
 README.md
 ```
+
+## Tools
+
+```bash
+node tools/validate-data.mjs                       # schema + CONFIRMED/PENDING/DERIVED counts
+NODE_USE_ENV_PROXY=1 node tools/check-links.mjs    # every source URL, grouped by outcome
+node tools/media-roll.mjs                          # regenerate the media roll
+```
+
+The link checker separates dead links from hosts that merely refuse
+automated clients (Florida Memory and loc.gov item pages answer browsers
+fine) and from Wikimedia's rate limit.
 
 ## Historical arc (phases)
 
@@ -67,7 +86,9 @@ source: {
 }
 ```
 
-- Prefer **primary institutions**: U.S. Census, City of Tampa, Port Tampa Bay, Florida Memory, LOC Sanborn, NPS, HUD, FDOT.
+- Prefer **primary institutions**: U.S. Census, City of Tampa and its CRA
+  reports, Port Tampa Bay, Florida Memory, Library of Congress, National Park
+  Service nominations, HUD, FDOT, Tampa Downtown Partnership.
 - Hero and footer numbers must be `CONFIRMED`.
 - Rows marked `estimate: true` are working placeholders pending archival confirmation.
 - Image cards use public-domain or openly licensed assets with visible credit; when reuse rights are unclear, link out instead of embedding.
@@ -86,4 +107,5 @@ See [`PROGRESS.md`](./PROGRESS.md).
 
 ## Built with
 
-Leaflet · Chart.js · Carto Dark Matter · Space Grotesk / Space Mono
+Leaflet · Chart.js · Esri World Dark Gray and Light Gray Canvas tiles ·
+Space Grotesk / Space Mono

@@ -1,9 +1,9 @@
 # Downtown Tampa History — Implementation Plan
 
-**Branch:** `copilot/copy-downtown-tampa-history-again`  
+**Repository:** `fritzhand/History-of-tampa`  
 **Template:** `fritzhand/iranwar` (The 2026 Iran War: A Geoeconomic Autopsy)  
-**Status:** Planning complete · Implementation not started  
-**Last updated:** 2026-09-05
+**Status:** Implemented; citation audit in progress (see `PROGRESS.md`)  
+**Last updated:** 2026-09-06
 
 ---
 
@@ -328,16 +328,22 @@ Downtown Tampa history includes **forced displacement, segregation, and urban re
 
 ## 10. Execution Checklist
 
-- [ ] Phase A: Project rename + `tampaData` stub + map recenter  
-- [ ] Phase B: Phases + 15 `mapEvents` + scroll steps  
-- [ ] Phase C1: Census population + permits charts  
-- [ ] Phase C2: Year slider sandbox wiring  
-- [ ] Phase C3: Urban renewal / displacement section  
-- [ ] Phase C4: Water Street / modern boom metrics  
-- [ ] Phase C5: Sankeys  
-- [ ] Phase D: Media assets + popup integration  
-- [ ] Phase C6: Impact matrix  
-- [ ] Phase E: README + citation audit + visual QA + source link check  
+Status as of 2026-09-06 — see `PROGRESS.md` for the detail behind each line.
+
+- [x] Phase A: Project rename + `tampaData` stub + map recenter
+- [~] Phase B: Eras + 20 `mapEvents` + 15 scroll steps — built and navigable; dates, coordinates and citations still being verified
+- [~] Phase C1: Census population (done, fully cited) + permits charts (not started)
+- [x] Phase C2: Year slider sandbox wiring
+- [ ] Phase C3: Urban renewal / displacement section — section and chart built, hidden until sourced figures exist; **largest remaining gap**
+- [x] Phase C4: Water Street / modern boom metrics
+- [~] Phase C5: Sankeys — both render; flow weights remain a DERIVED editorial model
+- [x] Phase D: Media assets + popup integration — 42 rights-cleared images + LOC Sanborn index
+- [x] Phase C6: Impact matrix — nine districts, each with institutional sources
+- [~] Phase E: README + `CONTENT_LICENSE.md` + live source audit + link checker + headless QA done; citation audit continuing
+
+Still-conceptual data to replace or label: `portActivity` and
+`cigarProduction` (invented indices), plus `commercialIntensity`,
+`landUseShare` and `disruptionIndex`.
 
 ---
 
