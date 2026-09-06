@@ -1,62 +1,103 @@
-# Progress — Downtown Tampa History Fork
+# Progress — Downtown Tampa: A Civic Development Autopsy
 
-**Repository:** fritzhand/iranwar  
-**Branch:** `copilot/copy-downtown-tampa-history-again`  
-**Date:** 2026-09-05
+**Repository:** `fritzhand/History-of-tampa`
+**Branch:** `claude/history-tampa-repo-setup-s4b06j`
+**Last updated:** 2026-09-06
+
+This repository was seeded from the two `copilot/*` branches in
+`fritzhand/iranwar`: the rebuilt Downtown Tampa site and the planning
+documents, merged into one lineage. Everything below describes the state of
+that merged branch.
 
 ---
 
-## Done
+## Where the project stands
 
-- [x] Explored iranwar template end-to-end (`index.html`, `css/styles.css`, `js/data.js`, `js/app.js`, Iran archival prompt)
-- [x] Mapped iranwar architecture: static data-journalism site with cited `window.crisisData`, Leaflet scrolly map, Chart.js (~13 charts), custom SVG sankeys, day slider sandbox, geopolitical cost matrix
-- [x] Identified all 23 `crisisData` sections and app.js init surface area
-- [x] Researched open Tampa archival/data sources (City open data, USF, Florida Memory, LOC/Sanborn, CRA pages, Census/NHGIS, Port, MPO)
-- [x] Authored full implementation plan: `DOWNTOWN_TAMPA_PLAN.md`
-- [x] Authored Tampa archival research prompt: `ARCHIVAL_RESEARCH_PROMPT_TAMPA.md`
-- [x] Documented MVP vs full parity, ethics guardrails, risks, execution checklist
-- [x] Committed planning/prompting artifacts to this branch
+The site runs end to end. The remaining work is evidentiary, not structural:
+several data sections still carry editorial estimates that need institutional
+sources, and the timeline events still carry free-text citations.
 
-## Not started (implementation)
-
-- [ ] Phase A — Rename UI strings; `crisisData` → `tampaData` stubs; map recenter to downtown Tampa; year scrubber
-- [ ] Phase B — Phases, mapEvents, scrollSteps
-- [ ] Phase C — Charts, sankeys, displacement & modern boom metrics
-- [ ] Phase D — Rights-cleared `mediaAssets`
-- [ ] Phase E — README polish, `CONTENT_LICENSE.md`, citation audit, QA
-
-## Branch state at this checkpoint
-
-| Path | Role | Tampa status |
+| Plan phase (§10) | Status | Notes |
 |---|---|---|
-| `index.html` | Iran War page shell | Unchanged (template) |
-| `css/styles.css` | Dark Viridis | Unchanged (reuse) |
-| `js/data.js` | `window.crisisData` | Unchanged (template) |
-| `js/app.js` | Iran War app logic | Unchanged (template) |
-| `ARCHIVAL_RESEARCH_PROMPT.md` | Iran source hunt | Kept as reference |
-| `ARCHIVAL_RESEARCH_PROMPT_TAMPA.md` | Tampa source hunt | **Added** |
-| `DOWNTOWN_TAMPA_PLAN.md` | Full plan | **Added** |
-| `PROGRESS.md` | This file | **Added** |
-| `README.md` | Project readme | **Added** |
-| `LICENSE` | License | Unchanged |
+| A — Skeleton fork, `tampaData`, map recenter, year scrubber | **done** | Slider runs 1824–2024; eight civic eras replace the conflict phases |
+| B — Eras, `mapEvents`, `scrollSteps` | **partial** | 20 events and 15 steps exist and are navigable; dates, coordinates and citations are being verified |
+| C1 — Population and permits | **done (population)** | City and county series fully cited to Census tables; permits not started |
+| C2 — Year-slider sandbox | **done** | Six stat cards, two synced charts, era-coloured map |
+| C3 — Urban renewal and displacement | **not started** | Section and chart are built and hidden until the data exists; this is the largest remaining gap |
+| C4 — Water Street and modern boom metrics | **done** | Capital and hotel series rebuilt from named, sourced projects |
+| C5 — Sankeys | **partial** | Both render; flow weights remain a DERIVED editorial model |
+| C6 — Impact matrix | **done** | Nine districts, each with institutional source objects |
+| D — Rights-cleared media | **done** | 42 public-domain or CC images, 1837–2024, plus the LOC Sanborn volume index |
+| E — README, content license, citation audit, QA | **mostly done** | Live source audit section, link checker, headless QA; PROGRESS and plan kept current |
 
-## Design decisions locked in planning
+## Citation status
 
-1. **Fork interaction model, don’t rewrite the stack** — Leaflet + Chart.js + D3 sankey + dark Viridis remain.
-2. **Data kernel rename** — future implementation uses `window.tampaData` with the same citation object shape.
-3. **Time model** — year/era scrubber (not crisis day 0–112).
-4. **Geography** — Downtown CRA + Channel District + edges; Ybor as seam/context.
-5. **Citationality** — institutional URLs required; hero stats CONFIRMED only.
-6. **Media** — rights-first; link-out when redistribution unclear.
-7. **Ethics** — displacement and segregation treated as first-class metrics beside skyline/investment.
+Counted by `node tools/validate-data.mjs`:
 
-## Next session recommended start
+| Verification status | Sources |
+|---|---|
+| CONFIRMED | 80 |
+| PENDING | 38 |
+| DERIVED | 7 |
 
-1. Read `DOWNTOWN_TAMPA_PLAN.md` §6 Phase A and §10 checklist  
-2. Optionally run `ARCHIVAL_RESEARCH_PROMPT_TAMPA.md` in a search-enabled pass for Tier 1 metrics  
-3. Implement Phase A skeleton fork on this branch  
+Twenty `mapEvents` still carry a free-text `source` string rather than a
+source object; the validator reports each as a warning. The site renders a
+live version of this table in its own **Source Audit** section.
 
-## Notes
+## Done in this pass
 
-- Planning was initially delivered only in chat; this commit materializes it in-repo so work can pause/resume safely.
-- No application behavior has changed yet; the live page is still the Iran War autopsy template.
+- **Repository set up.** Both copilot branches merged into
+  `fritzhand/History-of-tampa`; research prompts reconciled with the layout
+  the plan specifies (`ARCHIVAL_RESEARCH_PROMPT.md` kept as the iranwar
+  template reference, `ARCHIVAL_RESEARCH_PROMPT_TAMPA.md` canonical).
+- **Citation schema enforced.** Every `source` object carries
+  `verificationStatus` and `accessType`; `tools/validate-data.mjs` checks the
+  shape and `tools/check-links.mjs` checks that the URLs resolve.
+- **Census data verified.** Every decade of `cityPopulation` cites the
+  specific Census table it comes from. The 1850 figure was reclassified as
+  DERIVED once the Census Office's own note showed it was never published as
+  an aggregate; 1870 was added; the 1960 note now quantifies the annexation
+  effect (140,331 of 274,970 residents lived in territory annexed after
+  1950). A `countyPopulation` series was added for context.
+- **Downtown residents corrected.** 2010, 2020 and 2025 now use Tampa
+  Downtown Partnership district counts (8,494 → 17,366 → ~23,600); two
+  unsourced modern estimates were removed.
+- **Capital and hotels rebuilt.** `developmentCapital` is now nominal
+  millions, one named project per point, on a log axis — the untraceable
+  billion-dollar era totals are gone. `hotelRooms` keeps only the four
+  anchors that have sources.
+- **District matrix sourced.** All nine rows carry institutional source
+  arrays; the Ybor, Channelside and Riverwalk rows were corrected against
+  the NHL nomination and City CRA reports.
+- **Media layer built.** The six fabricated thumbnails were replaced with 42
+  verified images and a rights policy in `CONTENT_LICENSE.md`.
+- **Interface work.** Key-free basemap (the CARTO tiles now watermark
+  anonymous use), clickable era pills with a locked scroll observer, a
+  sticky legend, a pinned mobile map, a light/dark theme, and a project logo.
+
+## Next
+
+1. **Displacement figures (plan C3).** The ethical guardrail requires
+   clearance and displacement numbers printed beside redevelopment
+   investment. Research is in flight; the section is built and waiting.
+2. **Timeline events.** Verify all 20 dates and coordinates and replace the
+   free-text citations with source objects.
+3. **Port and cigar series.** Both are invented indices. Replace with Army
+   Corps waterborne-commerce tonnage and sourced cigar output.
+4. **The three conceptual indices.** `commercialIntensity`, `landUseShare`
+   and `disruptionIndex` need either real data from City of Tampa parcel GIS
+   and Sanborn digitisation, an explicit DERIVED methodology note, or
+   removal.
+5. **New series.** Streetcar ridership, Riverwalk milestones, residential
+   units delivered, and CRA tax increment.
+
+## Working with the repo
+
+```bash
+python3 -m http.server 8080          # serve the site
+node tools/validate-data.mjs         # citation schema + counts
+NODE_USE_ENV_PROXY=1 node tools/check-links.mjs   # every source URL
+node tools/media-roll.mjs            # regenerate the CONTENT_LICENSE media table
+```
+
+`ARCHIVAL_RESEARCH_PROMPT_TAMPA.md` is the brief for the next evidence pass.
