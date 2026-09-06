@@ -20,8 +20,10 @@ project subpath.
 | Flow diagrams | Custom SVG sankeys — 1925 vs 2023 economy; redevelopment pathways |
 | District impact matrix | HTML table of winners / losses / rebuild outcomes |
 | Open photo archive | 42 rights-cleared archival images, 1837–2024, each credited |
+| Photographs in the narrative | Every scrollytelling step carries one or two of those images |
 | Live source audit | Every institution, its data points, and their verification status |
 | Light / dark theme | Toggle in the nav, remembered between visits |
+| Scroll assist | Floating arrows that walk the page, and the map narrative step by step |
 | Research backlog | `ARCHIVAL_RESEARCH_PROMPT_TAMPA.md` for the next evidence pass |
 
 ## Run locally
@@ -112,7 +114,28 @@ source: {
 
 See [`PROGRESS.md`](./PROGRESS.md).
 
+## Design
+
+Editorial, after the redesign of the parent `iranwar` project: Crimson Pro for
+headlines, Work Sans for body, labels and numbers, and a warm neutral palette
+where colour is rare and means something. A sequential ramp of warm neutrals
+carries the data, with a steel blue for the primary series and an oxblood for
+the crisis peak. The eight civic eras are named colours rather than ramp
+positions, so the bust reads cold, the clearance era reads oxblood and the
+waterfront reads like water.
+
+The whole palette lives in `css/styles.css` as custom properties, once for
+paper and once for the warm charcoal night mode. `js/app.js` reads it from
+there, and the data layer names a ramp step or an era instead of a hex, so
+charts, map markers, sankeys and stat cards all follow the theme toggle.
+
 ## Built with
 
 Leaflet · Chart.js · Esri World Dark Gray and Light Gray Canvas tiles ·
-Space Grotesk / Space Mono
+Crimson Pro / Work Sans
+
+## Credit
+
+Research, data and build by Jeremy Fritzhand
+([GitHub](https://github.com/fritzhand) ·
+[LinkedIn](https://www.linkedin.com/in/fritzhand/)), with Claude Code.

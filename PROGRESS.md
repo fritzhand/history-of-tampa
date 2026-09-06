@@ -36,9 +36,9 @@ Counted by `node tools/validate-data.mjs`:
 
 | Verification status | Sources |
 |---|---|
-| CONFIRMED | 102 |
+| CONFIRMED | 168 |
 | PENDING | 42 |
-| DERIVED | 31 |
+| DERIVED | 47 |
 
 The validator reports no errors and one warning, for the Port Tampa event,
 which is genuinely nine miles outside the downtown study area and says so in
@@ -86,6 +86,32 @@ its own note. The site renders a live version of this table in its own
 - **Interface work.** Key-free basemap (the CARTO tiles now watermark
   anonymous use), clickable era pills with a locked scroll observer, a
   sticky legend, a pinned mobile map, a light/dark theme, and a project logo.
+- **Editorial redesign.** The viridis identity is gone from both themes.
+  Crimson Pro carries the headlines, Work Sans the body, labels and numbers,
+  and the palette is warm neutrals with two accents that mean something: a
+  steel blue for the primary series, an oxblood for the crisis peak. The
+  eight eras became named colours rather than ramp positions. The palette
+  lives once in the stylesheet; `js/app.js` reads it from there and the data
+  layer names a ramp step or an era instead of a hex, so every chart, marker,
+  sankey and stat card follows the theme toggle.
+- **Contrast fixes the redesign surfaced.** The era badge put era-coloured
+  text on an unrelated fill; the pill label colour was chosen by asking
+  whether the fill was one of two neon viridis stops; text on an accent fill
+  was hardcoded black and vanished on the light theme's dark accents. All
+  three now compute or flip correctly.
+- **Source audit corrected.** The live roll counted each sankey link's node
+  index as a citation, inflating it to 307 points and inventing an "Unknown"
+  institution holding 50 of them. It now counts only citation objects, so the
+  page and `tools/validate-data.mjs` agree.
+- **Ported from the iranwar editorial branch.** The floating scroll assist
+  (steps are nav targets at every width, so the arrows walk the map narrative
+  rather than leaping past the sticky map), a hero byline, and a footer
+  author credit.
+- **Photographs in the narrative.** Every scrollytelling step now carries one
+  or two archival photographs drawn from `mediaAssets` by id, so the sticky
+  map is not the only thing on screen for fifteen steps. Rights and credit
+  stay in the media layer; a thumbnail that fails to load removes its own
+  figure.
 
 ## Next
 

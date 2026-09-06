@@ -417,6 +417,49 @@ function activateMapStep(step) {
 /* ═══════════════════════════════════════════════════════════════
    5. SCROLL STEPS
 ═══════════════════════════════════════════════════════════════ */
+/* Archival photographs for one narrative step. The step names media ids and
+   they resolve against mediaAssets, so the rights, credit and upstream link
+   stay in one place. A thumbnail that fails to load removes its own figure
+   rather than leaving a hole beside the map. */
+/* A thumbnail that will not load removes its own figure rather than leaving
+   a hole beside the map, and a pair that loses one half stops reserving the
+   second column. Exposed on window because the handler is an inline
+   attribute on markup this function builds. */
+function dropStepFigure(img) {
+  const fig = img.closest('.step-figure');
+  const box = fig && fig.parentElement;
+  if (fig) fig.remove();
+  if (box && box.querySelectorAll('.step-figure').length < 2) box.classList.remove('is-pair');
+  if (box && !box.querySelector('.step-figure')) box.remove();
+}
+window.dropStepFigure = dropStepFigure;
+
+function stepMediaHtml(step) {
+  const ids = step.media || [];
+  if (!ids.length) return '';
+  const byId = stepMediaHtml._index ||
+    (stepMediaHtml._index = new Map((D().mediaAssets || []).map(a => [a.id, a])));
+  const items = ids.map(id => byId.get(id)).filter(Boolean);
+  if (!items.length) return '';
+
+  const figures = items.map(a => `
+    <figure class="step-figure">
+      <a class="step-figure-link" href="${esc(a.sourceUrl)}" target="_blank" rel="noopener"
+         title="${esc(a.title)} — open the source record">
+        <img class="step-figure-img" src="${esc(a.thumbUrl)}" alt="${esc(a.title)}"
+             loading="lazy" decoding="async"
+             onerror="dropStepFigure(this)" />
+      </a>
+      <figcaption class="step-figure-cap">
+        <span class="step-figure-title">${esc(a.title)}</span>
+        <span class="step-figure-year">${esc(a.year)}</span>
+        <span class="step-figure-credit">${a.creditLine || ''}</span>
+      </figcaption>
+    </figure>`).join('');
+
+  return `<div class="step-figures${items.length > 1 ? ' is-pair' : ''}">${figures}</div>`;
+}
+
 function buildScrollSteps() {
   const container = document.getElementById('scroll-steps-container');
   if (!container) return;
@@ -434,10 +477,11 @@ function buildScrollSteps() {
       </div>
       <h3 class="step-headline">${step.headline}</h3>
       <p class="step-narrative">${step.narrative}</p>
+      ${stepMediaHtml(step)}
       <div class="step-metrics">
         <div class="step-metric-chip">Population <strong>${step.metric_pop}</strong></div>
         <div class="step-metric-chip">Port index <strong>${step.metric_port}</strong></div>
-        ${step.metric_note ? `<div class="step-metric-chip"><em style="color:#888">${step.metric_note}</em></div>` : ''}
+        ${step.metric_note ? `<div class="step-metric-chip"><em style="color:var(--text-secondary)">${step.metric_note}</em></div>` : ''}
       </div>
       <p class="step-source">
         ${sourceHtml(((D().mapEvents||[]).find(e => e.id === step.eventId)||{}).source)}
