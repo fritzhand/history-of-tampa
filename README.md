@@ -39,7 +39,7 @@ Map tiles, fonts, and CDN libraries need network access.
 
 ```
 index.html                          # Page sections & chart mounts
-css/styles.css                      # Viridis theme, light + dark
+css/styles.css                      # Editorial theme tokens, light + dark
 js/data.js                          # window.tampaData (cited series, media, sources)
 js/app.js                           # maps, charts, slider, sankeys, tables, theme
 tools/validate-data.mjs             # citation schema check + status counts

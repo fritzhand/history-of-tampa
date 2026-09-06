@@ -21,17 +21,45 @@
 
 const D = () => window.tampaData || window.crisisData || {};
 
+/* The editorial data ramp and the eight era colours. These literals are only
+   the pre-stylesheet fallback: refreshTheme() reads the live values out of
+   css/styles.css, so light and dark each get their own palette and there is
+   one place to change a colour. */
 const V = {
-  v0:'#440154', v1:'#482878', v2:'#3e4989', v3:'#31688e',
-  v4:'#26828e', v5:'#1f9e89', v6:'#35b779', v7:'#6ece58',
-  v8:'#b5de2b', v9:'#fde725'
+  v0:'#4E4A44', v1:'#6F6A62', v2:'#8C867C', v3:'#B4AC9E',
+  v4:'#C6BCA9', v5:'#8FB4D6', v6:'#CBB68A', v7:'#D9A96B',
+  v8:'#DE8B5C', v9:'#E06A5E'
 };
 
 const PC = {
-  fortress:'#482878', boomtown:'#3e4989', metropolis:'#31688e',
-  depression:'#26828e', suburban:'#1f9e89', renewal:'#fde725',
-  revival:'#6ece58', waterfront:'#35b779'
+  fortress:'#7C8794', boomtown:'#C6A24E', metropolis:'#7FA8CF',
+  depression:'#918C83', suburban:'#BE9A72', renewal:'#E06A5E',
+  revival:'#E2B366', waterfront:'#B6C4CE'
 };
+
+/* Resolve a palette key from the data layer to the live colour for the
+   current theme. Data files name a ramp step ("v9") or an era ("renewal")
+   rather than a hex, so a stat card, a sankey band and a chart series all
+   follow the light/dark toggle. Anything unrecognised passes through, so a
+   literal hex still works. */
+/* WCAG relative luminance of a #rrggbb fill, used to choose a legible label
+   colour. The old test asked whether the fill was one of the two neon viridis
+   stops; the editorial palette has no such shortcut. */
+function contrastInk(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || '').trim());
+  if (!m) return '#FBFAF8';
+  const n = parseInt(m[1], 16);
+  const lin = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const L = 0.2126 * lin((n >> 16) & 255) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255);
+  return L > 0.4 ? '#14120E' : '#FBFAF8';
+}
+
+function paint(c, fallback) {
+  if (!c) return fallback || V.v5;
+  if (Object.prototype.hasOwnProperty.call(V, c))  return V[c];
+  if (Object.prototype.hasOwnProperty.call(PC, c)) return PC[c];
+  return c;
+}
 
 const BASE_YEAR = 1824;
 const MAX_OFFSET = 200; // 1824–2024
@@ -65,7 +93,7 @@ function eraStatus(year) {
   return 'waterfront';
 }
 
-Chart.defaults.font.family    = "'Space Mono', monospace";
+Chart.defaults.font.family    = "'Work Sans', system-ui, sans-serif";
 Chart.defaults.font.size      = 10;
 
 /* Theme tokens for canvas and SVG surfaces that CSS cannot reach. Filled
@@ -80,8 +108,8 @@ const T = {
 const TIP = {
   backgroundColor:T.tipBg, borderColor:T.tipBorder, borderWidth:1,
   titleColor:T.tipTitle, bodyColor:T.tipBody, padding:12,
-  titleFont:{ family:"'Space Grotesk',sans-serif", weight:'700', size:12 },
-  bodyFont:{ family:"'Space Mono',monospace", size:10 }
+  titleFont:{ family:"'Work Sans',system-ui,sans-serif", weight:'600', size:12 },
+  bodyFont:{ family:"'Work Sans',system-ui,sans-serif", size:10.5 }
 };
 
 function currentTheme() {
@@ -106,12 +134,14 @@ function refreshTheme() {
   T.sankeyLabel  = cssVar('--text-soft', '#aaa');
   T.markerStroke = light ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.35)';
   T.markerActive = light ? '#17171a' : '#ffffff';
-  /* The two lightest viridis steps are illegible on paper: darken them in
-     light mode. Era pills, markers and charts all derive from V / PC. */
-  V.v8 = light ? '#8fb318' : '#b5de2b';
-  V.v9 = light ? '#c9a800' : '#fde725';
-  Object.assign(PC, { fortress:V.v1, boomtown:V.v2, metropolis:V.v3, depression:V.v4,
-                      suburban:V.v5, renewal:V.v9, revival:V.v7, waterfront:V.v6 });
+  /* Pull the whole palette out of the stylesheet so light and dark each get
+     values tuned for their ground. Era pills, map markers, charts, sankeys
+     and the stat blocks all derive from V / PC. */
+  for (let i = 0; i <= 9; i++) V['v' + i] = cssVar('--v' + i, V['v' + i]);
+  for (const era of ['fortress','boomtown','metropolis','depression',
+                     'suburban','renewal','revival','waterfront']) {
+    PC[era] = cssVar('--era-' + era, PC[era]);
+  }
   Chart.defaults.color       = T.text;
   Chart.defaults.borderColor = T.grid;
   Object.assign(TIP, { backgroundColor:T.tipBg, borderColor:T.tipBorder, titleColor:T.tipTitle, bodyColor:T.tipBody });
@@ -120,7 +150,7 @@ function refreshTheme() {
 function mkScale(overrides = {}) {
   return {
     grid:  { color:T.grid },
-    ticks: { color:T.text, font:{ family:"'Space Mono',monospace", size:10 } },
+    ticks: { color:T.text, font:{ family:"'Work Sans',system-ui,sans-serif", size:10 } },
     ...overrides
   };
 }
@@ -236,7 +266,7 @@ function buildPhaseLegend() {
   if (!c) return;
   c.innerHTML = '';
   Object.entries(PC).forEach(([phase, color]) => {
-    const light = color === V.v8 || color === V.v9;
+    const ink = contrastInk(color);
     const el = document.createElement('a');
     el.className = 'phase-pill';
     el.dataset.phase = phase;
@@ -244,8 +274,8 @@ function buildPhaseLegend() {
     el.setAttribute('role', 'link');
     el.setAttribute('tabindex', '0');
     el.title = `Jump to the ${phase.toUpperCase()} era in the timeline`;
-    el.style.cssText = `background:${color};color:${light ? '#000' : '#fff'}`;
-    el.innerHTML = `<span class="dot" style="background:${light ? '#000' : '#fff'}"></span>${phase.toUpperCase()}`;
+    el.style.cssText = `background:${color};color:${ink}`;
+    el.innerHTML = `<span class="dot" style="background:${ink}"></span>${phase.toUpperCase()}`;
     el.addEventListener('click', e => { e.preventDefault(); scrollToPhase(phase); });
     el.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToPhase(phase); }
@@ -319,9 +349,8 @@ function highlightPhasePill(phase) {
   const ind = document.getElementById('nav-phase-indicator');
   if (ind) {
     const color = PC[phase];
-    const light = color === V.v8 || color === V.v9;
     ind.innerHTML = color
-      ? `<span class="nav-phase-pill" style="background:${color};color:${light ? '#000' : '#fff'}">${phase.toUpperCase()}</span>`
+      ? `<span class="nav-phase-pill" style="background:${color};color:${contrastInk(color)}">${phase.toUpperCase()}</span>`
       : '';
   }
 }
@@ -442,6 +471,70 @@ function lockScrollyStep(target) {
   };
   window.addEventListener('scrollend', _navLockRelease);
   _navLockTimer = setTimeout(_navLockRelease, 1600);
+}
+
+/* Floating scroll assist (bottom-right, up + down). Steps are nav targets on
+   every screen size so the arrows walk the map narrative step by step — on
+   desktop the sticky map would otherwise be jumped past in one leap and never
+   advance. Elsewhere the arrows move section to section. */
+function initSectionNav() {
+  const nav  = document.getElementById('section-nav');
+  const up   = document.getElementById('section-nav-up');
+  const down = document.getElementById('section-nav-down');
+  if (!nav || !up || !down) return;
+
+  const SECTION_SEL = '#hero, #scrollytelling, section.chart-section-bg, ' +
+                      'section:not([id]):not(.chart-section-bg), #sandbox, ' +
+                      '#displacement, #sources, #resolution-footer';
+
+  /* Document order; a hidden section (displacement, transit) has no box and
+     is filtered out by its zero height below. */
+  const targets = () =>
+    Array.from(document.querySelectorAll(SECTION_SEL + ', .scroll-step'))
+         .filter(el => !el.hasAttribute('hidden') && el.offsetParent !== null);
+
+  /* A step must clear the sticky map on mobile to be readable. */
+  const readingOffset = el => {
+    if (el.classList.contains('scroll-step') && window.innerWidth <= 900) {
+      const fig = document.querySelector('.sticky-figure');
+      return navHeight() + legendHeight() + (fig?.offsetHeight || 0) + 14;
+    }
+    return navHeight() + 8;
+  };
+
+  const destOf    = el => el.getBoundingClientRect().top + window.scrollY - readingOffset(el);
+  const scrollToY = y  => window.scrollTo({ top: Math.max(y, 0), behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+
+  /* Scroll to a target and, if it is a step, pin the map immediately. Freezing
+     the scrolly observer stops an intermediate step from winning mid-flight:
+     on an up-scroll the step above the target dips into the top of the active
+     zone last and would land the map one step too high. */
+  const goTo = t => {
+    if (!t) return;
+    if (t.el.classList.contains('scroll-step')) lockScrollyStep(t.el);
+    scrollToY(t.y);
+  };
+
+  down.addEventListener('click', () => {
+    const next = targets().map(el => ({ el, y: destOf(el) }))
+      .filter(o => o.y > window.scrollY + 24).sort((a, b) => a.y - b.y)[0];
+    next ? goTo(next) : scrollToY(document.body.scrollHeight);
+  });
+
+  up.addEventListener('click', () => {
+    const prev = targets().map(el => ({ el, y: destOf(el) }))
+      .filter(o => o.y < window.scrollY - 24).sort((a, b) => b.y - a.y)[0];
+    prev ? goTo(prev) : scrollToY(0);
+  });
+
+  const onScroll = () => {
+    const y = window.scrollY;
+    nav.classList.toggle('is-visible', y > window.innerHeight * 0.45);
+    up.classList.toggle('is-disabled', y <= 24);
+    down.classList.toggle('is-disabled', (window.innerHeight + y) >= document.body.scrollHeight - 4);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 }
 
 /* Active zone for the observer. On mobile it sits BELOW the sticky map so a
@@ -577,13 +670,12 @@ function updateSlider(offset) {
   const status = eraStatus(year);
 
   const dEl = document.getElementById('slider-date-label');
-  if (dEl) dEl.textContent = `📅 ${year} · Year ${offset} of 200`;
+  if (dEl) dEl.textContent = `${year} · Year ${offset} of 200`;
 
   const badge = document.getElementById('era-badge');
   if (badge) {
     badge.textContent = `ERA: ${status.toUpperCase()}`;
-    badge.className   = `hormuz-badge open`;
-    badge.style.borderColor = PC[status] || V.v5;
+    badge.className   = 'era-badge';
     badge.style.color = PC[status] || V.v5;
   }
 
@@ -661,7 +753,7 @@ function drawSankey(svgId, { nodes, links }) {
     let y = PAD.top;
     cns.forEach(n => {
       const h = Math.max((n.val / tot) * usable, 8);
-      pos[n.idx] = { x:xBase, y, h, midY: y + h / 2, color: n.color || '#555' };
+      pos[n.idx] = { x:xBase, y, h, midY: y + h / 2, color: paint(n.color, T.textDim) };
       y += h + NG;
     });
   }
@@ -708,7 +800,7 @@ function drawSankey(svgId, { nodes, links }) {
     label.setAttribute('text-anchor', right ? 'end' : 'start');
     label.setAttribute('fill', '#aaa');
     label.setAttribute('font-size', '11');
-    label.setAttribute('font-family', "'Space Grotesk', sans-serif");
+    label.setAttribute('font-family', "'Work Sans', system-ui, sans-serif");
     label.textContent = n.name;
     svgEl.appendChild(label);
   });
@@ -1042,8 +1134,8 @@ function initEraChart() {
       datasets: [{
         label: 'Years in era',
         data: series.map(d => d.years),
-        backgroundColor: series.map(d => d.color + 'cc'),
-        borderColor: series.map(d => d.color),
+        backgroundColor: series.map(d => paint(d.color) + 'cc'),
+        borderColor: series.map(d => paint(d.color)),
         borderWidth: 1.5, borderRadius: 3, borderSkipped: false
       }]
     },
@@ -1214,7 +1306,7 @@ function renderStatBlocks() {
   if (hero && Array.isArray(hs) && hs.length) {
     hero.innerHTML = hs.map(s => `
       <div>
-        <div class="hero-stat-number" style="color:${esc(s.color || V.v5)}">${esc(s.value)}</div>
+        <div class="hero-stat-number" style="color:${esc(paint(s.color))}">${esc(s.value)}</div>
         <div class="hero-stat-label">${s.label}${s.sublabel ? '<br>' + s.sublabel : ''}</div>
         ${s.source ? `<div class="hero-stat-source">${sourceHtml(s.source)}</div>` : ''}
       </div>`).join('');
@@ -1223,8 +1315,8 @@ function renderStatBlocks() {
   const fs = D().footerStats;
   if (foot && Array.isArray(fs) && fs.length) {
     foot.innerHTML = fs.map(s => `
-      <div class="footer-stat" style="border-color:${esc(s.color || V.v5)}">
-        <div class="footer-stat-value" style="color:${esc(s.color || V.v5)}">${esc(s.value)}</div>
+      <div class="footer-stat" style="border-color:${esc(paint(s.color))}">
+        <div class="footer-stat-value" style="color:${esc(paint(s.color))}">${esc(s.value)}</div>
         <div class="footer-stat-delta">${s.sublabel || ''}</div>
         <div class="footer-stat-label">${s.label}</div>
         ${s.source ? `<div class="footer-stat-source">${sourceHtml(s.source)}</div>` : ''}
@@ -1266,7 +1358,7 @@ function initDisplacementSection() {
         <td>${cell(r.familiesDisplaced, r.familiesNote)}
           ${r.nonWhiteFamilies != null && r.familiesDisplaced ? `<div class="disp-share">${Math.round(100 * r.nonWhiteFamilies / r.familiesDisplaced)}% non-white</div>` : ''}</td>
         <td>${cell(r.businessesDisplaced, r.businessesNote)}</td>
-        <td style="font-family:var(--font-mono);font-size:10px;max-width:230px;white-space:normal">${sourceHtml(r.source)}</td>
+        <td style="font-family:var(--font-sans);font-size:10px;max-width:230px;white-space:normal">${sourceHtml(r.source)}</td>
       </tr>`).join('');
   }
 
@@ -1396,6 +1488,8 @@ function buildSourceRoll() {
     if (!src) return;
     if (Array.isArray(src)) { src.forEach(add); return; }
     if (typeof src === 'string') { uncited++; return; }
+    /* A sankey link's `source` is a node index. Only a citation object counts. */
+    if (typeof src !== 'object' || !(src.institution || src.url)) return;
     total++;
     const st = src.verificationStatus || 'PENDING';
     counts[st] = (counts[st] || 0) + 1;
@@ -1424,16 +1518,16 @@ function buildSourceRoll() {
       <td>${e.PENDING ? `<span class="net-badge net-mixed">${e.PENDING}</span>` : '—'}</td>
       <td>${e.DERIVED ? `<span class="net-badge net-moderate">${e.DERIVED}</span>` : '—'}</td>
       <td><span class="role-badge">${[...e.access].join(' / ') || '—'}</span></td>
-      <td>${e.url ? `<a href="${esc(e.url)}" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:10px">open ↗</a>` : '—'}</td>
+      <td>${e.url ? `<a href="${esc(e.url)}" target="_blank" rel="noopener" style="font-family:var(--font-sans);font-size:10px">open ↗</a>` : '—'}</td>
     </tr>`).join('');
 
   if (summary) {
     const pct = total ? Math.round(100 * counts.CONFIRMED / total) : 0;
     summary.innerHTML =
       `${total.toLocaleString()} cited data points across ${rows.length} institutions — ` +
-      `<strong style="color:var(--v6)">${counts.CONFIRMED} confirmed (${pct}%)</strong>, ` +
-      `<strong style="color:var(--v8)">${counts.PENDING} pending</strong>, ` +
-      `<strong style="color:#a29bfe">${counts.DERIVED} derived</strong>` +
+      `<strong style="color:var(--v5)">${counts.CONFIRMED} confirmed (${pct}%)</strong>, ` +
+      `<strong style="color:var(--v7)">${counts.PENDING} pending</strong>, ` +
+      `<strong style="color:var(--v9)">${counts.DERIVED} derived</strong>` +
       (uncited ? `, ${uncited} free-text citations still awaiting source objects` : '') + '.';
   }
 }
@@ -1466,10 +1560,10 @@ function buildCraIncrement() {
   el.innerHTML = districts.map(d => {
     const b = Number(d.base.value), n = Number(d.now.value);
     return `
-      <div class="cra-card" style="border-left-color:${d.color}">
+      <div class="cra-card" style="border-left-color:${esc(paint(d.color))}">
         <div class="cra-name">${esc(d.name)}</div>
         <div class="cra-row"><span>Base year</span><strong>${money(b)}</strong></div>
-        <div class="cra-row"><span>FY2025</span><strong style="color:${d.color}">${money(n)}</strong></div>
+        <div class="cra-row"><span>FY2025</span><strong style="color:${esc(paint(d.color))}">${money(n)}</strong></div>
         <div class="cra-multiple">${(n / b).toFixed(1)}× the frozen base</div>
       </div>`;
   }).join('') + (() => {
@@ -1566,6 +1660,7 @@ document.addEventListener('DOMContentLoaded', () => {
   refreshTheme();
   initThemeToggle();
   initProgressBar();
+  initSectionNav();
   buildPhaseLegend();
   setLayoutVars();
 

@@ -1,111 +1,138 @@
 /* ══════════════════════════════════════════════════════════════════
    DOWNTOWN TAMPA: A CIVIC DEVELOPMENT AUTOPSY
-   styles.css — Dark Viridis Theme (shared visual language)
+   styles.css — Editorial theme: paper and ink, one crisis accent, a link blue
    Open civic / historical data journalism
    ══════════════════════════════════════════════════════════════════ */
 
 /* ─── CSS CUSTOM PROPERTIES ─── */
+/* Editorial palette. Light (paper) is canonical; dark is a warm charcoal
+   night mode. Ink, one crisis accent and a link blue carry the meaning —
+   the old viridis greens and teals are gone from both themes. */
 :root {
-  /* Viridis palette — baseline (dark purple) → peak crisis (yellow) */
-  --v0: #440154;
-  --v1: #482878;
-  --v2: #3e4989;
-  --v3: #31688e;
-  --v4: #26828e;
-  --v5: #1f9e89;
-  --v6: #35b779;
-  --v7: #6ece58;
-  --v8: #b5de2b;
-  --v9: #fde725;
+  /* Sequential data ramp — warm neutral, with the accent at v5 and the
+     crisis peak at v9. Dark-mode values; the light block below inverts
+     the neutral end so the ramp stays legible on paper. */
+  --v0: #4E4A44;   /* deep warm charcoal */
+  --v1: #6F6A62;   /* deep warm gray    */
+  --v2: #8C867C;   /* warm gray         */
+  --v3: #B4AC9E;   /* light warm gray   */
+  --v4: #C6BCA9;   /* stone             */
+  --v5: #8FB4D6;   /* steel blue — primary accent */
+  --v6: #CBB68A;   /* wheat             */
+  --v7: #D9A96B;   /* ochre             */
+  --v8: #DE8B5C;   /* terracotta        */
+  --v9: #E06A5E;   /* oxblood — crisis peak */
 
-  /* Dark theme surfaces */
-  --bg-base:      #0a0a0a;
-  --bg-surface:   #111111;
-  --bg-card:      #161616;
-  --bg-elevated:  #1c1c1c;
-  --border:       #2a2a2a;
-  --border-light: #1e1e1e;
+  /* Warm charcoal surfaces */
+  --bg-base:      #14120E;
+  --bg-surface:   #1A1712;
+  --bg-card:      #201C16;
+  --bg-elevated:  #262119;
+  --border:       #332E26;
+  --border-light: #241F19;
 
   /* Text */
-  --text-primary:   #f0f0f0;
-  --text-secondary: #888888;
-  --text-muted:     #444444;
+  --text-primary:   #F1ECE2;
+  --text-secondary: #9E978A;
+  --text-muted:     #5A554C;
   --text-accent:    var(--v5);
-  --text-faint:     #555555;   /* chart ticks, footer small print */
-  --text-dim:       #666666;   /* chart legends */
-  --text-soft:      #aaaaaa;   /* sankey labels, tertiary copy */
-  --overlay-bg:     rgba(10, 10, 10, 0.92);
-  --overlay-bg-2:   rgba(10, 10, 10, 0.90);
-  --shadow-strong:  rgba(0, 0, 0, 0.8);
-  --shadow-soft:    rgba(0, 0, 0, 0.6);
-  --ring:           #ffffff;   /* focus / current-pill ring */
-  --ink:            #000000;   /* true black (progress track, map edges) */
-  --bg-deep:        #000000;   /* hero + footer bookends */
-  /* Status / net badges: background, text, border per state */
-  --badge-gain-bg:      #0a2a0a;  --badge-gain-fg:  var(--v6);  --badge-gain-br:  #1a5a1a;
-  --badge-mixed-bg:     #1a1a00;  --badge-mixed-fg: var(--v8);  --badge-mixed-br: #3a3a00;
-  --badge-moderate-bg:  #1a1a2a;  --badge-moderate-fg: #a29bfe; --badge-moderate-br: #2a2a4a;
-  --badge-exposure-bg:  #0a1530;  --badge-exposure-fg: #74b9ff; --badge-exposure-br: #1a3560;
-  --badge-severe-bg:    #2a1500;  --badge-severe-fg: #ff9f43;   --badge-severe-br: #5a3000;
-  --badge-catastrophic-bg: #2a0a0a; --badge-catastrophic-fg: #ff6b6b; --badge-catastrophic-br: #5a1010;
-  --thumb-bg:       linear-gradient(135deg, #1a1a1a, #0d0d0d);
+  --text-faint:     #6E685E;   /* chart ticks, footer small print */
+  --text-dim:       #7E7769;   /* chart legends */
+  --text-soft:      #B6AE9F;   /* sankey labels, tertiary copy */
+  --overlay-bg:     rgba(20, 18, 14, 0.92);
+  --overlay-bg-2:   rgba(20, 18, 14, 0.90);
+  --shadow-strong:  rgba(0, 0, 0, 0.72);
+  --shadow-soft:    rgba(0, 0, 0, 0.5);
+  --ring:           #F1ECE2;   /* focus / current-pill ring */
+  --ink:            #0C0A07;   /* deepest ground (progress track, map edges) */
+  --bg-deep:        #0E0C09;   /* hero + footer bookends */
+  /* Status / net badges: background, text, border per state. A single
+     severity ramp — gray → slate → gold → ochre → oxblood — plus blue for gain. */
+  --badge-gain-bg:      #16232D;  --badge-gain-fg:  #9CC0DE;  --badge-gain-br:  #2C4356;
+  --badge-mixed-bg:     #2A2416;  --badge-mixed-fg: #D8BE7C;  --badge-mixed-br: #4A3F24;
+  --badge-moderate-bg:  #24211C;  --badge-moderate-fg: #B4AC9E; --badge-moderate-br: #3C3730;
+  --badge-exposure-bg:  #1C242B;  --badge-exposure-fg: #A3B6C4; --badge-exposure-br: #33424E;
+  --badge-severe-bg:    #2E2016;  --badge-severe-fg: #DDA06A;   --badge-severe-br: #4E3722;
+  --badge-catastrophic-bg: #301A18; --badge-catastrophic-fg: #E08A80; --badge-catastrophic-br: #552A26;
+  --thumb-bg:       linear-gradient(135deg, #241F19, #16130F);
   --chart-yellow:   var(--v9);
+  --on-accent:      #14120E;   /* label ON an accent fill */
   color-scheme: dark;
 
-  /* Typography */
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-mono:    'Space Mono', 'Courier New', monospace;
+  /* Civic eras — eight named periods, not ramp positions. A warm sequence
+     punctuated by three hue events: the bust reads cold, clearance reads
+     oxblood, the waterfront reads like water. */
+  --era-fortress:   #7C8794;
+  --era-boomtown:   #C6A24E;
+  --era-metropolis: #7FA8CF;
+  --era-depression: #918C83;
+  --era-suburban:   #BE9A72;
+  --era-renewal:    #E06A5E;
+  --era-revival:    #E2B366;
+  --era-waterfront: #B6C4CE;
+
+  /* Typography — Crimson Pro for headlines, Work Sans for everything else */
+  --font-display: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+  --font-sans:    'Work Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Layout */
   --max-width:    1200px;
   --section-pad:  80px 24px;
-  --card-radius:  6px;
-
-  /* Phase colors (Viridis mapped) */
-  --phase-outbreak:   var(--v1);
-  --phase-closure:    var(--v2);
-  --phase-escalation: var(--v3);
-  --phase-peak:       var(--v9);
-  --phase-stalemate:  var(--v4);
-  --phase-ceasefire1: var(--v5);
-  --phase-collapse:   var(--v8);
-  --phase-blockade:   var(--v7);
-  --phase-relapse:    var(--v8);
-  --phase-resolution: var(--v6);
-  --phase-recovery:   var(--v5);
+  --card-radius:  3px;
 }
 
-/* ─── LIGHT THEME ───
+/* ─── LIGHT THEME (canonical) ───
    Toggled by the nav button (persisted in localStorage as 'oca-theme') and
    applied before first paint by the inline script in index.html. Warm paper
-   surfaces; the viridis era palette is kept so the eras keep their identity. */
+   and ink; the ramp's neutral end darkens so it stays legible on paper. */
 [data-theme="light"] {
-  --bg-base:      #f6f4ef;
-  --bg-surface:   #fbfaf7;
-  --bg-card:      #ffffff;
-  --bg-elevated:  #efece5;
-  --border:       #d9d4c9;
-  --border-light: #e6e2d8;
-  --text-primary:   #17171a;
-  --text-secondary: #55524c;
-  --text-muted:     #8d887d;
-  --text-faint:     #7a766d;
-  --text-dim:       #6a665e;
-  --text-soft:      #4a4740;
-  --overlay-bg:     rgba(251, 250, 247, 0.94);
-  --overlay-bg-2:   rgba(251, 250, 247, 0.92);
-  --shadow-strong:  rgba(30, 25, 15, 0.25);
-  --shadow-soft:    rgba(30, 25, 15, 0.15);
-  --ring:           #17171a;
-  --ink:            #17171a;
-  --thumb-bg:       linear-gradient(135deg, #e8e4da, #dcd7cb);
-  --bg-deep:        #efebe1;
-  --badge-gain-bg:      #e2f0e0;  --badge-gain-fg:  #1f6b34;  --badge-gain-br:  #b9d8b6;
-  --badge-mixed-bg:     #f6efd4;  --badge-mixed-fg: #7a6100;  --badge-mixed-br: #ddd0a2;
-  --badge-moderate-bg:  #eceaf7;  --badge-moderate-fg: #4b41a8; --badge-moderate-br: #cdc7ea;
-  --badge-exposure-bg:  #e4edf8;  --badge-exposure-fg: #1f5285; --badge-exposure-br: #bcd2e8;
-  --badge-severe-bg:    #fbeadb;  --badge-severe-fg: #96500b;   --badge-severe-br: #e9cdae;
-  --badge-catastrophic-bg: #fae4e2; --badge-catastrophic-fg: #a3261c; --badge-catastrophic-br: #eec3bd;
+  --v0: #3C3831;
+  --v1: #5F594F;
+  --v2: #7A7367;
+  --v3: #9A9184;
+  --v4: #A8977A;
+  --v5: #326891;   /* link blue — primary accent */
+  --v6: #9A7B3C;
+  --v7: #B87333;
+  --v8: #B4552A;
+  --v9: #A61B1B;   /* oxblood — crisis peak */
+
+  --bg-base:      #FBFAF8;
+  --bg-surface:   #FFFFFF;
+  --bg-card:      #FFFFFF;
+  --bg-elevated:  #F4F2EC;
+  --border:       #E4E1DA;
+  --border-light: #EDEBE4;
+  --text-primary:   #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --text-muted:     #9A9488;
+  --text-faint:     #857F73;
+  --text-dim:       #75705F;
+  --text-soft:      #4A463F;
+  --overlay-bg:     rgba(251, 250, 248, 0.94);
+  --overlay-bg-2:   rgba(251, 250, 248, 0.92);
+  --shadow-strong:  rgba(26, 26, 26, 0.22);
+  --shadow-soft:    rgba(26, 26, 26, 0.12);
+  --ring:           #1A1A1A;
+  --ink:            #1A1A1A;
+  --thumb-bg:       linear-gradient(135deg, #F4F2EC, #E8E5DC);
+  --bg-deep:        #F4F2EC;
+  --badge-gain-bg:      #E7EEF5;  --badge-gain-fg:  #29567A;  --badge-gain-br:  #C3D5E4;
+  --badge-mixed-bg:     #F5EEDC;  --badge-mixed-fg: #7A5F1C;  --badge-mixed-br: #E0D2AF;
+  --badge-moderate-bg:  #F0EEE8;  --badge-moderate-fg: #5C574E; --badge-moderate-br: #DCD8CE;
+  --badge-exposure-bg:  #EAEFF3;  --badge-exposure-fg: #45606F; --badge-exposure-br: #CBD8E0;
+  --badge-severe-bg:    #F7EADC;  --badge-severe-fg: #90501A;   --badge-severe-br: #E4CDAE;
+  --badge-catastrophic-bg: #F5E4E1; --badge-catastrophic-fg: #A61B1B; --badge-catastrophic-br: #E6C3BD;
+
+  --era-fortress:   #55636F;
+  --era-boomtown:   #8A6D1E;
+  --era-metropolis: #326891;
+  --era-depression: #6E6A62;
+  --era-suburban:   #8E5F30;
+  --era-renewal:    #A61B1B;
+  --era-revival:    #B07C1C;
+  --era-waterfront: #5B7C93;
+  --on-accent:      #FBFAF8;
   color-scheme: light;
 }
 
@@ -117,7 +144,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg-base);
   color: var(--text-primary);
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -168,11 +195,19 @@ a:hover { color: var(--v7); }
   height: 32px;
   flex-shrink: 0;
 }
+/* The mark reads the palette, so it follows the light/dark toggle:
+   the river in steel blue, the street grid warming as it goes, the
+   Plant minaret in the crisis accent. */
+.logo-river   { stroke: var(--era-metropolis); fill: none; }
+.logo-grid-1  { fill: var(--v2); }
+.logo-grid-2  { fill: var(--v6); }
+.logo-grid-3  { fill: var(--v7); }
+.logo-tower   { fill: var(--v9); }
 
 .nav-logo-text { display: flex; flex-direction: column; line-height: 1.2; }
 
 .nav-logo-primary {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 700;
   color: var(--v5);
@@ -181,7 +216,7 @@ a:hover { color: var(--v7); }
 }
 
 .nav-logo-secondary {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--text-secondary);
   letter-spacing: 0.5px;
@@ -197,7 +232,7 @@ a:hover { color: var(--v7); }
 
 .nav-project-title {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -213,7 +248,7 @@ a:hover { color: var(--v7); }
 }
 
 .nav-phase-pill {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -241,7 +276,7 @@ a:hover { color: var(--v7); }
 }
 
 .hero-eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   color: var(--v5);
   letter-spacing: 3px;
@@ -251,15 +286,16 @@ a:hover { color: var(--v7); }
 
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(40px, 7vw, 80px);
-  font-weight: 700;
-  line-height: 1.0;
+  font-size: clamp(44px, 8vw, 88px);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
   margin-bottom: 24px;
 }
 
 .hero-subtitle {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: clamp(15px, 2vw, 18px);
   color: var(--text-secondary);
   max-width: 600px;
@@ -275,7 +311,7 @@ a:hover { color: var(--v7); }
 }
 
 .hero-stat-number {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: clamp(28px, 4vw, 44px);
   font-weight: 700;
   line-height: 1;
@@ -283,14 +319,14 @@ a:hover { color: var(--v7); }
 }
 
 .hero-stat-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   color: var(--text-secondary);
   letter-spacing: 0.5px;
   line-height: 1.5;
 }
 
-.hero-viridis-bar {
+.hero-era-bar {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 4px;
@@ -323,7 +359,7 @@ a:hover { color: var(--v7); }
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -356,7 +392,7 @@ a:hover { color: var(--v7); }
 }
 
 .section-eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   color: var(--text-secondary);
   letter-spacing: 2px;
@@ -366,14 +402,16 @@ a:hover { color: var(--v7); }
 
 .section-title {
   font-family: var(--font-display);
-  font-size: clamp(22px, 3vw, 32px);
-  font-weight: 700;
+  font-size: clamp(24px, 3.2vw, 34px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   margin-bottom: 8px;
   color: var(--text-primary);
 }
 
 .section-subtitle {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 14px;
   color: var(--text-secondary);
   max-width: 640px;
@@ -426,7 +464,7 @@ a:hover { color: var(--v7); }
 }
 
 .map-step-date {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--v5);
   letter-spacing: 1.5px;
@@ -436,10 +474,10 @@ a:hover { color: var(--v7); }
 
 .map-step-headline {
   font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.3;
+  line-height: 1.25;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -453,7 +491,7 @@ a:hover { color: var(--v7); }
 }
 
 .map-metric {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   color: var(--text-secondary);
 }
@@ -495,7 +533,7 @@ a:hover { color: var(--v7); }
 }
 
 .step-phase-date {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -504,15 +542,16 @@ a:hover { color: var(--v7); }
 
 .step-headline {
   font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.008em;
   margin-bottom: 12px;
   color: var(--text-primary);
 }
 
 .step-narrative {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 15px;
   color: var(--text-soft);
   line-height: 1.75;
@@ -527,7 +566,7 @@ a:hover { color: var(--v7); }
 }
 
 .step-metric-chip {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   padding: 5px 10px;
   border-radius: 3px;
@@ -539,7 +578,7 @@ a:hover { color: var(--v7); }
 .step-metric-chip strong { color: var(--v9); }
 
 .step-source {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--text-muted);
   margin-top: 12px;
@@ -562,7 +601,7 @@ a:hover { color: var(--v7); }
 }
 
 .chart-card-title {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -585,7 +624,7 @@ a:hover { color: var(--v7); }
 }
 
 .chart-source {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--text-muted);
   margin-top: 12px;
@@ -598,7 +637,7 @@ a:hover { color: var(--v7); }
 }
 
 .chart-desc {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 12px;
   color: var(--text-secondary);
   margin-bottom: 16px;
@@ -640,25 +679,26 @@ a:hover { color: var(--v7); }
 }
 
 .slider-date-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
-.hormuz-badge {
-  font-family: var(--font-mono);
+/* Era badge: the era's own colour as a hairline outline and the label, on
+   the page ground. The old solid fill put era-coloured text on an unrelated
+   background, which failed contrast in both themes. */
+.era-badge {
+  font-family: var(--font-sans);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 4px 12px;
-  border-radius: 3px;
-  letter-spacing: 1px;
+  border-radius: 2px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  background: transparent;
+  border: 1px solid currentColor;
 }
-
-.hormuz-badge.closed   { background: var(--v9); color: #000; }
-.hormuz-badge.open     { background: var(--v5); color: #000; }
-.hormuz-badge.blockaded{ background: var(--v2); color: #fff; }
 
 /* Range slider */
 input[type="range"].crisis-slider {
@@ -676,8 +716,8 @@ input[type="range"].crisis-slider::-webkit-slider-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #fff;
-  border: 3px solid #111;
+  background: var(--text-primary);
+  border: 3px solid var(--bg-base);
   box-shadow: 0 0 0 2px var(--v5);
   cursor: pointer;
 }
@@ -686,8 +726,8 @@ input[type="range"].crisis-slider::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #fff;
-  border: 3px solid #111;
+  background: var(--text-primary);
+  border: 3px solid var(--bg-base);
   box-shadow: 0 0 0 2px var(--v5);
   cursor: pointer;
 }
@@ -695,7 +735,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 .slider-ticks {
   display: flex;
   justify-content: space-between;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--text-secondary);
   margin-top: 6px;
@@ -719,7 +759,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 }
 
 .stat-card-value {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 20px;
   font-weight: 700;
   line-height: 1;
@@ -730,7 +770,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 }
 
 .stat-card-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--text-secondary);
   letter-spacing: 0.5px;
@@ -764,7 +804,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 .sandbox-event-headline {
   font-family: var(--font-display);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 6px;
   line-height: 1.3;
   overflow: hidden;
@@ -774,7 +814,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 }
 
 .sandbox-event-body {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.6;
@@ -792,7 +832,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 }
 
 .sankey-btn {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -808,13 +848,13 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 
 .sankey-btn.active {
   background: var(--v5);
-  color: #000;
+  color: var(--on-accent);
   border-color: var(--v5);
 }
 
 .sankey-btn.crisis.active {
   background: var(--v9);
-  color: #000;
+  color: var(--on-accent);
   border-color: var(--v9);
 }
 
@@ -827,12 +867,13 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 .geo-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
   font-size: 13px;
 }
 
 .geo-table th {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -861,7 +902,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 
 .geo-table .role-badge {
   display: inline-block;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   padding: 2px 7px;
   border-radius: 10px;
@@ -872,7 +913,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 
 .net-badge {
   display: inline-block;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   font-weight: 700;
   padding: 3px 8px;
@@ -903,7 +944,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 }
 
 .footer-eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   color: var(--v5);
   letter-spacing: 3px;
@@ -914,7 +955,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 .footer-title {
   font-family: var(--font-display);
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 32px;
 }
 
@@ -931,14 +972,14 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 }
 
 .footer-stat-value {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .footer-stat-delta {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   color: var(--text-faint);
   margin-bottom: 2px;
@@ -952,7 +993,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 .footer-credits {
   border-top: 1px solid var(--border-light);
   padding-top: 24px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   color: var(--text-muted);
   line-height: 1.8;
@@ -964,7 +1005,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 /* ─── LEAFLET OVERRIDES ─── */
 .leaflet-container {
   background: var(--bg-base) !important;
-  font-family: var(--font-display) !important;
+  font-family: var(--font-sans) !important;
 }
 
 .leaflet-popup-content-wrapper {
@@ -979,13 +1020,13 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 
 .leaflet-popup-content {
   margin: 14px 16px !important;
-  font-family: var(--font-display) !important;
+  font-family: var(--font-sans) !important;
   min-width: 220px !important;
   max-width: 280px !important;
 }
 
 .map-popup-date {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -995,14 +1036,14 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 .map-popup-title {
   font-family: var(--font-display);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 7px;
   line-height: 1.3;
 }
 
 .map-popup-body {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 11px;
   color: var(--text-secondary);
   line-height: 1.6;
@@ -1010,7 +1051,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 }
 
 .map-popup-source {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--text-muted);
 }
@@ -1056,14 +1097,14 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 .sankey-link:hover { fill-opacity: 0.55 !important; }
 
 .sankey-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   fill: var(--text-soft);
   pointer-events: none;
 }
 
 .sankey-col-header {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   font-weight: 700;
   fill: var(--text-faint);
@@ -1072,7 +1113,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 }
 
 .sankey-blocked-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   font-weight: 700;
   fill: var(--v9);
@@ -1086,7 +1127,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
   justify-content: center;
   height: 200px;
   color: var(--text-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   letter-spacing: 1px;
 }
@@ -1194,7 +1235,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   color: var(--text-secondary);
   letter-spacing: 1px;
@@ -1216,7 +1257,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
   margin-bottom: 4px;
 }
 .photo-year {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   color: var(--v5);
   letter-spacing: 1px;
@@ -1230,7 +1271,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
   margin-bottom: 8px;
 }
 .photo-credit {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--text-muted);
   letter-spacing: 0.4px;
@@ -1239,7 +1280,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 /* ─── CITATION BADGES & SOURCE LINES ─── */
 .src-badge {
   display: inline-block;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.8px;
@@ -1261,7 +1302,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 
 .hero-stat-source,
 .footer-stat-source {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--text-muted);
   margin-top: 6px;
@@ -1276,7 +1317,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 a.photo-thumb-wrap { display: block; }
 .photo-era {
   display: inline-block;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -1284,11 +1325,11 @@ a.photo-thumb-wrap { display: block; }
   border-radius: 10px;
   margin-left: 6px;
   vertical-align: middle;
-  color: #000;
+  color: var(--on-accent);
   text-transform: uppercase;
 }
 .photo-license {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   color: var(--v4);
   margin-top: 4px;
@@ -1297,7 +1338,7 @@ a.photo-thumb-wrap { display: block; }
 }
 .photo-links {
   margin-top: 6px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
 }
 .photo-links a { color: var(--v5); text-decoration: underline; margin-right: 10px; }
@@ -1322,13 +1363,13 @@ a.photo-thumb-wrap { display: block; }
 .theme-toggle:hover { color: var(--text-primary); border-color: var(--v5); transform: translateY(-1px); }
 .theme-toggle:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 .theme-toggle svg { width: 16px; height: 16px; }
-[data-theme="light"] .hero-viridis-bar { opacity: 0.9; }
+[data-theme="light"] .hero-era-bar { opacity: 0.9; }
 [data-theme="light"] .photo-thumb { filter: none; }
 [data-theme="light"] .chart-card { box-shadow: 0 1px 2px rgba(30,25,15,0.06); }
 
 /* Provenance line under each sandbox stat: which year the figure is from. */
 .stat-card-asof {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   letter-spacing: 0.5px;
   color: var(--text-muted);
@@ -1358,7 +1399,7 @@ a.photo-thumb-wrap { display: block; }
   max-width: 260px;
 }
 .disp-share {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   letter-spacing: 0.5px;
   color: #c0392b;
@@ -1393,17 +1434,160 @@ tr.disp-total td { font-weight: 600; border-top: 2px solid var(--border); }
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
 .cra-row strong { font-size: 15px; color: var(--text-primary); }
 .cra-multiple {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9.5px;
   letter-spacing: 0.5px;
   color: var(--text-muted);
   margin-top: 8px;
   text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   EDITORIAL FURNITURE
+   Ported from the iranwar editorial redesign: tabular figures, the
+   floating scroll assist, the hero byline and the author credit.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ─── TABULAR FIGURES ───
+   Work Sans replaces the retired monospace, so every column of numbers
+   asks for tabular numerals explicitly or the digits drift. */
+.hero-stat-number,
+.stat-card-value,
+.footer-stat-value,
+.footer-stat-delta,
+.stat-card-asof,
+.cra-row,
+.district-net,
+.audit-count,
+.slider-year,
+.year-readout,
+.legend-years {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* ─── SECTION-NAV FLOATING BUTTONS (up + down) ───
+   The scroll assist: section to section down the page, and step by step
+   through the scrollytelling narrative so the sticky map never gets
+   jumped past in one leap. */
+.section-nav {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 850;
+}
+.section-nav.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+.section-nav-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  color: var(--bg-base);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 20px var(--shadow-soft);
+  transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+.section-nav-btn:hover { background: var(--v9); color: var(--on-accent); border-color: var(--v9); }
+.section-nav-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.section-nav-btn svg { width: 20px; height: 20px; }
+.section-nav-btn.is-disabled { opacity: 0.32; pointer-events: none; }
+
+/* ─── HERO BYLINE ─── */
+.hero-byline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.author-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.author-avatar.is-missing { display: none; }
+.byline-meta { display: flex; flex-direction: column; line-height: 1.45; }
+.byline-name-line { color: var(--text-secondary); }
+.hero-byline-name { color: var(--text-primary); font-weight: 600; }
+.byline-dateline { color: var(--text-muted); font-size: 12px; }
+.byline-socials { display: inline-flex; gap: 4px; margin-left: 2px; }
+.byline-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 3px;
+  color: var(--text-muted);
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.byline-social:hover { color: var(--text-primary); background: var(--bg-elevated); }
+.byline-social svg { width: 15px; height: 15px; display: block; }
+
+/* ─── FOOTER AUTHOR CREDIT ─── */
+.footer-credit {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.credit-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.credit-avatar.is-missing { display: none; }
+.credit-meta { font-family: var(--font-sans); line-height: 1.5; }
+.credit-role {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.credit-name {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.credit-links { font-size: 12.5px; margin-top: 3px; }
+.credit-links a { color: var(--v5); text-decoration: none; }
+.credit-links a:hover { color: var(--v9); text-decoration: underline; }
+.credit-note { font-size: 12px; color: var(--text-secondary); margin-top: 6px; max-width: 46ch; line-height: 1.55; }
+
+@media (max-width: 600px) {
+  .section-nav { right: 14px; bottom: 14px; }
+  .section-nav-btn { width: 44px; height: 44px; }
+  .hero-byline { font-size: 12px; gap: 10px; }
+  .author-avatar { width: 40px; height: 40px; }
 }
