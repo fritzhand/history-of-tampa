@@ -1246,44 +1246,66 @@ function initDisplacementSection() {
   section.hidden = false;
 
   const num = v => (v == null || v === '') ? '—' : (typeof v === 'number' ? v.toLocaleString() : esc(v));
+  /* A number that carries a caveat gets the caveat, right in the cell. A
+     figure the sources dispute must not read like a figure they agree on. */
+  const cell = (v, note) =>
+    `${num(v)}${note ? `<div class="disp-note">${esc(note)}</div>` : ''}`;
+
+  const totals  = rows.filter(r => r.id === 'tampa-total');
+  const projects = rows.filter(r => r.id !== 'tampa-total');
+
   const tbody = document.getElementById('displacement-table-body');
   if (tbody) {
-    tbody.innerHTML = rows.map(r => `
-      <tr>
-        <td class="country-cell" style="white-space:normal;max-width:300px">${esc(r.project)}
-          ${r.note ? `<div style="font-weight:400;font-size:11px;color:#777;line-height:1.4;margin-top:4px">${esc(r.note)}</div>` : ''}</td>
+    tbody.innerHTML = projects.concat(totals).map(r => `
+      <tr${r.id === 'tampa-total' ? ' class="disp-total"' : ''}>
+        <td class="country-cell" style="white-space:normal;max-width:280px">${esc(r.project)}
+          ${r.note ? `<div class="disp-note">${esc(r.note)}</div>` : ''}</td>
         <td style="white-space:nowrap">${esc(r.years || '')}</td>
-        <td>${num(r.acresCleared)}</td>
-        <td>${num(r.housingUnitsDemolished)}</td>
-        <td>${num(r.familiesDisplaced)}</td>
-        <td>${num(r.businessesDisplaced)}</td>
-        <td style="font-family:var(--font-mono);font-size:10px;max-width:240px;white-space:normal">${sourceHtml(r.source)}</td>
+        <td>${cell(r.acresCleared, r.acresNote)}</td>
+        <td>${cell(r.housingUnitsDemolished, r.unitsNote)}</td>
+        <td>${cell(r.familiesDisplaced, r.familiesNote)}
+          ${r.nonWhiteFamilies != null && r.familiesDisplaced ? `<div class="disp-share">${Math.round(100 * r.nonWhiteFamilies / r.familiesDisplaced)}% non-white</div>` : ''}</td>
+        <td>${cell(r.businessesDisplaced, r.businessesNote)}</td>
+        <td style="font-family:var(--font-mono);font-size:10px;max-width:230px;white-space:normal">${sourceHtml(r.source)}</td>
       </tr>`).join('');
   }
 
+  /* The chart shows the projects, not the total, and splits families by the
+     racial classification the federal reports themselves recorded — that
+     split is the point of the section. */
   const ctx = document.getElementById('chart-displacement');
-  const charted = rows.filter(r => r.familiesDisplaced != null || r.housingUnitsDemolished != null);
+  const charted = projects.filter(r => r.familiesDisplaced != null || r.housingUnitsDemolished != null);
   if (ctx && charted.length) {
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: charted.map(r => r.project),
+        labels: charted.map(r => r.project.replace(/ \(.*$/, '').replace(/ —.*$/, '')),
         datasets: [
-          { label: 'Families / households displaced', data: charted.map(r => r.familiesDisplaced ?? null),
-            backgroundColor: '#c0392bcc', borderColor: '#c0392b', borderWidth: 1.5, borderRadius: 3, borderSkipped: false },
           { label: 'Housing units demolished', data: charted.map(r => r.housingUnitsDemolished ?? null),
-            backgroundColor: V.v1 + 'cc', borderColor: V.v1, borderWidth: 1.5, borderRadius: 3, borderSkipped: false }
+            backgroundColor: V.v1 + 'cc', borderColor: V.v1, borderWidth: 1.5, borderRadius: 3, borderSkipped: false, stack: 'units' },
+          { label: 'Families displaced — recorded non-white', data: charted.map(r => r.nonWhiteFamilies ?? null),
+            backgroundColor: '#c0392bcc', borderColor: '#c0392b', borderWidth: 1.5, borderRadius: 3, borderSkipped: false, stack: 'families' },
+          { label: 'Families displaced — recorded white', data: charted.map(r => r.whiteFamilies ?? null),
+            backgroundColor: V.v4 + 'cc', borderColor: V.v4, borderWidth: 1.5, borderRadius: 3, borderSkipped: false, stack: 'families' }
         ]
       },
       options: {
         indexAxis: 'y', responsive: true, maintainAspectRatio: false,
         plugins: {
-          tooltip: { ...TIP, callbacks: { footer: items => pointFooter(charted[items[0].dataIndex]) }},
-          legend: { labels: { color:'#666', boxWidth:14, font:{ size:10 }}}
+          tooltip: { ...TIP, callbacks: {
+            footer: items => {
+              const r = charted[items[0].dataIndex];
+              const lines = [];
+              if (items[0].datasetIndex === 0 && r.unitsNote) lines.push(r.unitsNote);
+              if (items[0].datasetIndex > 0 && r.familiesNote) lines.push(r.familiesNote);
+              return lines.concat(pointFooter(r));
+            }
+          }},
+          legend: { labels: { color:T.textDim, boxWidth:14, font:{ size:10 }}}
         },
         scales: {
-          x: mkScale({ min:0, title:{ display:true, text:'Count', color:'#444', font:{ size:10 }}}),
-          y: mkScale({ ticks:{ font:{ size:9 }}})
+          x: mkScale({ min:0, stacked:true, title:{ display:true, text:'Count', color:T.title, font:{ size:10 }}}),
+          y: mkScale({ stacked:true, ticks:{ font:{ size:9 }}})
         }
       }
     });
@@ -1291,10 +1313,18 @@ function initDisplacementSection() {
     ctx.closest('.chart-card').hidden = true;
   }
 
-  const src = document.getElementById('displacement-chart-source');
-  if (src) {
-    const insts = [...new Set(rows.map(r => r.source && r.source.institution).filter(Boolean))];
-    src.innerHTML = 'Sources: ' + insts.map(esc).join(' · ');
+  renderSourceLine('displacement-chart-source', (totals[0] || projects[0] || {}).source, 'Federal totals: ');
+
+  /* Redlining context line, if the section is present. */
+  const rl = D().redlining;
+  const rlEl = document.getElementById('redlining-line');
+  if (rlEl && rl) {
+    rlEl.innerHTML =
+      `In the federal government's ${rl.year} residential security survey, ` +
+      `<strong>${Math.round(rl.hazardousShare * 100)}% of Tampa's graded area was rated “Hazardous”</strong> — ` +
+      `${rl.gradedSquareMiles.hazardous} of ${rl.gradedSquareMiles.total} square miles, more than the “Best” and ` +
+      `“Still Desirable” grades combined. The survey counted ${rl.population.total.toLocaleString()} residents, ` +
+      `${rl.population.africanAmerican.toLocaleString()} of them African American. ` + sourceHtml(rl.source);
   }
 }
 

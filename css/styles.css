@@ -1346,3 +1346,24 @@ a.photo-thumb-wrap { display: block; }
   color: var(--text-muted);
   line-height: 1.6;
 }
+
+/* Displacement table: a disputed number carries its dispute. */
+.disp-note {
+  font-weight: 400;
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 4px;
+  white-space: normal;
+  max-width: 260px;
+}
+.disp-share {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  color: #c0392b;
+  margin-top: 4px;
+}
+[data-theme="light"] .disp-share { color: #a3261c; }
+tr.disp-total { background: var(--bg-elevated); }
+tr.disp-total td { font-weight: 600; border-top: 2px solid var(--border); }
