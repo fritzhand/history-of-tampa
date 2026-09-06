@@ -15,7 +15,26 @@
 
 window.tampaData = {
 
-  meta: { title: "Downtown Tampa: A Civic Development Autopsy", subtitle: "How a fort, a railroad, a cigar boom, urban renewal, and a waterfront remade the civic core of Tampa Bay", span: "1824 – 2024", years: 200, center: [27.9475, -82.4563], defaultZoom: 14 },
+  meta: {
+    title: "Downtown Tampa: A Civic Development Autopsy",
+    subtitle: "How a fort, a railroad, a cigar boom, urban renewal, and a waterfront remade the civic core of Tampa Bay",
+    span: "1824 - 2024",
+    years: 200,
+    center: [27.9475, -82.4563],
+    defaultZoom: 14,
+
+    /* Study area, per DOWNTOWN_TAMPA_PLAN.md section 4. "Downtown" is not one
+       boundary: the Census, the CRAs and the Tampa Downtown Partnership each
+       draw it differently, so every series records which one it uses. */
+    studyArea: {
+      description: "City of Tampa Downtown CRA and Channel District CRA, plus the Franklin Street corridor, the Riverwalk, the Tampa Heights seam and the Ybor approach.",
+      boundingBox: { west: -82.4750, south: 27.9300, east: -82.4340, north: 27.9650 },
+      crs: "EPSG:4326 (WGS 84) for stored coordinates; Leaflet renders in EPSG:3857 Web Mercator.",
+      geographyNote: "cityPopulation and countyPopulation are municipal and county totals, not downtown. downtownResidents 2010-2025 uses the Tampa Downtown Partnership Special Services District. The Channel District CRA is 221 acres with a 2004 base year. Ybor City is treated as a seam, not part of the core."
+    },
+
+    method: "Every figure carries a source object with an institution, a date, a URL, a verification status and an access type. CONFIRMED means the cited page states the figure. PENDING means the institution is right but the figure was not read there. DERIVED means the value is an editorial reconstruction whose inputs are named in its note. Hero and footer figures are CONFIRMED only."
+  },
 
   cityPopulation: [
     { year: 1850, pop: 974, note: "Tampa settlement including the Fort Brooke garrison: 638 free persons + 336 enslaved; the Census Office omitted the aggregate as uncertain.",
@@ -412,11 +431,31 @@ window.tampaData = {
   ],
 
   landUseShare: [
-    { year: 1900, residential: 35, retail: 25, industrial: 20, civic: 10, vacant: 10 },
-    { year: 1930, residential: 28, retail: 30, industrial: 18, civic: 12, vacant: 12 },
-    { year: 1960, residential: 15, retail: 22, industrial: 15, civic: 18, vacant: 30 },
-    { year: 1980, residential: 8, retail: 18, industrial: 10, civic: 22, vacant: 42 },
-    { year: 2000, residential: 18, retail: 20, industrial: 5, civic: 25, vacant: 32 },
+    { year: 1900, residential: 35, retail: 25, industrial: 20, civic: 10, vacant: 10,
+      source: { institution: "Editorial model; City of Tampa parcel GIS and LOC Sanborn volumes are the intended inputs", date: "2026-09-06",
+        url: "https://opendata.tampa.gov/",
+        note: "DERIVED, not measured. These decade shares reconstruct the core's land-use mix from the narrative record: Sanborn coverage for the pre-war decades, urban-renewal and parking-lot accounts for the mid-century, City parcel data for 2023. No parcel-level digitisation has been done, so read them as proportions of an argument rather than of an area.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { year: 1930, residential: 28, retail: 30, industrial: 18, civic: 12, vacant: 12,
+      source: { institution: "Editorial model; City of Tampa parcel GIS and LOC Sanborn volumes are the intended inputs", date: "2026-09-06",
+        url: "https://opendata.tampa.gov/",
+        note: "DERIVED, not measured. These decade shares reconstruct the core's land-use mix from the narrative record: Sanborn coverage for the pre-war decades, urban-renewal and parking-lot accounts for the mid-century, City parcel data for 2023. No parcel-level digitisation has been done, so read them as proportions of an argument rather than of an area.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { year: 1960, residential: 15, retail: 22, industrial: 15, civic: 18, vacant: 30,
+      source: { institution: "Editorial model; City of Tampa parcel GIS and LOC Sanborn volumes are the intended inputs", date: "2026-09-06",
+        url: "https://opendata.tampa.gov/",
+        note: "DERIVED, not measured. These decade shares reconstruct the core's land-use mix from the narrative record: Sanborn coverage for the pre-war decades, urban-renewal and parking-lot accounts for the mid-century, City parcel data for 2023. No parcel-level digitisation has been done, so read them as proportions of an argument rather than of an area.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { year: 1980, residential: 8, retail: 18, industrial: 10, civic: 22, vacant: 42,
+      source: { institution: "Editorial model; City of Tampa parcel GIS and LOC Sanborn volumes are the intended inputs", date: "2026-09-06",
+        url: "https://opendata.tampa.gov/",
+        note: "DERIVED, not measured. These decade shares reconstruct the core's land-use mix from the narrative record: Sanborn coverage for the pre-war decades, urban-renewal and parking-lot accounts for the mid-century, City parcel data for 2023. No parcel-level digitisation has been done, so read them as proportions of an argument rather than of an area.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { year: 2000, residential: 18, retail: 20, industrial: 5, civic: 25, vacant: 32,
+      source: { institution: "Editorial model; City of Tampa parcel GIS and LOC Sanborn volumes are the intended inputs", date: "2026-09-06",
+        url: "https://opendata.tampa.gov/",
+        note: "DERIVED, not measured. These decade shares reconstruct the core's land-use mix from the narrative record: Sanborn coverage for the pre-war decades, urban-renewal and parking-lot accounts for the mid-century, City parcel data for 2023. No parcel-level digitisation has been done, so read them as proportions of an argument rather than of an area.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
     { year: 2023, residential: 32, retail: 18, industrial: 3, civic: 22, vacant: 25,
       source: { date: "2023", institution: "City of Tampa GIS / planning generalized model", url: "https://opendata.tampa.gov/", verificationStatus: "PENDING", accessType: "FREE", note: "Generalized core land-use model for narrative; refine with parcel GIS extract." } }
   ],
@@ -594,8 +633,10 @@ window.tampaData = {
       { target: 11, value: 4,
         source: 8 }
     ],
-    sourceNote: "Synthesized economic-base model from NPS Ybor docs, Port Tampa Bay histories, Florida Memory commercial surveys",
-    sourceUrl: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text"
+    source: { institution: "Editorial flow model of the 1925 economic base", date: "2026-09-06",
+      url: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text",
+      note: "DERIVED. The node set and flow weights are an editorial reconstruction of how cigars, phosphate, rail and Main Street retail fed the 1925 downtown, informed by the NPS Ybor City NHL nomination, Port Tampa Bay histories and Florida Memory commercial photographs. The widths are proportions of an argument, not measured dollars.",
+      verificationStatus: "DERIVED", accessType: "FREE" }
   },
 
   sankeyEconomy2023: {
@@ -660,8 +701,10 @@ window.tampaData = {
       { target: 11, value: 4,
         source: 10 }
     ],
-    sourceNote: "Synthesized from TDP district mix, SPP Water Street program, Port Tampa Bay modern profile",
-    sourceUrl: "https://www.tampasdowntown.com/"
+    source: { institution: "Editorial flow model of the 2023 economic base", date: "2026-09-06",
+      url: "https://www.tampasdowntown.com/wp-content/uploads/2025/05/Development-Guide-May-2025-DIGITAL.pdf",
+      note: "DERIVED. The node set and flow weights are an editorial reconstruction of today's mix (office, hospitality, residential rents, healthcare and education, sport, and a port that has moved seaward), informed by the Tampa Downtown Partnership development guide and Port Tampa Bay's modern profile. Not measured dollars.",
+      verificationStatus: "DERIVED", accessType: "FREE" }
   },
 
   sankeyLandUse: {
@@ -723,8 +766,10 @@ window.tampaData = {
       { target: 13, value: 18,
         source: 9 }
     ],
-    sourceNote: "Conceptual redevelopment pathway model — refine with City of Tampa parcel GIS",
-    sourceUrl: "https://opendata.tampa.gov/"
+    source: { institution: "Editorial model of redevelopment pathways", date: "2026-09-06",
+      url: "https://opendata.tampa.gov/",
+      note: "DERIVED. A conceptual pathway model from industrial edge, cleared renewal parcels, surface parking and aging retail to today's towers, parks, hospitality and remaining gaps. Refine with a City of Tampa parcel GIS extract.",
+      verificationStatus: "DERIVED", accessType: "FREE" }
   },
 
   districtImpact: [
@@ -864,11 +909,31 @@ window.tampaData = {
   ],
 
   disruptionIndex: [
-    { district: "CBD retail core", y1950: 10, y1970: 55, y1990: 40, y2020: 25, color: "#1f9e89" },
-    { district: "Central Ave / Scrub", y1950: 15, y1970: 95, y1990: 85, y2020: 70, color: "#c0392b" },
-    { district: "Ybor residential", y1950: 20, y1970: 80, y1990: 55, y2020: 35, color: "#d68910" },
-    { district: "Channelside industrial", y1950: 25, y1970: 40, y1990: 60, y2020: 75, color: "#6c3483" },
-    { district: "Waterfront south CBD", y1950: 30, y1970: 50, y1990: 45, y2020: 90, color: "#fde725" }
+    { district: "CBD retail core", y1950: 10, y1970: 55, y1990: 40, y2020: 25, color: "#1f9e89",
+      source: { institution: "Editorial model; NPS nominations, City of Tampa markers and CRA plans as inputs", date: "2026-09-06",
+        url: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text",
+        note: "DERIVED, not measured. A 0-100 editorial score of physical disruption per district per year, reasoned from the documented record: the 1959 Scrub clearance and 1960s I-4 work, the 1965 Ybor urban renewal that leveled 70 acres and 660 houses, containerisation on the port edge, and the Water Street rebuild. The 2020 waterfront score reflects intentional master-planned reconstruction, not clearance. Replace with acres cleared and units demolished once the displacement research lands.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { district: "Central Ave / Scrub", y1950: 15, y1970: 95, y1990: 85, y2020: 70, color: "#c0392b",
+      source: { institution: "Editorial model; NPS nominations, City of Tampa markers and CRA plans as inputs", date: "2026-09-06",
+        url: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text",
+        note: "DERIVED, not measured. A 0-100 editorial score of physical disruption per district per year, reasoned from the documented record: the 1959 Scrub clearance and 1960s I-4 work, the 1965 Ybor urban renewal that leveled 70 acres and 660 houses, containerisation on the port edge, and the Water Street rebuild. The 2020 waterfront score reflects intentional master-planned reconstruction, not clearance. Replace with acres cleared and units demolished once the displacement research lands.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { district: "Ybor residential", y1950: 20, y1970: 80, y1990: 55, y2020: 35, color: "#d68910",
+      source: { institution: "Editorial model; NPS nominations, City of Tampa markers and CRA plans as inputs", date: "2026-09-06",
+        url: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text",
+        note: "DERIVED, not measured. A 0-100 editorial score of physical disruption per district per year, reasoned from the documented record: the 1959 Scrub clearance and 1960s I-4 work, the 1965 Ybor urban renewal that leveled 70 acres and 660 houses, containerisation on the port edge, and the Water Street rebuild. The 2020 waterfront score reflects intentional master-planned reconstruction, not clearance. Replace with acres cleared and units demolished once the displacement research lands.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { district: "Channelside industrial", y1950: 25, y1970: 40, y1990: 60, y2020: 75, color: "#6c3483",
+      source: { institution: "Editorial model; NPS nominations, City of Tampa markers and CRA plans as inputs", date: "2026-09-06",
+        url: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text",
+        note: "DERIVED, not measured. A 0-100 editorial score of physical disruption per district per year, reasoned from the documented record: the 1959 Scrub clearance and 1960s I-4 work, the 1965 Ybor urban renewal that leveled 70 acres and 660 houses, containerisation on the port edge, and the Water Street rebuild. The 2020 waterfront score reflects intentional master-planned reconstruction, not clearance. Replace with acres cleared and units demolished once the displacement research lands.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { district: "Waterfront south CBD", y1950: 30, y1970: 50, y1990: 45, y2020: 90, color: "#fde725",
+      source: { institution: "Editorial model; NPS nominations, City of Tampa markers and CRA plans as inputs", date: "2026-09-06",
+        url: "https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text",
+        note: "DERIVED, not measured. A 0-100 editorial score of physical disruption per district per year, reasoned from the documented record: the 1959 Scrub clearance and 1960s I-4 work, the 1965 Ybor urban renewal that leveled 70 acres and 660 houses, containerisation on the port edge, and the Water Street rebuild. The 2020 waterfront score reflects intentional master-planned reconstruction, not clearance. Replace with acres cleared and units demolished once the displacement research lands.",
+        verificationStatus: "DERIVED", accessType: "FREE" } }
   ],
 
   /* Rights-cleared imagery (plan Phase D). Every asset is public domain or
@@ -1365,14 +1430,46 @@ window.tampaData = {
   ],
 
   eraMilestones: [
-    { era: "Fortress\n1824–1883", years: 59, color: "#482878", note: "Military outpost + village" },
-    { era: "Boomtown\n1884–1914", years: 30, color: "#3e4989", note: "Rail, cigars, hotel, war port" },
-    { era: "Metropolis\n1915–1929", years: 14, color: "#31688e", note: "Phosphate + land boom" },
-    { era: "Depression/War\n1929–1945", years: 16, color: "#26828e", note: "Bust then wartime industry" },
-    { era: "Suburban\n1945–1962", years: 17, color: "#1f9e89", note: "Auto exodus begins" },
-    { era: "Renewal\n1963–1985", years: 22, color: "#fde725", note: "Interstate + clearance" },
-    { era: "Revival\n1986–2008", years: 22, color: "#6ece58", note: "Convention/arena/tourism" },
-    { era: "Waterfront\n2009–2024", years: 15, color: "#35b779", note: "Riverwalk + Water Street" }
+    { era: "Fortress\n1824–1883", years: 59, color: "#482878", note: "Military outpost + village",
+      source: { institution: "Periodization synthesized from City of Tampa, NPS and Tampa Bay History Center chronologies", date: "2026-09-06",
+        url: "https://www.tampa.gov/info/tampa-history",
+        note: "DERIVED. The eight civic eras are this project's own periodization, drawn from the City of Tampa history page, the NPS Ybor City NHL nomination, the Tampa Bay History Center timeline and the Tampa Downtown Partnership's account. Era boundaries are editorial; the events inside them are individually cited.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { era: "Boomtown\n1884–1914", years: 30, color: "#3e4989", note: "Rail, cigars, hotel, war port",
+      source: { institution: "Periodization synthesized from City of Tampa, NPS and Tampa Bay History Center chronologies", date: "2026-09-06",
+        url: "https://www.tampa.gov/info/tampa-history",
+        note: "DERIVED. The eight civic eras are this project's own periodization, drawn from the City of Tampa history page, the NPS Ybor City NHL nomination, the Tampa Bay History Center timeline and the Tampa Downtown Partnership's account. Era boundaries are editorial; the events inside them are individually cited.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { era: "Metropolis\n1915–1929", years: 14, color: "#31688e", note: "Phosphate + land boom",
+      source: { institution: "Periodization synthesized from City of Tampa, NPS and Tampa Bay History Center chronologies", date: "2026-09-06",
+        url: "https://www.tampa.gov/info/tampa-history",
+        note: "DERIVED. The eight civic eras are this project's own periodization, drawn from the City of Tampa history page, the NPS Ybor City NHL nomination, the Tampa Bay History Center timeline and the Tampa Downtown Partnership's account. Era boundaries are editorial; the events inside them are individually cited.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { era: "Depression/War\n1929–1945", years: 16, color: "#26828e", note: "Bust then wartime industry",
+      source: { institution: "Periodization synthesized from City of Tampa, NPS and Tampa Bay History Center chronologies", date: "2026-09-06",
+        url: "https://www.tampa.gov/info/tampa-history",
+        note: "DERIVED. The eight civic eras are this project's own periodization, drawn from the City of Tampa history page, the NPS Ybor City NHL nomination, the Tampa Bay History Center timeline and the Tampa Downtown Partnership's account. Era boundaries are editorial; the events inside them are individually cited.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { era: "Suburban\n1945–1962", years: 17, color: "#1f9e89", note: "Auto exodus begins",
+      source: { institution: "Periodization synthesized from City of Tampa, NPS and Tampa Bay History Center chronologies", date: "2026-09-06",
+        url: "https://www.tampa.gov/info/tampa-history",
+        note: "DERIVED. The eight civic eras are this project's own periodization, drawn from the City of Tampa history page, the NPS Ybor City NHL nomination, the Tampa Bay History Center timeline and the Tampa Downtown Partnership's account. Era boundaries are editorial; the events inside them are individually cited.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { era: "Renewal\n1963–1985", years: 22, color: "#fde725", note: "Interstate + clearance",
+      source: { institution: "Periodization synthesized from City of Tampa, NPS and Tampa Bay History Center chronologies", date: "2026-09-06",
+        url: "https://www.tampa.gov/info/tampa-history",
+        note: "DERIVED. The eight civic eras are this project's own periodization, drawn from the City of Tampa history page, the NPS Ybor City NHL nomination, the Tampa Bay History Center timeline and the Tampa Downtown Partnership's account. Era boundaries are editorial; the events inside them are individually cited.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { era: "Revival\n1986–2008", years: 22, color: "#6ece58", note: "Convention/arena/tourism",
+      source: { institution: "Periodization synthesized from City of Tampa, NPS and Tampa Bay History Center chronologies", date: "2026-09-06",
+        url: "https://www.tampa.gov/info/tampa-history",
+        note: "DERIVED. The eight civic eras are this project's own periodization, drawn from the City of Tampa history page, the NPS Ybor City NHL nomination, the Tampa Bay History Center timeline and the Tampa Downtown Partnership's account. Era boundaries are editorial; the events inside them are individually cited.",
+        verificationStatus: "DERIVED", accessType: "FREE" } },
+    { era: "Waterfront\n2009–2024", years: 15, color: "#35b779", note: "Riverwalk + Water Street",
+      source: { institution: "Periodization synthesized from City of Tampa, NPS and Tampa Bay History Center chronologies", date: "2026-09-06",
+        url: "https://www.tampa.gov/info/tampa-history",
+        note: "DERIVED. The eight civic eras are this project's own periodization, drawn from the City of Tampa history page, the NPS Ybor City NHL nomination, the Tampa Bay History Center timeline and the Tampa Downtown Partnership's account. Era boundaries are editorial; the events inside them are individually cited.",
+        verificationStatus: "DERIVED", accessType: "FREE" } }
   ]
 };
 

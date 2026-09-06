@@ -37,12 +37,16 @@ function checkSource(s, where) {
   if (s.verificationStatus === 'DERIVED' && !s.note) warnings.push(`${where}: DERIVED without a methodology note`);
 }
 
-// Walk every array section with per-point sources
+// Walk every section: arrays of cited points, and object sections (the
+// sankeys) that carry one source for the whole model.
 for (const [name, val] of Object.entries(d)) {
-  if (!Array.isArray(val)) continue;
-  val.forEach((row, i) => {
-    if (row && typeof row === 'object' && 'source' in row) checkSource(row.source, `${name}[${i}]`);
-  });
+  if (Array.isArray(val)) {
+    val.forEach((row, i) => {
+      if (row && typeof row === 'object' && 'source' in row) checkSource(row.source, `${name}[${i}]`);
+    });
+  } else if (val && typeof val === 'object' && 'source' in val) {
+    checkSource(val.source, name);
+  }
 }
 
 // mapEvents

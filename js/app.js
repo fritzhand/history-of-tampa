@@ -716,11 +716,23 @@ function drawSankey(svgId, { nodes, links }) {
 
 let currentEconomyMode = '1925';
 
+/* Print a section's own source line into a footer element, so a DERIVED
+   model always announces itself rather than hiding behind a tidy caption. */
+function renderSourceLine(elId, source, prefix = 'Source: ') {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (!source) { el.textContent = ''; return; }
+  const one = Array.isArray(source) ? source[0] : source;
+  const note = one && one.note ? `<span class="chart-source-note">${esc(one.note)}</span>` : '';
+  el.innerHTML = prefix + sourceHtml(source) + note;
+}
+
 function renderSankeyEconomy(mode) {
   currentEconomyMode = mode;
   const data = mode === '2023' ? D().sankeyEconomy2023 : D().sankeyEconomy1925;
   if (!data) return;
   drawSankey('sankey-economy-svg', data);
+  renderSourceLine('sankey-economy-source', data.source);
   document.getElementById('sankey-economy-1925-btn')?.classList.toggle('active', mode === '1925');
   document.getElementById('sankey-economy-2023-btn')?.classList.toggle('active', mode === '2023');
   document.getElementById('sankey-economy-crisis-btn')?.classList.toggle('active', mode === '2023');
@@ -730,6 +742,16 @@ function renderSankeyLandUse() {
   const data = D().sankeyLandUse;
   if (!data) return;
   drawSankey('sankey-landuse-svg', data);
+  renderSourceLine('sankey-landuse-source', data.source);
+}
+
+/* The three conceptual sections each carry one shared DERIVED source; print
+   it under their charts so the caveat travels with the picture. */
+function renderModelSourceLines() {
+  const first = arr => (arr && arr.length ? arr.find(x => x && x.source)?.source : null);
+  renderSourceLine('landuse-source',    first(D().landUseShare));
+  renderSourceLine('disruption-source', first(D().disruptionIndex));
+  renderSourceLine('eras-source',       first(D().eraMilestones));
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1410,6 +1432,7 @@ function rebuildCharts() {
   initSandboxCapitalChart();
   initDisplacementSection();
   initStreetcarChart();
+  renderModelSourceLines();
 }
 
 function updateThemeToggle() {
@@ -1504,6 +1527,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderStatBlocks();
   initDisplacementSection();
   initStreetcarChart();
+  renderModelSourceLines();
   buildSourceRoll();
 
   /* No half-primed first step: the overlay shows the "scroll to begin"

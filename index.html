@@ -148,7 +148,7 @@
           <div class="chart-card-title">Era Durations — 200 Years of Civic Phases</div>
           <p class="chart-desc">Fortress and suburban/renewal stretches are long; the classical metropolis peak is brief. Waterfront recovery is still young.</p>
           <div class="canvas-wrap" style="height:260px"><canvas id="chart-eras"></canvas></div>
-          <p class="chart-source">Periodization synthesized from City of Tampa, TDP, NPS Ybor, and Florida Memory timelines</p>
+          <p class="chart-source" id="eras-source"></p>
         </div>
       </div>
     </div>
@@ -170,7 +170,7 @@
         <div id="sankey-economy-wrap" style="width:100%;overflow-x:auto">
           <svg id="sankey-economy-svg" style="min-width:680px;height:380px;width:100%"></svg>
         </div>
-        <p class="chart-source">Sources: <a href="https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text" target="_blank">NPS, Ybor City NHL nomination</a> · <a href="https://www.porttb.com/" target="_blank">Port Tampa Bay</a> · <a href="https://www.tampasdowntown.com/wp-content/uploads/2025/05/Development-Guide-May-2025-DIGITAL.pdf" target="_blank">Tampa Downtown Partnership</a> · <a href="https://www.waterstreettampa.com/" target="_blank">Water Street Tampa</a> · flow weights are a DERIVED editorial model</p>
+        <p class="chart-source" id="sankey-economy-source"></p>
       </div>
 
       <div class="chart-card reveal-on-scroll">
@@ -179,7 +179,7 @@
         <div id="sankey-landuse-wrap" style="width:100%;overflow-x:auto">
           <svg id="sankey-landuse-svg" style="min-width:680px;height:360px;width:100%"></svg>
         </div>
-        <p class="chart-source">Conceptual model — refine with <a href="https://opendata.tampa.gov/" target="_blank">City of Tampa Open Data</a> parcel GIS</p>
+        <p class="chart-source" id="sankey-landuse-source"></p>
       </div>
     </div>
   </section>
@@ -317,7 +317,7 @@
           <div class="chart-card-title">Core Land-Use Share Over Time (%)</div>
           <p class="chart-desc">Vacant/parking expands through renewal decades; residential returns in the 21st century while industrial exits the walkable core.</p>
           <div class="canvas-wrap" style="height:280px"><canvas id="chart-landuse"></canvas></div>
-          <p class="chart-source">Generalized model — <a href="https://opendata.tampa.gov/" target="_blank">opendata.tampa.gov</a> for parcel refinement</p>
+            <p class="chart-source" id="landuse-source"></p>
         </div>
       </div>
 
@@ -325,7 +325,7 @@
         <div class="chart-card-title">Neighborhood Disruption Index (0–100)</div>
         <p class="chart-desc">Physical disruption peaks for Central Avenue / The Scrub and Ybor during interstate and urban renewal years. South waterfront disruption in 2020 reflects intentional master-planned rebuild (Water Street), not mid-century clearance trauma — different cause, still high change.</p>
         <div class="canvas-wrap" style="height:320px"><canvas id="chart-disruption"></canvas></div>
-        <p class="chart-source">Synthesized from HUD renewal histories, FDOT interstate impacts, USF special collections, and modern redevelopment footprints</p>
+        <p class="chart-source" id="disruption-source"></p>
       </div>
     </div>
   </section>
