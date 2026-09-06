@@ -2,6 +2,13 @@
 
 An open-data, scrollytelling data-journalism site on **200 years of downtown Tampa** — from Fort Brooke (1824) to the Water Street era. It is a domain fork of [`fritzhand/iranwar`](https://github.com/fritzhand/iranwar) (*The 2026 Iran War: A Geoeconomic Autopsy*): same architecture, same citation standard, different subject.
 
+**Live:** <https://fritzhand.github.io/history-of-tampa/>
+
+Published with GitHub Pages from the root of `main`. The URL uses the
+lower-case repository name; the mixed-case spelling returns 404. Every asset
+path is relative, so the site works unchanged under the `/history-of-tampa/`
+project subpath.
+
 ## What you get
 
 | Layer | Implementation |
