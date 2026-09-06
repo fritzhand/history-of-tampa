@@ -23,7 +23,10 @@ project subpath.
 | Photographs in the narrative | Every scrollytelling step carries one or two of those images |
 | Live source audit | Every institution, its data points, and their verification status |
 | Light / dark theme | Toggle in the nav, remembered between visits |
+| Share metadata | Open Graph, Twitter Card and schema.org Article, with a rendered 1200×630 card |
 | Scroll assist | Floating arrows that walk the page, and the map narrative step by step |
+| Section drawer | A hamburger table of contents built from the page's own sections |
+| About | What the project is, how the evidence is graded, and how to reuse it |
 | Research backlog | `ARCHIVAL_RESEARCH_PROMPT_TAMPA.md` for the next evidence pass |
 
 ## Run locally
@@ -40,13 +43,17 @@ Map tiles, fonts, and CDN libraries need network access.
 ## Project structure
 
 ```
-index.html                          # Page sections & chart mounts
+index.html                          # Page sections, nav drawer, About & chart mounts
 css/styles.css                      # Editorial theme tokens, light + dark
 js/data.js                          # window.tampaData (cited series, media, sources)
 js/app.js                           # maps, charts, slider, sankeys, tables, theme
 tools/validate-data.mjs             # citation schema check + status counts
 tools/check-links.mjs               # requests every source URL, reports dead ones
 tools/media-roll.mjs                # regenerates the CONTENT_LICENSE media table
+tools/check-meta.mjs                # social + structured metadata check
+tools/og-card.html                  # source of the 1200×630 share card
+tools/render-card.mjs               # renders that card to assets/og-image.png
+assets/                             # og-image, favicons, author portrait
 tools/migrate-sources.py            # one-off schema migration (kept for reference)
 DOWNTOWN_TAMPA_PLAN.md              # Implementation strategy, schema, phases, checklist
 ARCHIVAL_RESEARCH_PROMPT_TAMPA.md   # Tampa source-hunting brief (canonical)
@@ -63,6 +70,9 @@ README.md
 node tools/validate-data.mjs                       # schema + CONFIRMED/PENDING/DERIVED counts
 NODE_USE_ENV_PROXY=1 node tools/check-links.mjs    # every source URL, grouped by outcome
 node tools/media-roll.mjs                          # regenerate the media roll
+node tools/check-meta.mjs                          # Open Graph / Twitter / JSON-LD
+node tools/check-meta.mjs --live                   # ...and fetch the deployed page as a crawler
+node tools/render-card.mjs                         # rebuild assets/og-image.png from tools/og-card.html
 ```
 
 The link checker separates dead links from hosts that merely refuse

@@ -40,13 +40,26 @@ compiled data in `js/data.js` and the third-party media the site displays.
 Rights concerns: open an issue on the repository and the item will be
 removed or replaced with a link-out while it is reviewed.
 
+## The site's own assets
+
+Everything in `assets/` is original work for this project, released under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) alongside the data,
+with one exception noted below. None of it embeds third-party media, so the
+no-self-hosting rule above is not in tension with it.
+
+| File | What it is |
+|---|---|
+| `og-image.png` | The 1200×630 share card: type, rules and the era palette. No photography. |
+| `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png` | The Open Civic Archive mark — the Hillsborough River, the downtown grid, a Plant minaret. |
+| `jeremy.jpg` | Author portrait, published with the subject's permission. Not CC BY; all rights reserved. |
+
 ## Basemap and libraries
 
-- Map tiles: Esri World Dark Gray Canvas — © Esri, HERE, Garmin,
-  © OpenStreetMap contributors. Used under Esri's basemap terms with
-  attribution displayed on the map.
+- Map tiles: Esri World Dark Gray Canvas (dark theme) and World Light Gray
+  Canvas (light theme) — © Esri, HERE, Garmin, © OpenStreetMap contributors.
+  Used under Esri's basemap terms with attribution displayed on the map.
 - Libraries: Leaflet (BSD-2), Chart.js (MIT), loaded from public CDNs.
-- Fonts: Space Grotesk and Space Mono (SIL Open Font License) via Google Fonts.
+- Fonts: Crimson Pro and Work Sans (SIL Open Font License) via Google Fonts.
 
 ## A note on hot-linking
 

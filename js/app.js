@@ -296,6 +296,15 @@ function legendHeight() {
   return document.getElementById('phase-legend')?.offsetHeight || 46;
 }
 
+/* The era legend is sticky for the whole page, not just the scrollytelling
+   section, so anything that scrolls to a heading has to clear the nav AND
+   the legend or the heading lands underneath them. */
+function stickyOffset() {
+  const legend = document.getElementById('phase-legend');
+  const stuck = legend && getComputedStyle(legend).position === 'sticky' && legend.offsetHeight > 0;
+  return navHeight() + (stuck ? legend.offsetHeight : 0);
+}
+
 /* Publish live nav + legend heights so sticky offsets adapt (CSS vars). */
 function setLayoutVars() {
   document.documentElement.style.setProperty('--nav-h', navHeight() + 'px');
@@ -517,6 +526,169 @@ function lockScrollyStep(target) {
   _navLockTimer = setTimeout(_navLockRelease, 1600);
 }
 
+/* The page is still settling while a jump is in flight: charts lay out,
+   lazy figures load, and the displacement section unhides itself once its
+   data renders. Any of those changes the target's offset mid-scroll and the
+   reader lands short or past the heading. So re-assert the destination for
+   a short window after the jump, and again whenever the document's height
+   changes inside it. */
+let _jumpStop = null;
+function scrollToSection(target) {
+  const destOf = () => Math.max(target.getBoundingClientRect().top + window.scrollY - stickyOffset() - 8, 0);
+  const smooth = !prefersReducedMotion();
+  window.scrollTo({ top: destOf(), behavior: smooth ? 'smooth' : 'auto' });
+  if (!smooth) return;
+
+  if (_jumpStop) _jumpStop();
+  let settled = false;
+  const snap = () => {
+    const want = destOf();
+    if (Math.abs(window.scrollY - want) > 8) window.scrollTo({ top: want, behavior: 'auto' });
+  };
+  const onSettle = () => { settled = true; snap(); };
+  /* A height change while we are still homing in means the target moved. */
+  const ro = ('ResizeObserver' in window)
+    ? new ResizeObserver(() => { if (settled) snap(); })
+    : null;
+  ro && ro.observe(document.body);
+  window.addEventListener('scrollend', onSettle);
+  const t1 = setTimeout(onSettle, 900);
+  const t2 = setTimeout(snap, 1600);
+  const stop = setTimeout(() => _jumpStop && _jumpStop(), 2600);
+
+  _jumpStop = () => {
+    clearTimeout(t1); clearTimeout(t2); clearTimeout(stop);
+    window.removeEventListener('scrollend', onSettle);
+    ro && ro.disconnect();
+    _jumpStop = null;
+  };
+  /* A deliberate scroll by the reader ends the correction window early. */
+  window.addEventListener('wheel',     () => _jumpStop && _jumpStop(), { once: true, passive: true });
+  window.addEventListener('touchstart', () => _jumpStop && _jumpStop(), { once: true, passive: true });
+}
+
+/* Every in-page anchor — the hero buttons, a shared #about link, a footnote
+   — goes through the same corrected scroller. The browser's own smooth jump
+   computes its destination once, up front, and lands wrong when the page is
+   still laying out beneath it. Handlers that already call preventDefault
+   (era pills, drawer links) never reach this. */
+function initAnchorScroll() {
+  document.addEventListener('click', e => {
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || a.closest('#nav-drawer') || a.classList.contains('phase-pill')) return;
+    const id = a.getAttribute('href').slice(1);
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    if (id === 'scrollytelling') { scrollToPhase(Object.keys(PC)[0]); }
+    else { scrollToSection(target); }
+    if (history.replaceState) history.replaceState(null, '', '#' + id);
+  });
+}
+
+/* Section drawer. A single-page site still needs a table of contents, so the
+   hamburger opens a list built from the page's own sections — add a section
+   later and it appears here without touching this function. Opening locks the
+   page at its current offset rather than letting the background scroll away
+   under the drawer. */
+function initNavDrawer() {
+  const btn    = document.getElementById('nav-toggle');
+  const drawer = document.getElementById('nav-drawer');
+  const scrim  = document.getElementById('nav-scrim');
+  const list   = document.getElementById('nav-drawer-list');
+  if (!btn || !drawer || !scrim || !list) return;
+
+  /* Build the list. A section's own kicker is its short name; the headline is
+     the tooltip. Hidden sections (displacement before its data renders) are
+     skipped and re-checked each time the drawer opens. */
+  const NAMES = {
+    hero: 'Top of the page',
+    scrollytelling: 'The narrative map',
+    about: 'About this project',
+    'resolution-footer': 'Closing figures',
+  };
+  const buildList = () => {
+    const secs = Array.from(document.querySelectorAll('section[id], footer[id]'))
+      .filter(el => !el.hasAttribute('hidden'));
+    list.innerHTML = secs.map((el, i) => {
+      const kicker = el.querySelector('.section-eyebrow')?.textContent.trim().replace(/\s+/g, ' ');
+      const title  = el.querySelector('.section-title, .footer-title')?.textContent.trim().replace(/\s+/g, ' ');
+      const label  = NAMES[el.id] || kicker || title || el.id;
+      return `<a class="nav-drawer-link" href="#${esc(el.id)}" data-target="${esc(el.id)}"` +
+             (title ? ` title="${esc(title)}"` : '') +
+             `><span class="nav-drawer-num">${String(i + 1).padStart(2, '0')}</span>` +
+             `<span>${esc(label)}</span></a>`;
+    }).join('');
+  };
+  buildList();
+
+  const isOpen = () => document.body.classList.contains('nav-open');
+
+  const open = () => {
+    buildList();
+    markCurrent();
+    /* Freeze the page where it is: position:fixed on body would otherwise
+       jump the reader to the top the moment the drawer opens. */
+    const y = window.scrollY || 0;
+    document.body.dataset.navLockY = String(y);
+    document.body.classList.add('nav-open');
+    scrim.hidden = false;
+    drawer.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    btn.setAttribute('aria-label', 'Close the section menu');
+    drawer.querySelector('.nav-drawer-link')?.focus({ preventScroll: true });
+  };
+
+  const close = ({ restore = true } = {}) => {
+    if (!isOpen()) return;
+    document.body.classList.remove('nav-open');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', 'Open the section menu');
+    /* Keep the panels in the DOM until the slide-out finishes, then hide them
+       so their links leave the tab order. */
+    const y = parseInt(document.body.dataset.navLockY || '0', 10);
+    if (restore) window.scrollTo({ top: y, left: 0, behavior: 'instant' });
+    setTimeout(() => {
+      if (isOpen()) return;
+      scrim.hidden = true;
+      drawer.hidden = true;
+    }, 260);
+  };
+
+  btn.addEventListener('click', () => (isOpen() ? close() : open()));
+  scrim.addEventListener('click', () => close());
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+  list.addEventListener('click', e => {
+    const a = e.target.closest('.nav-drawer-link');
+    if (!a) return;
+    e.preventDefault();
+    const target = document.getElementById(a.dataset.target);
+    close({ restore: false });
+    if (!target) return;
+    /* The scrollytelling section owns a sticky map and a locked observer, so
+       route through the same helper the era pills use. */
+    if (target.id === 'scrollytelling') { scrollToPhase(Object.keys(PC)[0]); return; }
+    scrollToSection(target);
+  });
+
+  /* Mark whichever section the reader is actually in. */
+  function markCurrent() {
+    const mid = window.scrollY + window.innerHeight * 0.35;
+    let best = null;
+    for (const a of list.querySelectorAll('.nav-drawer-link')) {
+      const el = document.getElementById(a.dataset.target);
+      if (!el) continue;
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      if (top <= mid) best = a;
+    }
+    list.querySelectorAll('.nav-drawer-link').forEach(a => a.classList.toggle('is-current', a === best));
+  }
+  window.addEventListener('scroll', () => { if (isOpen()) markCurrent(); }, { passive: true });
+}
+
 /* Floating scroll assist (bottom-right, up + down). Steps are nav targets on
    every screen size so the arrows walk the map narrative step by step — on
    desktop the sticky map would otherwise be jumped past in one leap and never
@@ -541,9 +713,9 @@ function initSectionNav() {
   const readingOffset = el => {
     if (el.classList.contains('scroll-step') && window.innerWidth <= 900) {
       const fig = document.querySelector('.sticky-figure');
-      return navHeight() + legendHeight() + (fig?.offsetHeight || 0) + 14;
+      return stickyOffset() + (fig?.offsetHeight || 0) + 14;
     }
-    return navHeight() + 8;
+    return stickyOffset() + 8;
   };
 
   const destOf    = el => el.getBoundingClientRect().top + window.scrollY - readingOffset(el);
@@ -1704,6 +1876,8 @@ document.addEventListener('DOMContentLoaded', () => {
   refreshTheme();
   initThemeToggle();
   initProgressBar();
+  initAnchorScroll();
+  initNavDrawer();
   initSectionNav();
   buildPhaseLegend();
   setLayoutVars();

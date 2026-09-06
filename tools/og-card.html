@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<!--
+  Source for assets/og-image.png — the 1200x630 Open Graph share card.
+
+  Regenerate after editing:
+    node tools/render-card.mjs
+  which renders this file at 2x and downsamples to exactly 1200x630, the size
+  index.html declares in og:image:width / og:image:height.
+
+  Keep it self-contained: only the Google Fonts link may be remote, because the
+  renderer has no other network affordance and a missing asset would ship as a
+  hole in every unfurl.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Downtown Tampa — Open Civic Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: #FBFAF8; color: #1A1A1A;
+    font-family: 'Work Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1;
+  }
+  /* One tracking scale, in em, instead of nine hand-nudged px values. */
+  .t1 { letter-spacing: .16em } .t2 { letter-spacing: .18em }
+  .t3 { letter-spacing: .20em } .t4 { letter-spacing: .22em }
+
+  .card { width: 1200px; height: 630px; padding: 46px 64px 44px; display: flex; flex-direction: column; }
+  .card > * { flex: 0 0 auto; }
+
+  .masthead { display: flex; align-items: center; justify-content: space-between; }
+  .imprint { display: flex; align-items: center; gap: 13px; }
+  .mark { width: 34px; height: 34px; flex-shrink: 0; display: block; }
+  .imprint-text { display: flex; flex-direction: column; gap: 4px; }
+  .imprint-name { font-size: 15px; font-weight: 600; text-transform: uppercase; line-height: 1; }
+  .imprint-sub  { font-size: 9.5px; font-weight: 500; text-transform: uppercase; color: #9A9488; line-height: 1; }
+  /* One line, large enough to survive a 300px unfurl. */
+  .provenance { font-size: 13px; font-weight: 600; text-transform: uppercase; color: #2B2B2B; line-height: 1; }
+  .provenance b { font-weight: 700; }
+
+  .rules { margin-top: 13px; }
+  .rule-heavy { height: 2px; background: #1A1A1A; }
+  .rule-hair  { height: 1px; background: #E4E1DA; margin-top: 4px; }
+
+  .head { margin-top: 28px; }
+  .kicker { font-size: 12px; font-weight: 600; text-transform: uppercase; color: #326891; line-height: 1; }
+  /* Optical alignment: the D's stem sits inside its side bearing, so the
+     glyph has to hang left to meet the rule. Same for the italic A below. */
+  h1 {
+    margin-top: 15px; margin-left: -10px;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    font-size: 132px; font-weight: 600; line-height: .9;
+    letter-spacing: -.024em; color: #1A1A1A;
+  }
+  .deck {
+    margin-top: 8px; margin-left: 4px;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    font-size: 52px; font-weight: 600; font-style: italic;
+    line-height: 1.02; letter-spacing: -.006em; color: #3C3831;
+  }
+
+  .standfirst { margin-top: 18px; max-width: 1010px; font-size: 16px; line-height: 1.55; color: #2B2B2B; }
+
+  .byline {
+    margin-top: 16px; display: flex; align-items: baseline; gap: 12px;
+    font-size: 11.5px; text-transform: uppercase; color: #6B6B6B; line-height: 1;
+  }
+  .byline .name { font-weight: 700; color: #1A1A1A; }
+  .byline .sep { color: #C9C4B8; }
+  .byline .url { color: #326891; font-weight: 500; text-transform: none; letter-spacing: .06em; }
+
+  .spacer { flex: 1 1 auto !important; min-height: 10px; }
+
+  .foot-rule { height: 1px; background: #E4E1DA; }
+  /* A grid, so the rail survives a label rewrite. */
+  .figures { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 14px; }
+  .fig-item  { min-width: 0; }
+  .fig-num   { font-size: 25px; font-weight: 700; line-height: 1; letter-spacing: -.01em; white-space: nowrap; }
+  /* A fixed two-line box so the four labels share a baseline whatever they say. */
+  .fig-label { margin-top: 5px; min-height: 24px; font-size: 9.4px; font-weight: 500; text-transform: uppercase; color: #6B6B6B; line-height: 1.25; }
+  .fig-renewal .fig-num { color: #A61B1B; }
+  /* A card that boasts of 146 institutions should name a few. */
+  .sources { margin-top: 11px; font-size: 9.4px; font-weight: 500; text-transform: uppercase; color: #9A9488; line-height: 1; }
+
+  /* Endpoints read as a range above the ribbon; the names below are the key. */
+  .era-span { display: flex; justify-content: space-between; align-items: baseline;
+              margin-top: 15px; font-size: 9.4px; font-weight: 600;
+              text-transform: uppercase; color: #6B6B6B; line-height: 1; }
+  .era-span b { color: #1A1A1A; font-weight: 700; }
+  .era-bar { display: flex; height: 8px; width: 100%; margin-top: 7px; }
+  .era-bar span { display: block; height: 100%; }
+  /* Names turn the ribbon from a stripe into a key. */
+  .era-names { display: flex; width: 100%; margin-top: 6px; }
+  .era-names span {
+    font-size: 7.8px; font-weight: 600; text-transform: uppercase;
+    /* The two narrowest eras get ~68px of box, so the names row runs tighter
+       than the rest of the card's tracking scale rather than colliding. */
+    letter-spacing: .10em !important;
+    color: #6B6B6B; line-height: 1; white-space: nowrap;
+    /* Without min-width:0 a flex item will not shrink below its nowrap text,
+       so the narrow eras ran into each other instead of clipping. */
+    min-width: 0; overflow: hidden; text-overflow: clip; padding-right: 7px;
+  }
+  .era-names span:last-child { padding-right: 0; text-align: right; }
+</style>
+</head>
+<body>
+  <div class="card">
+
+    <header class="masthead">
+      <div class="imprint">
+        <!-- Site mark: the Hillsborough River bending into the bay, the downtown
+             street grid on its east bank, a Plant minaret on the west. -->
+        <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5"  width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="21"   y="5.5"  width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="26.5" y="5.5"  width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11"   width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="21"   y="11"   width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="26.5" y="11"   width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="21"   y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8"  y="8"    width="2.8" height="11"  rx="0.7" fill="#A61B1B"/>
+          <circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+        <div class="imprint-text">
+          <div class="imprint-name t3">Open Civic Archive</div>
+          <div class="imprint-sub t2">Downtown Tampa &middot; 1824&ndash;2024</div>
+        </div>
+      </div>
+      <div class="provenance t2"><b>257</b> Cited Sources</div>
+    </header>
+
+    <div class="rules">
+      <div class="rule-heavy"></div>
+      <div class="rule-hair"></div>
+    </div>
+
+    <div class="head">
+      <div class="kicker t4">Two Hundred Years &nbsp;&middot;&nbsp; Fort Brooke to Water Street</div>
+      <h1>Downtown Tampa</h1>
+      <div class="deck">A Civic Development Autopsy</div>
+    </div>
+
+    <p class="standfirst">
+      A fort at a river mouth, a cigar boom, a Black main street cleared for an interstate, a waterfront
+      rebuilt at private scale &mdash; told with cited open data and archival photography.
+    </p>
+
+    <div class="byline t2">
+      <span class="name">By Jeremy Fritzhand</span>
+      <span class="sep">&mdash;</span>
+      <span class="url">fritzhand.github.io/history-of-tampa</span>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="foot-rule"></div>
+
+    <div class="figures">
+      <div class="fig-item">
+        <div class="fig-num">8,494 &rarr; 17,366</div>
+        <div class="fig-label t1">Downtown residents<br />2010 to 2020 Census</div>
+      </div>
+      <div class="fig-item fig-renewal">
+        <div class="fig-num">1,242</div>
+        <div class="fig-label t1">Families displaced<br />91.7% recorded non-white</div>
+      </div>
+      <div class="fig-item">
+        <div class="fig-num">309.6</div>
+        <div class="fig-label t1">Acres cleared<br />by urban renewal</div>
+      </div>
+      <div class="fig-item">
+        <div class="fig-num">$3B</div>
+        <div class="fig-label t1">Water Street investment<br />private, 2019</div>
+      </div>
+    </div>
+
+    <div class="sources t1">
+      U.S. Census Bureau &middot; HUD Urban Renewal Directory &middot; City of Tampa &middot; Tampa Downtown Partnership &middot; Library of Congress
+    </div>
+
+    <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
+
+    <!-- Segments are years elapsed: 1824-1883, 1884-1914, 1915-1928, 1929-1944,
+         1945-1962, 1963-1985, 1986-2008, 2009-2024. -->
+    <div class="era-bar">
+      <span style="flex:60;background:#55636F"></span>
+      <span style="flex:31;background:#8A6D1E"></span>
+      <span style="flex:14;background:#326891"></span>
+      <span style="flex:16;background:#6E6A62"></span>
+      <span style="flex:18;background:#8E5F30"></span>
+      <span style="flex:23;background:#A61B1B"></span>
+      <span style="flex:23;background:#B07C1C"></span>
+      <span style="flex:16;background:#5B7C93"></span>
+    </div>
+    <div class="era-names t1">
+      <span style="flex:60">Fortress</span>
+      <span style="flex:31">Boomtown</span>
+      <span style="flex:14">Metropolis</span>
+      <span style="flex:16">Depression</span>
+      <span style="flex:18">Suburban</span>
+      <span style="flex:23">Renewal</span>
+      <span style="flex:23">Revival</span>
+      <span style="flex:16">Waterfront</span>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -112,6 +112,26 @@ its own note. The site renders a live version of this table in its own
   map is not the only thing on screen for fifteen steps. Rights and credit
   stay in the media layer; a thumbnail that fails to load removes its own
   figure.
+- **Share metadata.** The page had four Open Graph tags and no image, so every
+  share unfurled as a bare text link. It now carries the full Open Graph and
+  Twitter Card set with a rendered 1200×630 card, real favicon files, and a
+  schema.org `Article` block. `tools/check-meta.mjs` checks the lot, including
+  that `og:image` really is the size it claims.
+- **Section drawer.** A hamburger in the nav opens a numbered table of
+  contents built from the page's own sections, so a section added later
+  appears without editing the list. Opening freezes the page where it is
+  rather than scrolling the reader to the top.
+- **About section.** What the project is, what CONFIRMED / PENDING / DERIVED
+  actually mean, what is still missing, and how to reuse the data — reachable
+  from a button in the hero.
+- **Horizontal scroll on phones fixed.** The page was ~6px wider than a 360px
+  viewport (47px at 320px). Two causes, both the same CSS trap: grid tracks
+  written as `1fr` resolve their minimum to min-content, and grid and flex
+  children default to `min-width: auto`, so a chart canvas, a Leaflet map or
+  a nowrap nav label refused to shrink and dragged the page with them. Tracks
+  are now `minmax(0, 1fr)`, the affected children may shrink, `.sandbox-split`
+  no longer asks for `50% 50%` plus a gap, and `html` carries `overflow-x:
+  clip` as a backstop.
 
 ## Next
 

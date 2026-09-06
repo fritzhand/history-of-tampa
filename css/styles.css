@@ -139,7 +139,12 @@
 /* ─── RESET & BASE ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Belt and braces against a stray wide child. `clip` rather than `hidden`:
+     hidden would make html a scroll container and break position:sticky. */
+  overflow-x: clip;
+}
 
 body {
   background: var(--bg-base);
@@ -178,8 +183,12 @@ a:hover { color: var(--v7); }
   height: 56px;
   display: flex;
   align-items: center;
-  padding: 0 24px;
-  gap: 24px;
+  padding: 0 16px;
+  gap: 14px;
+  /* Without this the flex line's min-content width wins over `right: 0`
+     and the bar runs past a narrow viewport, taking the page with it. */
+  min-width: 0;
+  max-width: 100vw;
 }
 
 .nav-logo {
@@ -204,7 +213,8 @@ a:hover { color: var(--v7); }
 .logo-grid-3  { fill: var(--v7); }
 .logo-tower   { fill: var(--v9); }
 
-.nav-logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+.nav-logo-text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+.nav-logo-primary, .nav-logo-secondary { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .nav-logo-primary {
   font-family: var(--font-sans);
@@ -238,6 +248,10 @@ a:hover { color: var(--v7); }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  /* min-width:auto is the default on a flex item and resolves to the full
+     nowrap width, so the ellipsis never fires and the bar overflows. */
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .nav-right {
@@ -432,7 +446,7 @@ a:hover { color: var(--v7); }
 
 .scroll-section {
   display: grid;
-  grid-template-columns: 55% 45%;
+  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
   align-items: start;
   position: relative;
 }
@@ -647,7 +661,7 @@ a:hover { color: var(--v7); }
 /* Two-column chart grid */
 .chart-grid-2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 20px;
 }
 
@@ -744,7 +758,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 /* Stat cards grid */
 .stat-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 20px;
 }
@@ -780,7 +794,8 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 /* Sandbox split */
 .sandbox-split {
   display: grid;
-  grid-template-columns: 50% 50%;
+  /* was 50% 50%, which with the gap was always 16px wider than the wrapper */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px;
   align-items: start;
 }
@@ -1135,7 +1150,7 @@ input[type="range"].crisis-slider::-moz-range-thumb {
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
   .scroll-section {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .sticky-figure {
@@ -1154,9 +1169,9 @@ input[type="range"].crisis-slider::-moz-range-thumb {
   .scroll-steps { padding: 32px 20px; }
   .scroll-step  { min-height: 50vh; }
 
-  .chart-grid-2 { grid-template-columns: 1fr; }
-  .stat-cards   { grid-template-columns: repeat(2, 1fr); }
-  .sandbox-split { grid-template-columns: 1fr; }
+  .chart-grid-2 { grid-template-columns: minmax(0, 1fr); }
+  .stat-cards   { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sandbox-split { grid-template-columns: minmax(0, 1fr); }
   #sandbox-map-container { height: 300px; }
 }
 
@@ -1166,9 +1181,9 @@ input[type="range"].crisis-slider::-moz-range-thumb {
   #phase-legend { padding: 10px 16px; scrollbar-width: none; }
   #phase-legend::-webkit-scrollbar { display: none; }
   .phase-legend-inner { flex-wrap: nowrap; width: max-content; }
-  .hero-stats { grid-template-columns: 1fr 1fr; }
-  .stat-cards { grid-template-columns: 1fr 1fr; }
-  .footer-stats { grid-template-columns: 1fr 1fr; }
+  .hero-stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .stat-cards { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .footer-stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .nav-phase-pill { display: none; }
   .geo-table { font-size: 11px; }
   .geo-table th, .geo-table td { padding: 8px; }
@@ -1473,6 +1488,298 @@ tr.disp-total td { font-weight: 600; border-top: 2px solid var(--border); }
   font-feature-settings: 'tnum' 1;
 }
 
+/* Plain anchor jumps (the hero button, a shared #about link) are handled by
+   the browser, not by us, so tell it how much pinned chrome to clear: the
+   fixed nav plus the sticky era legend. setLayoutVars() keeps both current. */
+section[id], footer[id], #hero {
+  scroll-margin-top: calc(var(--nav-h, 56px) + var(--legend-h, 46px) + 8px);
+}
+
+/* ─── NARROW-VIEWPORT SAFETY ───
+   Grid and flex children default to min-width:auto, which resolves to their
+   content's min-content width. A chart canvas, a Leaflet map or a nowrap
+   label then refuses to shrink and drags the page wider than the screen —
+   the horizontal scroll you can pinch away. These boxes may shrink. */
+.chart-card,
+.chart-grid-2 > *,
+.sandbox-split > *,
+.sandbox-event-card,
+#sandbox-map-container,
+.scroll-section > *,
+.stat-card,
+.photo-card,
+.about-grid > *,
+.step-figures > * {
+  min-width: 0;
+}
+
+/* ─── SECTION DRAWER (hamburger) ───
+   A single-page site still needs a table of contents. The button sits at the
+   head of the nav at every width; the drawer slides in from the left over a
+   scrim, and each entry jumps to a section. */
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.nav-toggle:hover { background: var(--bg-elevated); color: var(--text-primary); }
+.nav-toggle:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+.nav-toggle .hb { position: relative; width: 18px; height: 14px; display: block; }
+.nav-toggle .hb span {
+  position: absolute;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.26s ease, opacity 0.18s ease, top 0.26s ease, bottom 0.26s ease;
+}
+.nav-toggle .hb-t { top: 0; }
+.nav-toggle .hb-m { top: 6px; }
+.nav-toggle .hb-b { bottom: 0; }
+/* open → morph the bars into an X */
+body.nav-open .nav-toggle .hb-t { transform: translateY(6px) rotate(45deg); }
+body.nav-open .nav-toggle .hb-m { opacity: 0; transform: translateX(-6px); }
+body.nav-open .nav-toggle .hb-b { transform: translateY(-6px) rotate(-45deg); }
+
+.nav-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 940;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s ease;
+}
+body.nav-open .nav-scrim { opacity: 1; pointer-events: auto; }
+
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 960;
+  width: min(320px, 86vw);
+  height: 100%;
+  height: 100dvh;
+  padding: 18px 20px 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  box-shadow: 8px 0 32px var(--shadow-soft);
+  transform: translateX(-102%);
+  transition: transform 0.24s ease;
+}
+body.nav-open .nav-drawer { transform: translateX(0); }
+
+.nav-drawer-kicker {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 44px 4px 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+.nav-drawer-list { display: flex; flex-direction: column; }
+.nav-drawer-link {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 4px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-light);
+  transition: color 0.15s ease, padding-left 0.15s ease;
+}
+.nav-drawer-link:hover,
+.nav-drawer-link:focus-visible { color: var(--text-primary); padding-left: 8px; }
+.nav-drawer-link.is-current { color: var(--text-primary); font-weight: 600; }
+.nav-drawer-link.is-current .nav-drawer-num { color: var(--v5); }
+.nav-drawer-num {
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  min-width: 16px;
+  flex: none;
+}
+.nav-drawer-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+.nav-drawer-foot a { color: var(--v5); text-decoration: none; }
+.nav-drawer-foot a:hover { color: var(--v9); text-decoration: underline; }
+
+/* The nav sits above the drawer so the X stays clickable. */
+body.nav-open #main-nav { z-index: 970; }
+
+/* Narrow bars: the drawer carries the wayfinding, so the long project title
+   and its divider come off the line. This is also what keeps the nav's
+   min-content width inside a 360px viewport. */
+@media (max-width: 720px) {
+  .nav-project-title, .nav-divider { display: none; }
+}
+@media (max-width: 380px) {
+  #main-nav { padding: 0 10px; gap: 10px; }
+  .nav-logo-secondary { display: none; }
+}
+
+/* ─── HERO ACTIONS ─── */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 44px;
+}
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+.hero-cta:hover { border-color: var(--text-primary); background: var(--bg-elevated); color: var(--text-primary); }
+.hero-cta:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.hero-cta-primary {
+  background: var(--v5);
+  border-color: var(--v5);
+  color: var(--on-accent);
+}
+.hero-cta-primary:hover { background: var(--v9); border-color: var(--v9); color: var(--on-accent); }
+
+/* ─── ABOUT ─── */
+#about { background: var(--bg-surface); border-top: 1px solid var(--border); }
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 44px;
+  align-items: start;
+}
+.about-main { max-width: 660px; }
+.about-main p {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.72;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+.about-main a { color: var(--v5); }
+.about-main a:hover { color: var(--v9); text-decoration: underline; }
+.about-lede { font-size: 17px !important; color: var(--text-primary) !important; }
+.about-h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 30px 0 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.about-status { list-style: none; margin: 0 0 16px; padding: 0; }
+.about-status li {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.about-badge {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  border: 1px solid;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: 1px;
+}
+.about-badge-confirmed { background: var(--badge-gain-bg); color: var(--badge-gain-fg); border-color: var(--badge-gain-br); }
+.about-badge-pending   { background: var(--badge-mixed-bg); color: var(--badge-mixed-fg); border-color: var(--badge-mixed-br); }
+.about-badge-derived   { background: var(--badge-moderate-bg); color: var(--badge-moderate-fg); border-color: var(--badge-moderate-br); }
+
+.about-side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.about-card {
+  padding: 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+.about-card-kicker {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.about-card-body, .about-card-note {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.about-card-note { margin-top: 12px; font-size: 12px; color: var(--text-muted); }
+.about-author { display: flex; align-items: center; gap: 12px; }
+.about-avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex: none;
+}
+.about-avatar.is-missing { display: none; }
+.about-author-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.about-author-links { font-family: var(--font-sans); font-size: 12.5px; margin-top: 2px; }
+.about-author-links a { color: var(--v5); text-decoration: none; }
+.about-author-links a:hover { color: var(--v9); text-decoration: underline; }
+.about-links { list-style: none; margin: 0; padding: 0; }
+.about-links li { padding: 5px 0; border-bottom: 1px solid var(--border-light); }
+.about-links li:last-child { border-bottom: none; }
+.about-links a { font-family: var(--font-sans); font-size: 13px; color: var(--v5); text-decoration: none; }
+.about-links a:hover { color: var(--v9); text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+}
+
 /* ─── STEP FIGURES ───
    Archival photographs inside the scrollytelling narrative, so the sticky map
    is not the only thing on screen for fifteen steps. One image runs the width
@@ -1480,11 +1787,11 @@ tr.disp-total td { font-weight: 600; border-top: 2px solid var(--border); }
    screens. */
 .step-figures {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   margin: 18px 0 16px;
 }
-.step-figures.is-pair { grid-template-columns: 1fr 1fr; }
+.step-figures.is-pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 
 .step-figure {
   margin: 0;
@@ -1640,7 +1947,7 @@ tr.disp-total td { font-weight: 600; border-top: 2px solid var(--border); }
 .credit-note { font-size: 12px; color: var(--text-secondary); margin-top: 6px; max-width: 46ch; line-height: 1.55; }
 
 @media (max-width: 900px) {
-  .step-figures.is-pair { grid-template-columns: 1fr; }
+  .step-figures.is-pair { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 600px) {
