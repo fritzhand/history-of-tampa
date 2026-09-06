@@ -61,22 +61,62 @@ function eraStatus(year) {
   return 'waterfront';
 }
 
-Chart.defaults.color          = '#555';
-Chart.defaults.borderColor    = '#1e1e1e';
 Chart.defaults.font.family    = "'Space Mono', monospace";
 Chart.defaults.font.size      = 10;
 
+/* Theme tokens for canvas and SVG surfaces that CSS cannot reach. Filled
+   from the stylesheet's custom properties by refreshTheme(), so charts,
+   map markers and sankeys follow the light/dark toggle. */
+const T = {
+  text:'#555', textDim:'#666', title:'#444', grid:'#1a1a1a',
+  tipBg:'#161616', tipBorder:'#2a2a2a', tipTitle:'#f0f0f0', tipBody:'#999',
+  sankeyLabel:'#aaa', markerStroke:'rgba(255,255,255,0.35)', markerActive:'#ffffff'
+};
+
 const TIP = {
-  backgroundColor:'#161616', borderColor:'#2a2a2a', borderWidth:1,
-  titleColor:'#f0f0f0', bodyColor:'#999', padding:12,
+  backgroundColor:T.tipBg, borderColor:T.tipBorder, borderWidth:1,
+  titleColor:T.tipTitle, bodyColor:T.tipBody, padding:12,
   titleFont:{ family:"'Space Grotesk',sans-serif", weight:'700', size:12 },
   bodyFont:{ family:"'Space Mono',monospace", size:10 }
 };
 
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+
+function cssVar(name, fallback) {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return v || fallback;
+}
+
+function refreshTheme() {
+  const light = currentTheme() === 'light';
+  T.text         = cssVar('--text-faint', '#555');
+  T.textDim      = cssVar('--text-dim', '#666');
+  T.title        = cssVar('--text-muted', '#444');
+  T.grid         = cssVar('--border-light', '#1a1a1a');
+  T.tipBg        = cssVar('--bg-card', '#161616');
+  T.tipBorder    = cssVar('--border', '#2a2a2a');
+  T.tipTitle     = cssVar('--text-primary', '#f0f0f0');
+  T.tipBody      = cssVar('--text-secondary', '#999');
+  T.sankeyLabel  = cssVar('--text-soft', '#aaa');
+  T.markerStroke = light ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.35)';
+  T.markerActive = light ? '#17171a' : '#ffffff';
+  /* The two lightest viridis steps are illegible on paper: darken them in
+     light mode. Era pills, markers and charts all derive from V / PC. */
+  V.v8 = light ? '#8fb318' : '#b5de2b';
+  V.v9 = light ? '#c9a800' : '#fde725';
+  Object.assign(PC, { fortress:V.v1, boomtown:V.v2, metropolis:V.v3, depression:V.v4,
+                      suburban:V.v5, renewal:V.v9, revival:V.v7, waterfront:V.v6 });
+  Chart.defaults.color       = T.text;
+  Chart.defaults.borderColor = T.grid;
+  Object.assign(TIP, { backgroundColor:T.tipBg, borderColor:T.tipBorder, titleColor:T.tipTitle, bodyColor:T.tipBody });
+}
+
 function mkScale(overrides = {}) {
   return {
-    grid:  { color:'#1a1a1a' },
-    ticks: { color:'#555', font:{ family:"'Space Mono',monospace", size:10 } },
+    grid:  { color:T.grid },
+    ticks: { color:T.text, font:{ family:"'Space Mono',monospace", size:10 } },
     ...overrides
   };
 }
@@ -99,22 +139,35 @@ function fmtNum(n) {
    CARTO's basemaps.cartocdn.com now watermarks anonymous tiles with
    "API KEY REQUIRED", so the original dark_all layer is unusable
    without registering a key. Esri's canvas needs only attribution. */
-const BASEMAP = {
-  base:  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-  label: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+const BASEMAPS = {
+  dark: {
+    base:  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+    label: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}'
+  },
+  light: {
+    base:  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+    label: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}'
+  },
   attribution: 'Tiles &copy; <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a> &mdash; Esri, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
   maxNativeZoom: 16,
   maxZoom: 18
 };
 
+const _basemapLayers = new Map();   // Leaflet map -> { base, label }
+
+/* Adds (or, on a theme change, replaces) the basemap pair for a map. */
 function addBasemap(map) {
-  L.tileLayer(BASEMAP.base, {
-    attribution: BASEMAP.attribution,
-    maxNativeZoom: BASEMAP.maxNativeZoom, maxZoom: BASEMAP.maxZoom
+  const urls = BASEMAPS[currentTheme()];
+  const prev = _basemapLayers.get(map);
+  if (prev) { map.removeLayer(prev.base); map.removeLayer(prev.label); }
+  const base = L.tileLayer(urls.base, {
+    attribution: BASEMAPS.attribution,
+    maxNativeZoom: BASEMAPS.maxNativeZoom, maxZoom: BASEMAPS.maxZoom
   }).addTo(map);
-  L.tileLayer(BASEMAP.label, {
-    maxNativeZoom: BASEMAP.maxNativeZoom, maxZoom: BASEMAP.maxZoom, opacity: 0.85
+  const label = L.tileLayer(urls.label, {
+    maxNativeZoom: BASEMAPS.maxNativeZoom, maxZoom: BASEMAPS.maxZoom, opacity: 0.85
   }).addTo(map);
+  _basemapLayers.set(map, { base, label });
 }
 
 /* Citation helpers.
@@ -177,6 +230,7 @@ function initProgressBar() {
 function buildPhaseLegend() {
   const c = document.getElementById('phase-pills-container');
   if (!c) return;
+  c.innerHTML = '';
   Object.entries(PC).forEach(([phase, color]) => {
     const light = color === V.v8 || color === V.v9;
     const el = document.createElement('a');
@@ -292,7 +346,7 @@ function initScrollMap() {
     const color = PC[ev.phase] || V.v3;
     const m = L.circleMarker([ev.lat, ev.lng], {
       radius:5, fillColor:color,
-      color:'rgba(255,255,255,0.35)', weight:1,
+      color:T.markerStroke, weight:1,
       fillOpacity:0.75, opacity:1
     }).bindPopup(
       `<div class="map-popup-date">${ev.date} · ${(ev.phase||'').toUpperCase()}</div>` +
@@ -301,7 +355,7 @@ function initScrollMap() {
       `<div class="map-popup-source">${sourceHtml(ev.source)}</div>`,
       { maxWidth:280 }
     ).addTo(scrollMap);
-    scrollMkrs[ev.id] = { m, color };
+    scrollMkrs[ev.id] = { m, phase: ev.phase };
   });
 }
 
@@ -311,14 +365,14 @@ function activateMapStep(step) {
   if (prevActiveId && scrollMkrs[prevActiveId]) {
     const p = scrollMkrs[prevActiveId];
     p.m.setRadius(5);
-    p.m.setStyle({ fillOpacity:0.75, weight:1, color:'rgba(255,255,255,0.35)' });
+    p.m.setStyle({ fillOpacity:0.75, weight:1, color:T.markerStroke });
   }
 
   const ev = (D().mapEvents || []).find(e => e.id === step.eventId);
   if (ev && scrollMkrs[ev.id]) {
     const cur = scrollMkrs[ev.id];
     cur.m.setRadius(12);
-    cur.m.setStyle({ fillOpacity:1, weight:2.5, color:'#ffffff' });
+    cur.m.setStyle({ fillOpacity:1, weight:2.5, color:T.markerActive });
     prevActiveId = ev.id;
   }
 
@@ -443,6 +497,17 @@ function initScrollytelling() {
 ═══════════════════════════════════════════════════════════════ */
 let sandboxMap = null;
 let coreMarker = null;
+const sandboxMkrs = [];
+
+/* Re-colour every map marker after a theme change (palette + strokes). */
+function restyleMarkers() {
+  Object.values(scrollMkrs).forEach(({ m, phase }) => {
+    const active = prevActiveId && scrollMkrs[prevActiveId] && scrollMkrs[prevActiveId].m === m;
+    m.setStyle({ fillColor: PC[phase] || V.v3, color: active ? T.markerActive : T.markerStroke });
+  });
+  sandboxMkrs.forEach(({ m, phase }) => m.setStyle({ fillColor: PC[phase] || V.v3, color: T.markerStroke }));
+  if (coreMarker) coreMarker.setStyle({ color: T.markerActive });
+}
 
 function initSandboxMap() {
   const el = document.getElementById('sandbox-map-container');
@@ -458,9 +523,9 @@ function initSandboxMap() {
 
   (D().mapEvents || []).forEach(ev => {
     const color = PC[ev.phase] || V.v3;
-    L.circleMarker([ev.lat, ev.lng], {
+    const m = L.circleMarker([ev.lat, ev.lng], {
       radius:5, fillColor:color,
-      color:'rgba(255,255,255,0.25)', weight:1, fillOpacity:0.7
+      color:T.markerStroke, weight:1, fillOpacity:0.7
     }).bindPopup(
       `<div class="map-popup-date">${ev.date} · ${(ev.phase||'').toUpperCase()}</div>` +
       `<div class="map-popup-title">${ev.title}</div>` +
@@ -468,11 +533,12 @@ function initSandboxMap() {
       `<div class="map-popup-source">${sourceHtml(ev.source)}</div>`,
       { maxWidth:260 }
     ).addTo(sandboxMap);
+    sandboxMkrs.push({ m, phase: ev.phase });
   });
 
   coreMarker = L.circleMarker(center, {
     radius:16, fillColor:V.v5,
-    color:'#ffffff', weight:2, fillOpacity:0.85
+    color:T.markerActive, weight:2, fillOpacity:0.85
   }).bindTooltip('Downtown core', { permanent:false, direction:'top' })
     .addTo(sandboxMap);
 }
@@ -1301,6 +1367,65 @@ function buildSourceRoll() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   13. THEME (light / dark)
+   Dark is the design default. The choice persists in localStorage and is
+   applied before first paint by the inline script in index.html.
+═══════════════════════════════════════════════════════════════ */
+const THEME_KEY = 'oca-theme';
+const SUN_SVG  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+const MOON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+function rebuildCharts() {
+  document.querySelectorAll('canvas').forEach(c => { const ch = Chart.getChart(c); if (ch) ch.destroy(); });
+  initCityPopChart();
+  initDowntownResidentsChart();
+  initPortCigarChart();
+  initCommercialChart();
+  initCapitalChart();
+  initHotelChart();
+  initLandUseChart();
+  initDisruptionChart();
+  initEraChart();
+  initSandboxDualChart();
+  initSandboxCapitalChart();
+  initDisplacementSection();
+  initStreetcarChart();
+}
+
+function updateThemeToggle() {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  const light = currentTheme() === 'light';
+  btn.setAttribute('aria-pressed', String(light));
+  btn.title = light ? 'Switch to dark mode' : 'Switch to light mode';
+  btn.innerHTML = light ? MOON_SVG : SUN_SVG;
+}
+
+function applyTheme(theme) {
+  if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  else document.documentElement.removeAttribute('data-theme');
+  try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage unavailable */ }
+  refreshTheme();
+  if (scrollMap)  addBasemap(scrollMap);
+  if (sandboxMap) addBasemap(sandboxMap);
+  restyleMarkers();
+  buildPhaseLegend();
+  const cur = document.querySelector('.scroll-step.is-active');
+  if (cur) highlightPhasePill(cur.dataset.phase);
+  rebuildCharts();
+  renderSankeyEconomy(currentEconomyMode);
+  renderSankeyLandUse();
+  updateThemeToggle();
+}
+
+function initThemeToggle() {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  btn.addEventListener('click', () => applyTheme(currentTheme() === 'light' ? 'dark' : 'light'));
+  updateThemeToggle();
+}
+
+/* ═══════════════════════════════════════════════════════════════
    RESIZE
 ═══════════════════════════════════════════════════════════════ */
 let _rsTimer;
@@ -1318,6 +1443,8 @@ window.addEventListener('resize', () => {
    MAIN INIT
 ═══════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
+  refreshTheme();
+  initThemeToggle();
   initProgressBar();
   buildPhaseLegend();
   setLayoutVars();
