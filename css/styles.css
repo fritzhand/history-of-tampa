@@ -1367,3 +1367,43 @@ a.photo-thumb-wrap { display: block; }
 [data-theme="light"] .disp-share { color: #a3261c; }
 tr.disp-total { background: var(--bg-elevated); }
 tr.disp-total td { font-weight: 600; border-top: 2px solid var(--border); }
+
+/* ─── CRA TAX INCREMENT CARDS ─── */
+.cra-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 18px 0 6px;
+}
+.cra-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--v5);
+  border-radius: var(--card-radius);
+  padding: 14px 16px;
+}
+.cra-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+.cra-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.cra-row strong { font-size: 15px; color: var(--text-primary); }
+.cra-multiple {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  text-transform: uppercase;
+}

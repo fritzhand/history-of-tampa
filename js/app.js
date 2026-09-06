@@ -1439,6 +1439,52 @@ function buildSourceRoll() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   12f. CRA TAX INCREMENT
+   The public money behind the private towers: a redevelopment area
+   freezes its tax base and spends the growth above it in the district.
+═══════════════════════════════════════════════════════════════ */
+function buildCraIncrement() {
+  const el = document.getElementById('cra-increment');
+  if (!el) return;
+  const rows = D().craIncrement || [];
+  if (!rows.length) { el.closest('.chart-card').hidden = true; return; }
+
+  const find = k => rows.find(r => r.key === k);
+  const money = v => {
+    const n = Number(v);
+    if (!isFinite(n)) return String(v);
+    if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+    if (n >= 1e6) return '$' + Math.round(n / 1e6) + 'M';
+    return '$' + n.toLocaleString();
+  };
+
+  const districts = [
+    { name: 'Downtown CRA',        base: find('downtown-base'), now: find('downtown-FY2025'), color: V.v5 },
+    { name: 'Channel District CRA', base: find('channel-base'),  now: find('channel-FY2025'),  color: V.v7 }
+  ].filter(d => d.base && d.now);
+
+  el.innerHTML = districts.map(d => {
+    const b = Number(d.base.value), n = Number(d.now.value);
+    return `
+      <div class="cra-card" style="border-left-color:${d.color}">
+        <div class="cra-name">${esc(d.name)}</div>
+        <div class="cra-row"><span>Base year</span><strong>${money(b)}</strong></div>
+        <div class="cra-row"><span>FY2025</span><strong style="color:${d.color}">${money(n)}</strong></div>
+        <div class="cra-multiple">${(n / b).toFixed(1)}× the frozen base</div>
+      </div>`;
+  }).join('') + (() => {
+    const t = find('citywide-FY2025') || find('citywide-FY2024');
+    return t ? `<div class="cra-card" style="border-left-color:${V.v9}">
+        <div class="cra-name">All Tampa CRAs</div>
+        <div class="cra-row"><span>Tax increment</span><strong style="color:${V.v9}">${money(t.value)}</strong></div>
+        <div class="cra-multiple">${esc(t.key.replace('citywide-', ''))} · revenue captured citywide</div>
+      </div>` : '';
+  })();
+
+  renderSourceLine('cra-source', (find('downtown-FY2025') || rows[0]).source, 'Source: ');
+}
+
+/* ═══════════════════════════════════════════════════════════════
    13. THEME (light / dark)
    Dark is the design default. The choice persists in localStorage and is
    applied before first paint by the inline script in index.html.
@@ -1463,6 +1509,7 @@ function rebuildCharts() {
   initDisplacementSection();
   initStreetcarChart();
   renderModelSourceLines();
+  buildCraIncrement();
 }
 
 function updateThemeToggle() {
@@ -1558,6 +1605,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDisplacementSection();
   initStreetcarChart();
   renderModelSourceLines();
+  buildCraIncrement();
   buildSourceRoll();
 
   /* No half-primed first step: the overlay shows the "scroll to begin"
