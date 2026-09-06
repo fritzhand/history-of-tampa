@@ -14,8 +14,8 @@ that merged branch.
 ## Where the project stands
 
 The site runs end to end. The remaining work is evidentiary, not structural:
-several data sections still carry editorial estimates that need institutional
-sources, and the timeline events still carry free-text citations.
+the port and cigar series are still invented indices, and three conceptual
+models carry DERIVED methodology notes where real data belongs.
 
 | Plan phase (§10) | Status | Notes |
 |---|---|---|
