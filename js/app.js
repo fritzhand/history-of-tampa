@@ -789,6 +789,19 @@ function initCommercialChart() {
   });
 }
 
+/* Nominal dollars at the time; values span $1.9M to $3B, so the axis is
+   logarithmic. `millions` is the field; a legacy `billions` is converted. */
+function capitalMillions(d) {
+  return d.millions != null ? d.millions : (d.billions != null ? d.billions * 1000 : null);
+}
+function fmtMoney(m) {
+  if (m == null) return '—';
+  return m >= 1000 ? `$${(m / 1000).toFixed(m >= 10000 ? 0 : 1)}B` : `$${m >= 100 ? Math.round(m) : m}M`;
+}
+function capitalPointLabel(d) {
+  return d.label ? `${d.label} — ${fmtMoney(capitalMillions(d))}` : fmtMoney(capitalMillions(d));
+}
+
 function initCapitalChart() {
   const ctx = document.getElementById('chart-capital');
   if (!ctx) return;
@@ -798,9 +811,9 @@ function initCapitalChart() {
     data: {
       labels: series.map(d => d.year),
       datasets: [{
-        label: 'Development capital ($B)',
-        data: series.map(d => d.billions),
-        backgroundColor: V.v7 + 'cc',
+        label: 'Development capital (nominal $M)',
+        data: series.map(capitalMillions),
+        backgroundColor: series.map(d => (d.source && d.source.verificationStatus === 'DERIVED') ? V.v7 + '66' : V.v7 + 'cc'),
         borderColor: V.v7,
         borderWidth: 1.5, borderRadius: 3, borderSkipped: false
       }]
@@ -809,14 +822,14 @@ function initCapitalChart() {
       responsive: true, maintainAspectRatio: false,
       plugins: {
         tooltip: { ...TIP, callbacks: {
-          label: c => ` $${c.parsed.y.toFixed(2)}B`,
-          footer: items => [series[items[0].dataIndex]?.label || '', ...pointFooter(series[items[0].dataIndex])].filter(Boolean)
+          label: c => ` ${capitalPointLabel(series[c.dataIndex])}`,
+          footer: items => pointFooter(series[items[0].dataIndex])
         }},
         legend: { display: false }
       },
       scales: {
         x: mkScale(),
-        y: mkScale({ min:0, title:{ display:true, text:'USD billions (nominal-ish)', color:'#444', font:{ size:10 }}})
+        y: mkScale({ type:'logarithmic', min:1, title:{ display:true, text:'Nominal USD millions (log scale)', color:'#444', font:{ size:10 }}, ticks:{ callback: v => [1,10,100,1000,10000].includes(v) ? fmtMoney(v) : '' }})
       }
     }
   });
@@ -994,8 +1007,8 @@ function initSandboxCapitalChart() {
     data: {
       labels: series.map(d => d.year),
       datasets: [{
-        label: '$B capital waves',
-        data: series.map(d => d.billions),
+        label: 'Capital waves (nominal $M)',
+        data: series.map(capitalMillions),
         backgroundColor: V.v6 + 'bb',
         borderColor: V.v6, borderWidth: 1, borderRadius: 3, borderSkipped: false
       }]
@@ -1003,10 +1016,16 @@ function initSandboxCapitalChart() {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        tooltip: { ...TIP, callbacks: { footer: i => series[i[0].dataIndex]?.label || '' }},
+        tooltip: { ...TIP, callbacks: {
+          label: c => ` ${capitalPointLabel(series[c.dataIndex])}`,
+          footer: i => pointFooter(series[i[0].dataIndex])
+        }},
         legend: { display: false }
       },
-      scales: { x: mkScale({ ticks:{ font:{ size:9 }}}), y: mkScale({ min:0 }) }
+      scales: {
+        x: mkScale({ ticks:{ font:{ size:9 }}}),
+        y: mkScale({ type:'logarithmic', min:1, ticks:{ callback: v => [1,10,100,1000,10000].includes(v) ? fmtMoney(v) : '' }})
+      }
     }
   });
 }

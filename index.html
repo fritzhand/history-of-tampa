@@ -50,15 +50,15 @@
           <div class="hero-stat-label">years from Fort Brooke<br>to Water Street</div>
         </div>
         <div>
-          <div class="hero-stat-number" style="color:#b5de2b">~15.5k</div>
-          <div class="hero-stat-label">downtown-core residents<br>2023 estimate (from ~1.8k in 1980)</div>
+          <div class="hero-stat-number" style="color:#b5de2b">17,366</div>
+          <div class="hero-stat-label">downtown residents, 2020 Census<br>up from 8,494 in 2010</div>
         </div>
         <div>
-          <div class="hero-stat-number" style="color:#6ece58">$3.5B+</div>
-          <div class="hero-stat-label">Water Street program capital<br>Strategic Property Partners</div>
+          <div class="hero-stat-number" style="color:#6ece58">$3B</div>
+          <div class="hero-stat-label">Water Street private investment<br>Strategic Property Partners, 2019</div>
         </div>
         <div>
-          <div class="hero-stat-number" style="color:#1f9e89">384k</div>
+          <div class="hero-stat-number" style="color:#1f9e89">384,959</div>
           <div class="hero-stat-label">City of Tampa population<br>2020 U.S. Census</div>
         </div>
       </div>
@@ -110,17 +110,17 @@
           <span class="icon" style="background:#1f9e89"></span>
           City of Tampa Population — Decennial Census (1850–2020)
         </div>
-        <p class="chart-desc">Municipal population jumps track railroads, cigars, the 1920s land boom, wartime industry, and large mid-century annexations (especially the 1960 count). Citywide growth can mask downtown residential collapse.</p>
+        <p class="chart-desc">Municipal population jumps track railroads, cigars, the 1920s land boom, wartime industry, and the 1953 annexation act: 140,331 of Tampa's 274,970 residents in 1960 lived in territory annexed after 1950. Citywide growth can mask downtown residential collapse.</p>
         <div class="canvas-wrap" style="height:300px"><canvas id="chart-city-pop"></canvas></div>
-        <p class="chart-source">Sources: <a href="https://www.census.gov/programs-surveys/decennial-census.html" target="_blank">U.S. Census Bureau</a> · <a href="https://data.census.gov/profile/Tampa_city,_Florida?g=160XX00US1271000" target="_blank">data.census.gov · Tampa city</a></p>
+        <p class="chart-source">Sources: <a href="https://www2.census.gov/library/publications/decennial/1960/population-volume-1/vol-01-11-c.pdf" target="_blank">1960 Census Vol. I Pt. 11, Table 5 (1870–1960)</a> · <a href="https://www.census.gov/library/working-papers/1998/demo/POP-twps0027.html" target="_blank">Gibson, POP-WP027 (1930–1990)</a> · <a href="https://data.census.gov/table/DECENNIALPL2020.P1?g=160XX00US1271000" target="_blank">data.census.gov, 2020 P1</a> · 1850: Seventh Census, Statistics of Florida</p>
       </div>
 
       <div class="chart-grid-2">
         <div class="chart-card reveal-on-scroll">
           <div class="chart-card-title">Downtown-Core Residential Population</div>
-          <p class="chart-desc">Core residents peak in the streetcar era, trough under urban renewal, then rebound with Harbour Island, Channel District lofts, and Water Street. Pre-2010 points include labeled estimates.</p>
+          <p class="chart-desc">Core residents peak in the streetcar era, trough under urban renewal, then rebound with Harbour Island, Channel District lofts, and Water Street. 2010, 2020 and 2025 are Tampa Downtown Partnership district counts; earlier points are labeled estimates pending census-tract compilation.</p>
           <div class="canvas-wrap" style="height:260px"><canvas id="chart-dt-residents"></canvas></div>
-          <p class="chart-source"><a href="https://www.tampasdowntown.com/" target="_blank">Tampa Downtown Partnership</a> · Census tract aggregates · planning literature estimates</p>
+          <p class="chart-source"><a href="https://www.tampasdowntown.com/wp-content/uploads/2025/05/Development-Guide-May-2025-DIGITAL.pdf" target="_blank">Tampa Downtown Partnership, 2024-25 Development Guide</a> · earlier points: estimates (PENDING)</p>
         </div>
         <div class="chart-card reveal-on-scroll">
           <div class="chart-card-title">Era Durations — 200 Years of Civic Phases</div>
@@ -148,7 +148,7 @@
         <div id="sankey-economy-wrap" style="width:100%;overflow-x:auto">
           <svg id="sankey-economy-svg" style="min-width:680px;height:380px;width:100%"></svg>
         </div>
-        <p class="chart-source">Sources: <a href="https://www.nps.gov/ybor/index.htm" target="_blank">NPS Ybor City</a> · <a href="https://www.porttb.com/" target="_blank">Port Tampa Bay</a> · <a href="https://www.tampasdowntown.com/" target="_blank">Tampa Downtown Partnership</a> · <a href="https://www.waterstreettampa.com/" target="_blank">Water Street Tampa</a></p>
+        <p class="chart-source">Sources: <a href="https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text" target="_blank">NPS, Ybor City NHL nomination</a> · <a href="https://www.porttb.com/" target="_blank">Port Tampa Bay</a> · <a href="https://www.tampasdowntown.com/wp-content/uploads/2025/05/Development-Guide-May-2025-DIGITAL.pdf" target="_blank">Tampa Downtown Partnership</a> · <a href="https://www.waterstreettampa.com/" target="_blank">Water Street Tampa</a> · flow weights are a DERIVED editorial model</p>
       </div>
 
       <div class="chart-card reveal-on-scroll">
@@ -221,7 +221,7 @@
             <div class="canvas-wrap" style="height:260px"><canvas id="chart-sandbox-dual"></canvas></div>
           </div>
           <div class="chart-card" style="margin-bottom:0">
-            <div class="chart-card-title">Capital Waves ($B)</div>
+            <div class="chart-card-title">Capital Waves (nominal $M, log)</div>
             <div class="canvas-wrap" style="height:180px"><canvas id="chart-sandbox-capital"></canvas></div>
           </div>
         </div>
@@ -242,7 +242,7 @@
         </div>
         <p class="chart-desc">Cigar millions peak in the early 20th century and collapse by mid-century. Port activity remains a durable bay economy but migrates operationally seaward of the walkable CBD.</p>
         <div class="canvas-wrap" style="height:300px"><canvas id="chart-port-cigar"></canvas></div>
-        <p class="chart-source"><a href="https://www.nps.gov/ybor/index.htm" target="_blank">NPS Ybor City</a> · <a href="https://www.porttb.com/" target="_blank">Port Tampa Bay</a> · <a href="https://www.floridamemory.com/" target="_blank">Florida Memory</a></p>
+        <p class="chart-source"><a href="https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text" target="_blank">NPS, Ybor City NHL nomination</a> · <a href="https://www.porttb.com/" target="_blank">Port Tampa Bay</a> · <a href="https://www.floridamemory.com/" target="_blank">Florida Memory</a> · both series PENDING verification</p>
       </div>
 
       <div class="chart-grid-2">
@@ -254,9 +254,9 @@
         </div>
         <div class="chart-card reveal-on-scroll">
           <div class="chart-card-title">Downtown Hotel Room Stock</div>
-          <p class="chart-desc">From the Tampa Bay Hotel to land-boom palaces, mid-century demolition, convention rebuild, and Water Street hospitality.</p>
+          <p class="chart-desc">Named-hotel lower bounds: the 511-room Tampa Bay Hotel (1891), the land-boom Floridan (1927), the convention-era Marriott Waterside and Hyatt Regency (2000), and today's 3,000-plus walkable convention inventory. No institutional downtown room census exists before 2023.</p>
           <div class="canvas-wrap" style="height:260px"><canvas id="chart-hotels"></canvas></div>
-          <p class="chart-source"><a href="https://www.plantmuseum.com/" target="_blank">Henry B. Plant Museum</a> · TDP · SPP</p>
+          <p class="chart-source"><a href="https://www.plantmuseum.com/about/history" target="_blank">Henry B. Plant Museum</a> · <a href="https://tourtampabayarchitecture.com/page_23-html/" target="_blank">AIA Tampa Bay</a> · <a href="https://www.tampabay.com/archive/2000/01/10/making-room-for-an-inn/" target="_blank">Tampa Bay Times, 2000</a> · <a href="https://www.visittampabay.com/meeting-planners/convention-center/" target="_blank">Visit Tampa Bay</a></p>
         </div>
       </div>
 
@@ -280,10 +280,10 @@
 
       <div class="chart-grid-2">
         <div class="chart-card reveal-on-scroll">
-          <div class="chart-card-title">Major Development Capital Waves ($B)</div>
-          <p class="chart-desc">Water Street dwarfs prior private waves. Public interstate/renewal capital was transformative in form but not always in livability.</p>
+          <div class="chart-card-title">Major Development Capital — Nominal $M, Log Scale</div>
+          <p class="chart-desc">Each bar is one named project at its reported cost in the dollars of its day: the $3M Tampa Bay Hotel, the $140M Convention Center, the $160M Ice Palace, and the $3B Water Street program. Lighter bars are DERIVED sums. No institutional dollar figure exists for 1960s urban renewal or interstate spending.</p>
           <div class="canvas-wrap" style="height:280px"><canvas id="chart-capital"></canvas></div>
-          <p class="chart-source"><a href="https://www.waterstreettampa.com/" target="_blank">Strategic Property Partners</a> · City of Tampa · TDP</p>
+          <p class="chart-source"><a href="https://www.prnewswire.com/news-releases/strategic-property-partners-llc-begins-construction-on-tampas-first-downtown-trophy-office-tower-in-over-25-years-300881900.html" target="_blank">Strategic Property Partners, 2019</a> · <a href="https://www.plantmuseum.com/about/history" target="_blank">Plant Museum</a> · <a href="https://www.tampabay.com/archive/1990/10/20/convention-center-opens-in-style/" target="_blank">Tampa Bay Times archive</a> · <a href="https://www.tampa.gov/news/2025-10/city-tampa-celebrates-groundbreaking-west-riverwalk-project-175676" target="_blank">City of Tampa</a></p>
         </div>
         <div class="chart-card reveal-on-scroll">
           <div class="chart-card-title">Core Land-Use Share Over Time (%)</div>
@@ -352,8 +352,8 @@
         <a href="https://www.floridamemory.com/discover/photographs/" target="_blank">Florida Memory Photographs</a> ·
         <a href="https://www.loc.gov/collections/sanborn-maps/" target="_blank">LOC Sanborn Maps</a> ·
         <a href="https://commons.wikimedia.org/wiki/Category:Tampa,_Florida" target="_blank">Wikimedia · Tampa</a> ·
-        <a href="https://www.nps.gov/ybor/index.htm" target="_blank">NPS Ybor City</a> ·
-        <a href="https://digital.lib.usf.edu/" target="_blank">USF Digital Collections</a>
+        <a href="https://www.loc.gov/photos/?q=tampa+florida" target="_blank">LOC Prints &amp; Photographs · Tampa</a> ·
+        <a href="https://digitalcommons.usf.edu/" target="_blank">USF Digital Commons</a>
       </p>
     </div>
   </section>
@@ -379,7 +379,7 @@
           </table>
         </div>
         <div style="padding:12px 20px">
-          <p class="chart-source">Sources: City of Tampa · Tampa Downtown Partnership · NPS Ybor · USF Special Collections · HUD urban renewal literature · FDOT/FHWA interstate histories · Strategic Property Partners</p>
+          <p class="chart-source">Each row carries its own sources: NPS National Register and NHL nominations · City of Tampa CRA plans and annual reports · Tampa Downtown Partnership · Tampa Bay History Center · USF Institute on Black Life · Tampa Bay Times archive</p>
         </div>
       </div>
     </div>
@@ -424,13 +424,13 @@
 
       <div class="footer-stats">
         <div class="footer-stat" style="border-color:#1f9e89">
-          <div class="footer-stat-value" style="color:#1f9e89">~15.5k</div>
-          <div class="footer-stat-delta">up from ~1.8k (1980 est.)</div>
-          <div class="footer-stat-label">Downtown-core residents</div>
+          <div class="footer-stat-value" style="color:#1f9e89">~23,600</div>
+          <div class="footer-stat-delta">up from 8,494 in 2010</div>
+          <div class="footer-stat-label">Downtown residents, 2025</div>
         </div>
         <div class="footer-stat" style="border-color:#35b779">
-          <div class="footer-stat-value" style="color:#35b779">$3.5B+</div>
-          <div class="footer-stat-delta">Water Street program scale</div>
+          <div class="footer-stat-value" style="color:#35b779">$3B</div>
+          <div class="footer-stat-delta">Water Street private investment</div>
           <div class="footer-stat-label">Modern private capital</div>
         </div>
         <div class="footer-stat" style="border-color:#6ece58">
