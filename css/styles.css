@@ -1325,3 +1325,15 @@ a.photo-thumb-wrap { display: block; }
 [data-theme="light"] .hero-viridis-bar { opacity: 0.9; }
 [data-theme="light"] .photo-thumb { filter: none; }
 [data-theme="light"] .chart-card { box-shadow: 0 1px 2px rgba(30,25,15,0.06); }
+
+/* Provenance line under each sandbox stat: which year the figure is from. */
+.stat-card-asof {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+.stat-card-asof.is-far   { color: var(--badge-mixed-fg); }
+.stat-card-asof.is-empty { color: var(--text-muted); opacity: 0.7; font-style: italic; text-transform: none; }

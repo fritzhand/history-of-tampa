@@ -40,14 +40,18 @@ function yearOfOffset(offset) {
   return BASE_YEAR + offset;
 }
 
-function closestByYear(arr, year, yearFn) {
+/* Nearest point in a year-keyed series, but never one that would be a lie:
+   before a series begins there is no figure to show (the slider used to
+   report 511 downtown hotel rooms in 1824, snapped from the 1891 Tampa Bay
+   Hotel), and a point more than `maxGap` years away is too far to stand in
+   for the requested year. Returns null in both cases; callers render "—". */
+function closestByYear(arr, year, { yearFn, maxGap = 40 } = {}) {
   if (!arr || !arr.length) return null;
   const yf = yearFn || (d => d.year);
-  return arr.reduce((best, cur) => {
-    const bd = Math.abs(yf(best) - year);
-    const cd = Math.abs(yf(cur) - year);
-    return cd < bd ? cur : best;
-  });
+  const first = arr.reduce((m, d) => Math.min(m, yf(d)), Infinity);
+  if (year < first) return null;
+  const best = arr.reduce((b, c) => (Math.abs(yf(c) - year) < Math.abs(yf(b) - year) ? c : b));
+  return Math.abs(yf(best) - year) > maxGap ? null : best;
 }
 
 function eraStatus(year) {
@@ -583,13 +587,29 @@ function updateSlider(offset) {
     badge.style.color = PC[status] || V.v5;
   }
 
-  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-  set('stat-city-pop', fmtNum(city?.pop));
-  set('stat-dt-pop',   fmtNum(dt?.residents));
-  set('stat-port',     String(port?.index ?? '—'));
-  set('stat-cigar',    cig?.millions != null ? cig.millions + 'M' : '—');
-  set('stat-commerce', String(com?.index ?? '—'));
-  set('stat-hotels',   fmtNum(hot?.rooms));
+  /* Each card shows the figure and the year it actually comes from, so a
+     nearest-point stand-in is never mistaken for a reading of this year. */
+  const set = (id, point, value) => {
+    const e = document.getElementById(id);
+    if (e) e.textContent = point ? value : '—';
+    const a = document.getElementById(id + '-asof');
+    if (!a) return;
+    if (!point) {
+      a.textContent = year < 1850 ? 'no series this early' : 'no nearby figure';
+      a.className = 'stat-card-asof is-empty';
+      return;
+    }
+    const gap = Math.abs(point.year - year);
+    const est = point.estimate || (point.source && point.source.verificationStatus === 'DERIVED');
+    a.textContent = (gap === 0 ? `${point.year}` : `as of ${point.year}`) + (est ? ' · est.' : '');
+    a.className = 'stat-card-asof' + (gap > 12 ? ' is-far' : '');
+  };
+  set('stat-city-pop', city, fmtNum(city?.pop));
+  set('stat-dt-pop',   dt,   fmtNum(dt?.residents));
+  set('stat-port',     port, String(port?.index ?? '—'));
+  set('stat-cigar',    cig,  cig?.millions != null ? cig.millions + 'M' : '—');
+  set('stat-commerce', com,  String(com?.index ?? '—'));
+  set('stat-hotels',   hot,  fmtNum(hot?.rooms));
 
   const evH = document.getElementById('sandbox-event-headline');
   const evB = document.getElementById('sandbox-event-body');
