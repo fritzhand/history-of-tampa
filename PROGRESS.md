@@ -20,10 +20,10 @@ sources, and the timeline events still carry free-text citations.
 | Plan phase (§10) | Status | Notes |
 |---|---|---|
 | A — Skeleton fork, `tampaData`, map recenter, year scrubber | **done** | Slider runs 1824–2024; eight civic eras replace the conflict phases |
-| B — Eras, `mapEvents`, `scrollSteps` | **partial** | 20 events and 15 steps exist and are navigable; dates, coordinates and citations are being verified |
+| B — Eras, `mapEvents`, `scrollSteps` | **done** | 26 events and 15 steps, every date and claim verified, every event carrying a source object; coordinates corrected by up to 1.2 km |
 | C1 — Population and permits | **done (population)** | City and county series fully cited to Census tables; permits not started |
 | C2 — Year-slider sandbox | **done** | Six stat cards, two synced charts, era-coloured map |
-| C3 — Urban renewal and displacement | **not started** | Section and chart are built and hidden until the data exists; this is the largest remaining gap |
+| C3 — Urban renewal and displacement | **done** | Federal urban renewal figures for all three Tampa projects, the two interstates, Central Park Village and the Selmon corridor, plus the 1936 redlining survey |
 | C4 — Water Street and modern boom metrics | **done** | Capital and hotel series rebuilt from named, sourced projects |
 | C5 — Sankeys | **partial** | Both render; flow weights remain a DERIVED editorial model |
 | C6 — Impact matrix | **done** | Nine districts, each with institutional source objects |
@@ -36,13 +36,14 @@ Counted by `node tools/validate-data.mjs`:
 
 | Verification status | Sources |
 |---|---|
-| CONFIRMED | 80 |
-| PENDING | 38 |
-| DERIVED | 7 |
+| CONFIRMED | 102 |
+| PENDING | 42 |
+| DERIVED | 31 |
 
-Twenty `mapEvents` still carry a free-text `source` string rather than a
-source object; the validator reports each as a warning. The site renders a
-live version of this table in its own **Source Audit** section.
+The validator reports no errors and one warning, for the Port Tampa event,
+which is genuinely nine miles outside the downtown study area and says so in
+its own note. The site renders a live version of this table in its own
+**Source Audit** section.
 
 ## Done in this pass
 
@@ -71,25 +72,39 @@ live version of this table in its own **Source Audit** section.
   the NHL nomination and City CRA reports.
 - **Media layer built.** The six fabricated thumbnails were replaced with 42
   verified images and a rights policy in `CONTENT_LICENSE.md`.
+- **Displacement documented.** The site now prints what redevelopment
+  removed beside what it built: 309.6 acres, 2,223 dwellings and 1,242
+  families across three federal urban renewal projects, 91.7 per cent of the
+  families recorded as non-white, against $36.8M in federal grants approved.
+  Sources are the federal Urban Renewal Project Characteristics quarterlies
+  and HUD's Urban Renewal Directory as digitised by the University of
+  Richmond, cross-checked against Robert Kerstein's 1997 article. Where
+  sources disagree, both figures are printed and neither is averaged.
+- **Timeline verified.** All 26 events carry source objects; ten dates or
+  coordinates were corrected, and six events were added, including the 1959
+  Scrub clearance and the 1960 Woolworth sit-in.
 - **Interface work.** Key-free basemap (the CARTO tiles now watermark
   anonymous use), clickable era pills with a locked scroll observer, a
   sticky legend, a pinned mobile map, a light/dark theme, and a project logo.
 
 ## Next
 
-1. **Displacement figures (plan C3).** The ethical guardrail requires
-   clearance and displacement numbers printed beside redevelopment
-   investment. Research is in flight; the section is built and waiting.
-2. **Timeline events.** Verify all 20 dates and coordinates and replace the
-   free-text citations with source objects.
-3. **Port and cigar series.** Both are invented indices. Replace with Army
-   Corps waterborne-commerce tonnage and sourced cigar output.
-4. **The three conceptual indices.** `commercialIntensity`, `landUseShare`
-   and `disruptionIndex` need either real data from City of Tampa parcel GIS
-   and Sanborn digitisation, an explicit DERIVED methodology note, or
-   removal.
-5. **New series.** Streetcar ridership, Riverwalk milestones, residential
-   units delivered, and CRA tax increment.
+1. **Port and cigar series.** Both are still invented 0–100 indices.
+   Replace with Army Corps waterborne-commerce tonnage and sourced cigar
+   output. Research in flight.
+2. **The three conceptual indices.** `commercialIntensity`, `landUseShare`
+   and `disruptionIndex` now carry honest DERIVED methodology notes, but
+   they should be rebuilt from City of Tampa parcel GIS and a Sanborn
+   digitisation. The displacement research makes two `disruptionIndex` rows
+   replaceable with real quantities today.
+3. **New series.** Streetcar ridership, Riverwalk milestones, residential
+   units delivered, and CRA tax increment. Research in flight.
+4. **Pre-1970 downtown residents.** Four points remain PENDING estimates
+   with no tract data behind them.
+5. **Follow-ups the displacement research named.** OCR the Tampa pages of
+   the federal Urban Renewal Project Characteristics quarterlies to cite the
+   document directly rather than through the Digital Scholarship Lab, and
+   check the USF Roberts City photograph collection for the media layer.
 
 ## Working with the repo
 

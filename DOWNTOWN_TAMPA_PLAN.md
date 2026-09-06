@@ -331,19 +331,20 @@ Downtown Tampa history includes **forced displacement, segregation, and urban re
 Status as of 2026-09-06 — see `PROGRESS.md` for the detail behind each line.
 
 - [x] Phase A: Project rename + `tampaData` stub + map recenter
-- [~] Phase B: Eras + 20 `mapEvents` + 15 scroll steps — built and navigable; dates, coordinates and citations still being verified
+- [x] Phase B: Eras + 26 `mapEvents` + 15 scroll steps — every date and claim verified against an institutional source, every event carrying a source object
 - [~] Phase C1: Census population (done, fully cited) + permits charts (not started)
 - [x] Phase C2: Year slider sandbox wiring
-- [ ] Phase C3: Urban renewal / displacement section — section and chart built, hidden until sourced figures exist; **largest remaining gap**
+- [x] Phase C3: Urban renewal / displacement section — federal figures for all three urban renewal projects, both interstates, Central Park Village and the Selmon corridor, plus the 1936 redlining survey
 - [x] Phase C4: Water Street / modern boom metrics
 - [~] Phase C5: Sankeys — both render; flow weights remain a DERIVED editorial model
 - [x] Phase D: Media assets + popup integration — 42 rights-cleared images + LOC Sanborn index
 - [x] Phase C6: Impact matrix — nine districts, each with institutional sources
 - [~] Phase E: README + `CONTENT_LICENSE.md` + live source audit + link checker + headless QA done; citation audit continuing
 
-Still-conceptual data to replace or label: `portActivity` and
-`cigarProduction` (invented indices), plus `commercialIntensity`,
-`landUseShare` and `disruptionIndex`.
+Still-conceptual data: `portActivity` and `cigarProduction` are invented
+indices awaiting real tonnage and output figures. `commercialIntensity`,
+`landUseShare` and `disruptionIndex` now carry explicit DERIVED methodology
+notes but should still be rebuilt from parcel GIS and Sanborn digitisation.
 
 ---
 
