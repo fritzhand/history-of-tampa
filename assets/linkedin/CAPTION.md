@@ -1,80 +1,82 @@
 # LinkedIn post -- Downtown Tampa
 
-Seven cards in `assets/linkedin/` at 1080×1350 (4:5), numbered in reading order. Upload as a
-multi-image post (LinkedIn keeps filename order) and paste the caption below,
-or post `downtown-tampa-carousel.pdf` as a single LinkedIn document.
+Ten cards in `assets/linkedin/` at 1080x1350 (4:5), numbered in reading order.
+Upload as a multi-image post (LinkedIn keeps filename order) and paste the
+caption below, or post `downtown-tampa-carousel.pdf` as a single document.
 
-Every figure in the caption is CONFIRMED in `js/data.js` or countable from the
-repository itself. The photographs on cards 01 and 02 are pulled from
-`mediaAssets` at render time, credit line included, so a card can never claim a
-rights status the media layer does not carry.
+The cards are era-led: one photograph and a short account of the period. Every
+photograph is pulled from `mediaAssets` at render time with its credit line, so
+a card cannot claim a rights status the media layer does not carry. Every date
+on a card is cited in `js/data.js`.
 
 ---
 
 ## Caption -- full version
 
-I spent this past weekend building a thing. It is now open source.
+I spent a weekend building something for the fun of it, and it is now open
+source.
 
-"Downtown Tampa: A Civic Development Autopsy" is a scrollytelling map of 200
-years of downtown Tampa, from Fort Brooke in 1824 to Water Street today.
-Eight eras, a year slider, 42 archival photographs, and 257 cited sources.
+"Downtown Tampa: A Civic Development Autopsy" walks two hundred years of
+downtown Tampa as a scrolling map, from Fort Brooke in 1824 to Water Street
+today.
 
 fritzhand.github.io/history-of-tampa
 
-The part I actually care about is not the map. It is that every figure on the
-page declares how much you should trust it:
+Eight eras, and a photograph from each:
 
-- 168 CONFIRMED. The cited page states the figure.
-- 42 PENDING. The institution is right, the figure was not read there.
-- 47 DERIVED. An editorial reconstruction, with its inputs named.
+- Fortress, 1824 to 1883. The Army plants Fort Brooke at the mouth of the
+Hillsborough River, and the reservation's parade ground and wharf set the lines
+the downtown grid still follows.
+- Boomtown, 1884 to 1914. Plant's railroad arrives and ends the town's
+isolation, Martinez-Ybor builds a planned cigar city, and the Tampa Bay Hotel
+opens in 1891.
+- Metropolis, 1915 to 1929. Phosphate, streetcars, department stores, and the
+Tampa Theatre in 1926.
+- Depression and War, 1929 to 1945. The land boom breaks in 1926, two years
+ahead of Wall Street, then shipbuilding and MacDill remake the bayfront.
+- Postwar, 1946 to 1985. The car pulls retail outward, and downtown answers
+with civic building.
+- Revival, 1986 to 2008. Convention centre, aquarium, arena.
+- Waterfront, 2009 to 2024. The Riverwalk closes its last gap in 2015 and
+becomes one continuous 2.6 mile spine.
 
-So when the site says streetcar ridership went from 424,302 in its last full
-year with fares to 878,343 in its first fare-free year, you can click through
-to the federal National Transit Database and check me. Most civic history is a
-plaque you walk past. This one has footnotes.
+There are 42 archival photographs in it, from 1837 to 2024. All public domain
+or openly licensed, all credited on the page.
 
 Credit where it is owed. I did not invent this format. It is a domain fork of
 "The 2026 Iran War: A Geoeconomic Autopsy" by Sahasrik Ragani at Ahmedabad
-University, built for the Stepwell Centre for Asian Futures. Same
-architecture, same citation standard, different subject. Go read the
-original, it is genuinely excellent: chromadharma.github.io/iranwar
+University. Go read the original, it is genuinely excellent:
+chromadharma.github.io/iranwar
 
-Two asks.
+Have a look and tell me what you think. Tampa Bay people especially, tell me
+what I missed.
 
-1. Have a look and tell me what you think. Tampa Bay people especially, tell
-me what I got wrong. That is the entire point of putting the sources on the
-page.
-
-2. Fork it and do your city. Code is CC0, data is CC BY 4.0. Every city has a
-clearance decade, a highway that went through somebody, and a waterfront
-somebody is selling. Keep index.html and app.js, rewrite the data layer, run
-the validator, publish to GitHub Pages. If you build one, send me the link.
+And if you want to do this for your own city, the whole thing is open. Every
+place has a founding, a boom, a bust and a rebuild. Fork it and send me the
+link.
 
 github.com/fritzhand/history-of-tampa
 
-#OpenData #DataJournalism #UrbanHistory #TampaBay #OpenSource
+#Tampa #TampaBay #LocalHistory #OpenSource #Photography
 
 ---
 
 ## Caption -- short version
 
-Weekend project, now open source: 200 years of downtown Tampa as a
-scrollytelling map with 257 cited sources, from Fort Brooke in 1824 to Water
-Street today.
+Weekend project, now open source: two hundred years of downtown Tampa as a
+scrolling map, from Fort Brooke in 1824 to Water Street today.
 
 fritzhand.github.io/history-of-tampa
 
-Every figure on the page declares how much you should trust it. 168
-CONFIRMED, 42 PENDING, 47 DERIVED. So when it says streetcar ridership more
-than doubled the year the fare went away, from 424,302 to 878,343, you can
-click through to the federal transit records and check me.
+Eight eras, 42 archival photographs from 1837 onward, and a timeline you can
+drag across two centuries. A fort becomes a railroad town, a cigar capital, a
+phosphate port, and a waterfront city.
 
 I did not invent this format. It is a domain fork of "The 2026 Iran War: A
 Geoeconomic Autopsy" by Sahasrik Ragani at Ahmedabad University. Go read the
 original: chromadharma.github.io/iranwar
 
-Have a look and tell me what you think. Then fork it and do your city. Code
-is CC0, data is CC BY 4.0. If you build one, send me the link.
+Have a look and tell me what you think. Then fork it and do your own city.
 
 github.com/fritzhand/history-of-tampa
 
@@ -82,32 +84,31 @@ github.com/fritzhand/history-of-tampa
 
 ## First comment (optional)
 
-Worth naming the sources this leans on hardest: the University of Richmond
-Digital Scholarship Lab, whose "Renewing Inequality" and "Mapping Inequality"
-projects digitised the federal urban renewal and redlining records; Robert
-Kerstein's 1997 Tampa Bay History article, which the federal series
-cross-checks against almost to the unit; Florida Memory, USF Libraries and
-the Library of Congress for the photography; and the City of Tampa's own CRA
-reporting.
+On the photographs: they come from Florida Memory and the State Archives of
+Florida, the Burgert Brothers collection, the Library of Congress, USF
+Libraries and Wikimedia Commons. Everything on the page is public domain or
+openly licensed, with the credit line printed next to the image rather than
+buried in a colophon.
 
-The gaps are on the page too. The port and cigar series are still index
-numbers rather than real tonnage and output, and four pre-1970 downtown
-population figures have no tract data behind them. Those are marked, not
-hidden.
+If you know Tampa's history better than I do, and plenty of people do, the
+timeline is the part I would most like corrections on.
 
 ---
 
 ## Card order
 
-| # | File | What it does |
-|---|---|---|
-| 01 | `01-cover.png` | Title, era ribbon, weekend framing, a 1925 streetcar |
-| 02 | `02-premise.png` | A plaque versus 257 footnotes; 1920s street, 1926 and 2022 towers |
-| 03 | `03-receipts.png` | The citation standard, 168 / 42 / 47 |
-| 04 | `04-ledger.png` | $36.8M federal against $3B private, and the $100M of public money in the rebuild |
-| 05 | `05-inside.png` | What is in the repo, and the weekend's commit count |
-| 06 | `06-credit.png` | Sahasrik Ragani and the original project |
-| 07 | `07-fork.png` | Fork it, do your city, four steps |
+| # | File | Era | Photograph |
+|---|---|---|---|
+| 01 | `01-cover.png` | Title and the full span | 1925 streetcar on Grand Central Avenue |
+| 02 | `02-fortress.png` | Fortress, 1824-1883 | Fort Brooke, 1837 lithograph |
+| 03 | `03-boomtown.png` | Boomtown, 1884-1914 | V. M. Ybor cigar factory, c. 1902 |
+| 04 | `04-metropolis.png` | Metropolis, 1915-1929 | Franklin and Lafayette Streets, c. 1920s |
+| 05 | `05-depression.png` | Depression and War, 1929-1945 | "Skyline by Moonlight" postcard, c. 1930s |
+| 06 | `06-postwar.png` | Postwar, 1946-1985 | Curtis Hixon Hall, 1965 |
+| 07 | `07-revival.png` | Revival, 1986-2008 | Channelside Bay Plaza, 2007 |
+| 08 | `08-waterfront.png` | Waterfront, 2009-2024 | The Tampa Riverwalk, 2021 |
+| 09 | `09-credit.png` | -- | Sahasrik Ragani and the original project |
+| 10 | `10-explore.png` | -- | Read it, then do your city |
 
-Single-file alternative: `downtown-tampa-carousel.pdf`, seven 1080×1350 pages,
-vector text. LinkedIn renders it as a swipeable document post.
+Single-file alternative: `downtown-tampa-carousel.pdf`, ten 1080x1350 pages,
+vector text.

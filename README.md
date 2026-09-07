@@ -24,7 +24,7 @@ project subpath.
 | Live source audit | Every institution, its data points, and their verification status |
 | Light / dark theme | Toggle in the nav, remembered between visits |
 | Share metadata | Open Graph, Twitter Card and schema.org Article, with a rendered 1200×630 card |
-| Promo carousel | Seven 1080×1350 LinkedIn cards, plus a vector PDF edition |
+| Promo carousel | Ten 1080×1350 era cards, plus a vector PDF edition |
 | Scroll assist | Floating arrows that walk the page, and the map narrative step by step |
 | Section drawer | A hamburger table of contents built from the page's own sections |
 | About | What the project is, how the evidence is graded, and how to reuse it |
@@ -54,7 +54,7 @@ tools/media-roll.mjs                # regenerates the CONTENT_LICENSE media tabl
 tools/check-meta.mjs                # social + structured metadata check
 tools/og-card.html                  # source of the 1200×630 share card
 tools/render-card.mjs               # renders that card to assets/og-image.png
-tools/linkedin-cards.html           # source of the seven 1080×1350 promo cards
+tools/linkedin-cards.html           # source of the ten 1080×1350 era cards
 tools/render-linkedin.mjs           # renders those to assets/linkedin/*.png
 tools/render-linkedin-pdf.mjs       # renders the same cards to a vector PDF
 assets/                             # og-image, favicons, author portrait
@@ -88,17 +88,18 @@ fine) and from Wikimedia's rate limit.
 
 ## Promo collateral
 
-`assets/linkedin/` holds a seven-card carousel at 1080×1350, LinkedIn's 4:5 portrait,
+`assets/linkedin/` holds a ten-card carousel at 1080×1350, LinkedIn's 4:5 portrait,
 as both PNGs and a vector PDF for a document post,
 plus [`CAPTION.md`](./assets/linkedin/CAPTION.md) with the post copy and the
 card order. The cards are generated, not hand-drawn: `tools/linkedin-cards.html`
 is the source and `node tools/render-linkedin.mjs` renders it, so the carousel
 and the Open Graph card share one palette and one type scale.
 
-Every figure on a card is `CONFIRMED` in `js/data.js`, countable from the
-repository (commit counts, `tools/validate-data.mjs`), or a `DERIVED` total that
-says so on the card itself. A number burned into a PNG is the one claim a reader
-can never re-check, so nothing goes on a card the site cannot defend. The
+The cards are era-led: one archival photograph and a short account of the
+period, one card per era. Photographs are pulled from `mediaAssets` at render
+time together with their credit line, so a card cannot claim a rights status the
+media layer does not carry, and every date on a card is cited in `js/data.js`.
+The
 renderer fails if a card overflows its 1080×1350 box, because clipped copy would
 otherwise ship silently, and it fails again if any photograph is displayed at an
 aspect more than 2% from the source file's own — a crop, on pictures composed to

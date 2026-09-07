@@ -174,6 +174,11 @@
     white-space: nowrap; min-width: 0; overflow: hidden; padding-right: 13px;
   }
   .era-names span:last-child { padding-right: 0; text-align: right; }
+  /* On an era card the ribbon stops being decoration and becomes a position
+     marker: the era in question stays lit, the other seven step back. */
+  .era-bar[data-active] span.off   { opacity: .22; }
+  .era-names[data-active] span.off { opacity: .38; }
+  .era-names[data-active] span.on  { color: var(--ink); font-weight: 700; }
 
   /* Print/PDF: one card per page at 1080x1350, no gutter, no scaled paper.
      tools/render-linkedin-pdf.mjs sets the same 1080x1350 page box, so the
@@ -185,45 +190,9 @@
     .card:last-child { break-after: auto; page-break-after: auto; }
   }
 
-  /* ---- figure rails ---- */
-  .figures { display: grid; gap: 30px 34px; }
-  .figures.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .figures.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .fig-item { min-width: 0; }
-  .fig-num  { font-size: 54px; font-weight: 700; line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
-  .fig-num.sm { font-size: 42px; }
-  .fig-label { margin-top: 10px; font-size: 12.5px; font-weight: 500; text-transform: uppercase;
-               color: var(--muted); line-height: 1.35; }
-  .ox .fig-num { color: var(--oxblood); }
-  .steel .fig-num { color: var(--steel); }
 
-  /* ---- the citation-tier block on card 03 ---- */
-  .tiers { display: flex; flex-direction: column; gap: 26px; }
-  .tier { display: grid; grid-template-columns: 132px 1fr; gap: 26px; align-items: start; }
-  .tier-n { font-size: 52px; font-weight: 700; line-height: .9; letter-spacing: -.02em; text-align: right; }
-  .tier-name { font-size: 16px; font-weight: 700; text-transform: uppercase; line-height: 1; }
-  .tier-def { margin-top: 9px; font-size: 19px; line-height: 1.45; color: var(--ink-2); }
-  .tier-c .tier-n, .tier-c .tier-name { color: var(--steel); }
-  .tier-p .tier-n, .tier-p .tier-name { color: var(--gold); }
-  .tier-d .tier-n, .tier-d .tier-name { color: var(--muted); }
 
-  /* ---- the inventory list on card 06 ---- */
-  .inv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 40px; }
-  .inv-item { display: grid; grid-template-columns: 74px 1fr; gap: 18px; align-items: baseline; min-width: 0; }
-  .inv-n { font-size: 30px; font-weight: 700; line-height: 1; letter-spacing: -.02em; color: var(--steel); text-align: right; }
-  .inv-t { font-size: 17px; line-height: 1.35; color: var(--ink-2); }
 
-  /* ---- the ledger on card 05 ---- */
-  .ledger { display: grid; grid-template-columns: 1fr 92px 1fr; align-items: center; gap: 0; }
-  .led-side { min-width: 0; }
-  .led-era { font-size: 13px; font-weight: 700; text-transform: uppercase; line-height: 1; }
-  .led-amt { margin-top: 16px; font-size: 84px; font-weight: 700; line-height: .92; letter-spacing: -.03em; }
-  .led-what { margin-top: 14px; font-size: 17px; line-height: 1.45; color: var(--ink-2); }
-  .led-src { margin-top: 14px; font-size: 11.5px; font-weight: 500; text-transform: uppercase;
-             color: var(--faint); line-height: 1.4; }
-  .led-then .led-era, .led-then .led-amt { color: var(--oxblood); }
-  .led-now  .led-era, .led-now .led-amt  { color: var(--steel); }
-  .led-arrow { text-align: center; font-size: 40px; color: var(--rule); line-height: 1; }
 
   /* ---- credit card 07 ---- */
   .credit-quote {
@@ -239,14 +208,6 @@
   .card.dark .attrib-url { color: #8FB4D4; }
 
   /* ---- fork card 08 ---- */
-  .steps { display: flex; flex-direction: column; gap: 22px; }
-  .step { display: grid; grid-template-columns: 52px 1fr; gap: 22px; align-items: baseline; }
-  .step-n { font-size: 26px; font-weight: 700; color: var(--steel); line-height: 1.2; text-align: right; }
-  .card.dark .step-n { color: #8FB4D4; }
-  .step-t { font-size: 21px; line-height: 1.45; color: var(--ink-2); }
-  .card.dark .step-t { color: #D8D2C6; }
-  .step-t b { font-weight: 600; color: var(--ink); }
-  .card.dark .step-t b { color: #F4F1EA; }
   .licence {
     margin-top: 30px; align-self: flex-start; display: inline-flex; align-items: baseline; gap: 14px;
     border: 2px solid var(--ink); padding: 14px 22px;
@@ -259,30 +220,22 @@
 </head>
 <body>
 
-<!-- ══════════════════════ 01 · COVER ══════════════════════ -->
 <div class="card" data-card="01-cover">
   <header class="masthead">
     <div class="imprint">
       <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
-        <rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
-        <rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
-        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/>
-        <circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
-      </svg>
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
       <div class="imprint-text">
         <div class="imprint-name t3">Open Civic Archive</div>
         <div class="imprint-sub t2">Downtown Tampa &middot; 1824&ndash;2024</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>01</b> / 07</div>
+    <div class="pagenum t2"><b>01</b> / 10</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -295,65 +248,69 @@
     <div class="deck" style="margin-top: 10px; margin-left: 4px; font-size: 52px;">A Civic Development Autopsy</div>
   </div>
 
-  <p class="body" style="margin-top: 26px; max-width: 980px; font-size: 21px;">
-    An open-data scrollytelling history of how a fort at a river mouth became a cigar capital,
-    then a cleared grid, then a $3&nbsp;billion waterfront. Every figure cited. Every photograph
-    rights-cleared.
+  <p class="body" style="margin-top: 26px; max-width: 940px; font-size: 21px;">
+    A fort at a river mouth becomes a railroad town, a cigar capital, a phosphate port, and a
+    waterfront city &mdash; told as a scrolling map through eight eras, with archival photography
+    from each of them.
   </p>
 
   <div class="weekend" style="margin-top: 22px;">
     <span class="wk-rule"></span>
-    <span class="wk-text t2">Built over one weekend &middot; 29 commits, Saturday night to Sunday afternoon</span>
+    <span class="wk-text t2">An open-source weekend project</span>
   </div>
 
-  <div class="shots" style="margin-top: 20px;">
-    <figure class="shot band" data-media="streetcar-1925"></figure>
+  <div class="shots row" data-h="580" style="margin-top: 24px;">
+    <figure class="shot row" data-media="streetcar-1925"></figure>
   </div>
 
   <div class="spacer"></div>
 
   <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
   <div class="era-bar">
-    <span style="flex:60;background:var(--era-fortress)"></span>
-    <span style="flex:31;background:var(--era-boomtown)"></span>
-    <span style="flex:14;background:var(--era-metropolis)"></span>
-    <span style="flex:16;background:var(--era-depression)"></span>
-    <span style="flex:18;background:var(--era-suburban)"></span>
-    <span style="flex:23;background:var(--era-renewal)"></span>
-    <span style="flex:23;background:var(--era-revival)"></span>
-    <span style="flex:16;background:var(--era-waterfront)"></span>
+    <span style="flex:60;background:var(--era-fortress)" data-era="fortress"></span>
+    <span style="flex:31;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:14;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:18;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:16;background:var(--era-waterfront)" data-era="waterfront"></span>
   </div>
   <div class="era-names t1">
-    <span style="flex:60">Fortress</span><span style="flex:31">Boomtown</span>
-    <span style="flex:14">Metropolis</span><span style="flex:16">Depression</span>
-    <span style="flex:18">Suburban</span><span style="flex:23">Renewal</span>
-    <span style="flex:23">Revival</span><span style="flex:16">Waterfront</span>
+    <span style="flex:60" data-era="fortress">Fortress</span>
+    <span style="flex:31" data-era="boomtown">Boomtown</span>
+    <span style="flex:14" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:18" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:16" data-era="waterfront">Waterfront</span>
   </div>
 
-  <div style="margin-top: 34px;" class="foot-rule"></div>
+  <div style="margin-top: 30px;"></div>
+  <div class="foot-rule"></div>
   <div class="footline t1">
-    <span>By Jeremy Fritzhand &middot; Open source, CC0</span>
+    <span>By Jeremy Fritzhand &middot; Free to read and reuse</span>
     <span class="url">fritzhand.github.io/history-of-tampa</span>
   </div>
 </div>
 
-<!-- ══════════════════════ 02 · THE PREMISE ══════════════════════ -->
-<div class="card" data-card="02-premise">
+<div class="card" data-card="02-fortress">
   <header class="masthead">
     <div class="imprint">
       <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
-        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
-      </svg>
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
       <div class="imprint-text">
         <div class="imprint-name t3">Open Civic Archive</div>
-        <div class="imprint-sub t2">The premise</div>
+        <div class="imprint-sub t2">Era one of eight</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>02</b> / 07</div>
+    <div class="pagenum t2"><b>02</b> / 10</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -361,154 +318,43 @@
   <div class="spacer-top"></div>
 
   <div>
-    <div class="kicker t4">Why build this</div>
-    <h1 style="margin-top: 26px; margin-left: -10px; font-size: 88px;">Most civic history<br />is a plaque you<br />walk past.</h1>
-    <div class="deck" style="margin-top: 22px; margin-left: 4px; font-size: 50px;">This one has 257 footnotes.</div>
+    <div class="kicker t4">1824 &ndash; 1883</div>
+    <h1 style="margin-top: 20px; margin-left: -8px; font-size: 86px;">Fortress</h1>
   </div>
 
-  <p class="body" style="margin-top: 26px; max-width: 1010px; font-size: 20px;">
-    A city's development story usually arrives as a marker on a sidewalk or a paragraph in a
-    strategic plan &mdash; a claim with nothing behind it you can check. This is the same story
-    told the way a dataset is told: <b>every number carries the institution, the date and the
-    URL it came from</b>, and says out loud how confident it is.
-  </p>
-
-  <div class="shots row" data-h="300" style="margin-top: 26px;">
-    <figure class="shot row" data-media="franklin-lafayette"></figure>
-    <figure class="shot row" data-media="citizens-bank-1926"></figure>
-    <figure class="shot row" data-media="heron-2022"></figure>
+  <div class="shots row" data-h="550" style="margin-top: 26px;">
+    <figure class="shot row" data-media="fort-brooke-1837"></figure>
   </div>
 
-  <div class="spacer"></div>
-
-  <div class="foot-rule"></div>
-  <div class="figures c3" style="margin-top: 26px;">
-    <div class="fig-item"><div class="fig-num">26</div><div class="fig-label t1">Mapped events,<br />each with a source</div></div>
-    <div class="fig-item"><div class="fig-num">15</div><div class="fig-label t1">Narrative steps<br />over a sticky map</div></div>
-    <div class="fig-item"><div class="fig-num">42</div><div class="fig-label t1">Archival photographs,<br />rights-cleared &amp; credited</div></div>
-  </div>
-</div>
-
-<!-- ══════════════════════ 03 · THE RECEIPTS ══════════════════════ -->
-<div class="card" data-card="03-receipts">
-  <header class="masthead">
-    <div class="imprint">
-      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
-        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
-      </svg>
-      <div class="imprint-text">
-        <div class="imprint-name t3">Open Civic Archive</div>
-        <div class="imprint-sub t2">The citation standard</div>
-      </div>
-    </div>
-    <div class="pagenum t2"><b>03</b> / 07</div>
-  </header>
-
-  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
-
-  <div class="spacer-top"></div>
-
-  <div>
-    <div class="kicker t4">The part I actually care about</div>
-    <h1 style="margin-top: 28px; margin-left: -8px; font-size: 92px;">Every figure<br />declares how<br />much to trust it.</h1>
-  </div>
-
-  <p class="body" style="margin-top: 38px; max-width: 1010px; font-size: 21px;">
-    Data projects fail quietly: a confident number, no provenance, and no way to tell a
-    census table from a guess. So every source object here carries a verification status,
-    and the site prints the running count of each.
-  </p>
-
-  <div class="tiers" style="margin-top: 52px;">
-    <div class="tier tier-c">
-      <div class="tier-n">168</div>
-      <div>
-        <div class="tier-name t2">Confirmed</div>
-        <div class="tier-def">The cited page states the figure. Hero and footer numbers are this tier only.</div>
-      </div>
-    </div>
-    <div class="tier tier-p">
-      <div class="tier-n">42</div>
-      <div>
-        <div class="tier-name t2">Pending</div>
-        <div class="tier-def">The institution is right; the figure was not read there. Still visible, still flagged.</div>
-      </div>
-    </div>
-    <div class="tier tier-d">
-      <div class="tier-n">47</div>
-      <div>
-        <div class="tier-name t2">Derived</div>
-        <div class="tier-def">An editorial reconstruction. Its note names every input it was built from.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="spacer"></div>
-
-  <div class="foot-rule"></div>
-  <div class="footline t1">
-    <span>257 sources &middot; audited live on the page &middot; <span style="text-transform:none;letter-spacing:.05em">node tools/validate-data.mjs</span></span>
-    <span class="url">fritzhand.github.io/history-of-tampa</span>
-  </div>
-</div>
-
-<!-- ══════════════════════ 05 · THE LEDGER ══════════════════════ -->
-<div class="card" data-card="04-ledger">
-  <header class="masthead">
-    <div class="imprint">
-      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
-        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
-      </svg>
-      <div class="imprint-text">
-        <div class="imprint-name t3">Open Civic Archive</div>
-        <div class="imprint-sub t2">The same ground, sixty years apart</div>
-      </div>
-    </div>
-    <div class="pagenum t2"><b>04</b> / 07</div>
-  </header>
-
-  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
-
-  <div class="spacer-top"></div>
-
-  <div>
-    <div class="kicker t4">A comparison, and the figure that complicates it</div>
-    <h1 style="margin-top: 28px; margin-left: -8px; font-size: 92px;">Public money<br />cleared it. Public<br />money is helping<br />rebuild it.</h1>
-  </div>
-
-  <div class="ledger" style="margin-top: 66px;">
-    <div class="led-side led-then">
-      <div class="led-era t2">1957 &ndash; 1974 &middot; Federal</div>
-      <div class="led-amt">$36.8M</div>
-      <div class="led-what">In urban renewal grants approved for Tampa. <b>$28.2M</b> of it was actually disbursed.</div>
-      <div class="led-src t1">HUD Urban Renewal Directory, June 1974<br />via U. of Richmond DSL</div>
-    </div>
-    <div class="led-arrow">&rarr;</div>
-    <div class="led-side led-now">
-      <div class="led-era t2">2019 &middot; Private</div>
-      <div class="led-amt">$3B</div>
-      <div class="led-what">Announced private investment in Water Street Tampa &mdash; against <b>up to $100M</b> in CRA infrastructure reimbursement pledged by the city and county.</div>
-      <div class="led-src t1">Strategic Property Partners, 9 July 2019<br />Public share: $50M city + $50M county</div>
-    </div>
-  </div>
-
-  <p class="body" style="margin-top: 56px; max-width: 1010px; font-size: 20px; color: var(--muted);">
-    The tidy version of this story is that public money cleared the ground and private money
-    rebuilt it. The site's own data will not support that: both sides of the ledger have public
-    money in them. Nominal dollars, no averaging, no conversion &mdash; and the caveat printed
-    next to the number it qualifies.
+  <p class="body" style="margin-top: 26px; max-width: 940px; font-size: 21px;">
+    The U.S. Army plants Fort Brooke at the mouth of the Hillsborough River in 1824. The reservation’s parade ground and wharf set the lines the downtown street grid still follows. The village incorporates in 1849, the Town of Tampa is organised in 1853, and the first City of Tampa charter follows in December 1855.
   </p>
 
   <div class="spacer"></div>
 
+  <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
+  <div class="era-bar" data-active="fortress">
+    <span style="flex:60;background:var(--era-fortress)" data-era="fortress"></span>
+    <span style="flex:31;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:14;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:18;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:16;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="fortress">
+    <span style="flex:60" data-era="fortress">Fortress</span>
+    <span style="flex:31" data-era="boomtown">Boomtown</span>
+    <span style="flex:14" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:18" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:16" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 28px;"></div>
   <div class="foot-rule"></div>
   <div class="footline t1">
     <span>Downtown Tampa: A Civic Development Autopsy</span>
@@ -516,23 +362,22 @@
   </div>
 </div>
 
-<!-- ══════════════════════ 06 · WHAT'S INSIDE ══════════════════════ -->
-<div class="card" data-card="05-inside">
+<div class="card" data-card="03-boomtown">
   <header class="masthead">
     <div class="imprint">
       <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
-        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
-      </svg>
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
       <div class="imprint-text">
         <div class="imprint-name t3">Open Civic Archive</div>
-        <div class="imprint-sub t2">What is in the box</div>
+        <div class="imprint-sub t2">Era two of eight</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>05</b> / 07</div>
+    <div class="pagenum t2"><b>03</b> / 10</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -540,53 +385,401 @@
   <div class="spacer-top"></div>
 
   <div>
-    <div class="kicker t4">Static site &middot; no build step &middot; no backend</div>
-    <h1 style="margin-top: 28px; margin-left: -8px; font-size: 94px;">Three files do<br />all of it.</h1>
+    <div class="kicker t4">1884 &ndash; 1914</div>
+    <h1 style="margin-top: 20px; margin-left: -8px; font-size: 86px;">Boomtown</h1>
   </div>
 
-  <p class="body" style="margin-top: 32px; max-width: 1010px; font-size: 21px;">
-    <b>index.html</b>, <b>js/data.js</b> and <b>js/app.js</b>. Open the folder, run a static server,
-    and it works. Swap the data layer and it is a different city.
+  <div class="shots row" data-h="550" style="margin-top: 26px;">
+    <figure class="shot row" data-media="ybor-factory-1902"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 26px; max-width: 940px; font-size: 21px;">
+    Henry B. Plant’s railroad reaches Tampa in 1884 and ends its isolation. Vicente Martínez-Ybor buys forty acres north-east of town and builds a planned cigar city from 1886. Plant opens a deepwater port in 1888 and his Moorish-revival Tampa Bay Hotel in 1891. In 1898 Tampa is chosen as the U.S. port of embarkation for the Cuba campaign.
   </p>
-
-  <div class="inv" style="margin-top: 50px;">
-    <div class="inv-item"><div class="inv-n">01</div><div class="inv-t">A scrollytelling Leaflet map that moves through eight named eras</div></div>
-    <div class="inv-item"><div class="inv-n">02</div><div class="inv-t">A 1824&ndash;2024 year slider with six live metrics</div></div>
-    <div class="inv-item"><div class="inv-n">03</div><div class="inv-t">Charts for population, port, cigars, capital and land use</div></div>
-    <div class="inv-item"><div class="inv-n">04</div><div class="inv-t">Hand-built SVG sankeys: the 1925 economy against 2023</div></div>
-    <div class="inv-item"><div class="inv-n">05</div><div class="inv-t">A nine-district impact matrix of wins, losses and rebuilds</div></div>
-    <div class="inv-item"><div class="inv-n">06</div><div class="inv-t">42 rights-cleared archival photographs, 1837&ndash;2024</div></div>
-    <div class="inv-item"><div class="inv-n">07</div><div class="inv-t">A live source audit &mdash; every institution and its status</div></div>
-    <div class="inv-item"><div class="inv-n">08</div><div class="inv-t">A link checker that requests all 257 source URLs</div></div>
-  </div>
 
   <div class="spacer"></div>
 
+  <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
+  <div class="era-bar" data-active="boomtown">
+    <span style="flex:60;background:var(--era-fortress)" data-era="fortress"></span>
+    <span style="flex:31;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:14;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:18;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:16;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="boomtown">
+    <span style="flex:60" data-era="fortress">Fortress</span>
+    <span style="flex:31" data-era="boomtown">Boomtown</span>
+    <span style="flex:14" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:18" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:16" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 28px;"></div>
   <div class="foot-rule"></div>
-  <div class="figures c3" style="margin-top: 26px;">
-    <div class="fig-item steel"><div class="fig-num sm">29</div><div class="fig-label t1">Commits, Saturday night<br />to Sunday afternoon</div></div>
-    <div class="fig-item steel"><div class="fig-num sm">0</div><div class="fig-label t1">npm dependencies<br />in the site itself</div></div>
-    <div class="fig-item steel"><div class="fig-num sm">CC0</div><div class="fig-label t1">Code licence &middot; data CC BY 4.0<br />take it and go</div></div>
+  <div class="footline t1">
+    <span>Downtown Tampa: A Civic Development Autopsy</span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
   </div>
 </div>
 
-<!-- ══════════════════════ 07 · CREDIT ══════════════════════ -->
-<div class="card dark" data-card="06-credit">
+<div class="card" data-card="04-metropolis">
   <header class="masthead">
     <div class="imprint">
       <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#8FB4D4" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/>
-        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#C64B4B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#C64B4B"/>
-      </svg>
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Era three of eight</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>04</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1915 &ndash; 1929</div>
+    <h1 style="margin-top: 20px; margin-left: -8px; font-size: 86px;">Metropolis</h1>
+  </div>
+
+  <div class="shots row" data-h="580" style="margin-top: 26px;">
+    <figure class="shot row" data-media="franklin-lafayette"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 26px; max-width: 940px; font-size: 21px;">
+    Channel dredging and phosphate rail links make the port a global bulk exporter, and the money builds a denser commercial core: banks, department stores, warehouses and streetcars. The Tampa Theatre opens on Franklin Street in 1926, an atmospheric movie palace beneath a land-boom skyline.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
+  <div class="era-bar" data-active="metropolis">
+    <span style="flex:60;background:var(--era-fortress)" data-era="fortress"></span>
+    <span style="flex:31;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:14;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:18;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:16;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="metropolis">
+    <span style="flex:60" data-era="fortress">Fortress</span>
+    <span style="flex:31" data-era="boomtown">Boomtown</span>
+    <span style="flex:14" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:18" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:16" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 28px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Downtown Tampa: A Civic Development Autopsy</span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
+  </div>
+</div>
+
+<div class="card" data-card="05-depression">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Era four of eight</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>05</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1929 &ndash; 1945</div>
+    <h1 style="margin-top: 20px; margin-left: -8px; font-size: 86px;">Depression &amp; War</h1>
+  </div>
+
+  <div class="shots row" data-h="560" style="margin-top: 26px;">
+    <figure class="shot row" data-media="skyline-postcard-1930s"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 26px; max-width: 940px; font-size: 21px;">
+    Tampa’s real-estate financing breaks in 1926, more than two years before Wall Street, and the national Depression follows. From 1942 shipbuilding, MacDill Field and wartime logistics re-industrialise the bayfront and pull labour back into the metro.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
+  <div class="era-bar" data-active="depression">
+    <span style="flex:60;background:var(--era-fortress)" data-era="fortress"></span>
+    <span style="flex:31;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:14;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:18;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:16;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="depression">
+    <span style="flex:60" data-era="fortress">Fortress</span>
+    <span style="flex:31" data-era="boomtown">Boomtown</span>
+    <span style="flex:14" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:18" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:16" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 28px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Downtown Tampa: A Civic Development Autopsy</span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
+  </div>
+</div>
+
+<div class="card" data-card="06-postwar">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Eras five and six of eight</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>06</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1946 &ndash; 1985</div>
+    <h1 style="margin-top: 20px; margin-left: -8px; font-size: 86px;">Postwar</h1>
+  </div>
+
+  <div class="shots row" data-h="580" style="margin-top: 26px;">
+    <figure class="shot row" data-media="curtis-hixon-1965"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 26px; max-width: 940px; font-size: 21px;">
+    The car reshapes the region and retail follows it outward. Downtown answers with civic building: Curtis Hixon Hall opens in 1965, and in 1973 a five-block pedestrian mall is laid down Franklin Street to compete with the suburban shopping centres. It reopens to traffic in 2001.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
+  <div class="era-bar" data-active="suburban">
+    <span style="flex:60;background:var(--era-fortress)" data-era="fortress"></span>
+    <span style="flex:31;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:14;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:18;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:16;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="suburban">
+    <span style="flex:60" data-era="fortress">Fortress</span>
+    <span style="flex:31" data-era="boomtown">Boomtown</span>
+    <span style="flex:14" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:18" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:16" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 28px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Downtown Tampa: A Civic Development Autopsy</span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
+  </div>
+</div>
+
+<div class="card" data-card="07-revival">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Era seven of eight</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>07</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1986 &ndash; 2008</div>
+    <h1 style="margin-top: 20px; margin-left: -8px; font-size: 86px;">Revival</h1>
+  </div>
+
+  <div class="shots row" data-h="580" style="margin-top: 26px;">
+    <figure class="shot row" data-media="channelside-2007"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 26px; max-width: 940px; font-size: 21px;">
+    A waterfront convention centre opens in October 1990. The Florida Aquarium follows in 1995 and a downtown arena in 1996, turning the industrial Channelside edge into a tourism and events district and pivoting downtown toward meetings, hotels and nightly activation.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
+  <div class="era-bar" data-active="revival">
+    <span style="flex:60;background:var(--era-fortress)" data-era="fortress"></span>
+    <span style="flex:31;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:14;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:18;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:16;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="revival">
+    <span style="flex:60" data-era="fortress">Fortress</span>
+    <span style="flex:31" data-era="boomtown">Boomtown</span>
+    <span style="flex:14" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:18" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:16" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 28px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Downtown Tampa: A Civic Development Autopsy</span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
+  </div>
+</div>
+
+<div class="card" data-card="08-waterfront">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Era eight of eight</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>08</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">2009 &ndash; 2024</div>
+    <h1 style="margin-top: 20px; margin-left: -8px; font-size: 86px;">Waterfront</h1>
+  </div>
+
+  <div class="shots row" data-h="580" style="margin-top: 26px;">
+    <figure class="shot row" data-media="riverwalk-2021"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 26px; max-width: 940px; font-size: 21px;">
+    On 27 March 2015 an over-water section beneath the Kennedy Boulevard bridge closes the last gap, and decades of segmented riverfront plans become one continuous 2.6-mile pedestrian spine. Sparkman Wharf opens in 2018, and a fifty-three-acre mixed-use district rises south of the core.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
+  <div class="era-bar" data-active="waterfront">
+    <span style="flex:60;background:var(--era-fortress)" data-era="fortress"></span>
+    <span style="flex:31;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:14;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:18;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:16;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="waterfront">
+    <span style="flex:60" data-era="fortress">Fortress</span>
+    <span style="flex:31" data-era="boomtown">Boomtown</span>
+    <span style="flex:14" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:18" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:16" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 28px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Downtown Tampa: A Civic Development Autopsy</span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
+  </div>
+</div>
+
+<div class="card dark" data-card="09-credit">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#8FB4D4" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#C64B4B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#C64B4B"/>
+        </svg>
       <div class="imprint-text">
         <div class="imprint-name t3">Open Civic Archive</div>
         <div class="imprint-sub t2">Where the format came from</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>06</b> / 07</div>
+    <div class="pagenum t2"><b>09</b> / 10</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -594,20 +787,20 @@
   <div class="spacer-top"></div>
 
   <div>
-    <div class="kicker t4" style="color:#8FB4D4">Credit where it is owed</div>
-    <h1 style="margin-top: 30px; margin-left: -8px; font-size: 100px;">I did not<br />invent this<br />format.</h1>
+    <div class="kicker t4">Credit where it is owed</div>
+    <h1 style="margin-top: 26px; margin-left: -8px; font-size: 100px;">I did not<br />invent this<br />format.</h1>
   </div>
 
-  <p class="credit-quote" style="margin-top: 48px; max-width: 1010px;">
+  <p class="credit-quote" style="margin-top: 40px; max-width: 940px;">
     Downtown Tampa is a domain fork of &ldquo;The 2026 Iran War: A Geoeconomic Autopsy&rdquo; &mdash;
-    same architecture, same citation standard, a different subject.
+    same architecture, a different subject.
   </p>
 
   <div class="spacer"></div>
 
   <div class="foot-rule"></div>
 
-  <div class="attrib" style="margin-top: 34px;">
+  <div class="attrib" style="margin-top: 32px;">
     <div class="attrib-role t2">The original</div>
     <div class="attrib-name">Sahasrik Ragani</div>
     <div class="attrib-role t2">Ahmedabad University &middot; Stepwell Centre for Asian Futures</div>
@@ -615,23 +808,22 @@
   </div>
 </div>
 
-<!-- ══════════════════════ 08 · FORK IT ══════════════════════ -->
-<div class="card" data-card="07-fork">
+<div class="card" data-card="10-explore">
   <header class="masthead">
     <div class="imprint">
       <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
-        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
-      </svg>
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
       <div class="imprint-text">
         <div class="imprint-name t3">Open Civic Archive</div>
         <div class="imprint-sub t2">Your turn</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>07</b> / 07</div>
+    <div class="pagenum t2"><b>10</b> / 10</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -639,42 +831,35 @@
   <div class="spacer-top"></div>
 
   <div>
-    <div class="kicker t4">The whole point of putting it in the open</div>
-    <h1 style="margin-top: 28px; margin-left: -10px; font-size: 118px;">Fork it.<br />Do your city.</h1>
+    <div class="kicker t4">Open source, open archive</div>
+    <h1 style="margin-top: 24px; margin-left: -10px; font-size: 112px;">Read it.<br />Then do<br />your city.</h1>
   </div>
 
-  <p class="body" style="margin-top: 36px; max-width: 1010px; font-size: 22px;">
-    Tampa is not special here &mdash; the structure is. Every city has a clearance decade, a
-    highway that went through somebody, and a waterfront somebody is selling. Swap the data
-    layer and the machine runs on your archive.
+  <p class="body" style="margin-top: 30px; max-width: 940px; font-size: 22px;">
+    Every place has eras like these &mdash; a founding, a boom, a bust, a rebuild. The map, the
+    timeline and the photo archive are all open, so the same structure can carry another city’s
+    two hundred years.
   </p>
 
-  <div class="steps" style="margin-top: 48px;">
-    <div class="step"><div class="step-n">1</div>
-      <div class="step-t">Fork the repo. Keep <b>index.html</b> and <b>js/app.js</b> as they are.</div></div>
-    <div class="step"><div class="step-n">2</div>
-      <div class="step-t">Rewrite <b>js/data.js</b> with your city's eras, events and series &mdash; one source object per figure.</div></div>
-    <div class="step"><div class="step-n">3</div>
-      <div class="step-t">Run <b>node tools/validate-data.mjs</b> and <b>tools/check-links.mjs</b>. They fail you honestly.</div></div>
-    <div class="step"><div class="step-n">4</div>
-      <div class="step-t">Publish on GitHub Pages. Send me the link &mdash; I want to read it.</div></div>
+  <div class="shots row" data-h="300" style="margin-top: 30px;">
+    <figure class="shot row" data-media="tampa-bay-hotel-1902"></figure>
+    <figure class="shot row" data-media="union-station-2009"></figure>
   </div>
 
   <div class="spacer"></div>
 
   <div class="licence">
-    <span>Code <b>CC0 1.0</b></span><span class="sep">&middot;</span>
-    <span>Data <b>CC BY 4.0</b></span><span class="sep">&middot;</span>
-    <span>No attribution required, but welcome</span>
+    <span>Photographs <b>public domain or CC</b></span><span class="sep">&middot;</span>
+    <span>Credited on every image</span>
   </div>
 
-  <div style="margin-top: 30px;" class="foot-rule"></div>
+  <div style="margin-top: 28px;"></div>
+  <div class="foot-rule"></div>
   <div class="footline t1">
     <span>github.com/fritzhand/history-of-tampa</span>
     <span class="url">fritzhand.github.io/history-of-tampa</span>
   </div>
 </div>
-
 
 <script src="../js/data.js"></script>
 <script>
@@ -710,6 +895,14 @@
           fig.style.width = (h * (img.naturalWidth / img.naturalHeight)) + 'px';
         }
       }
+    });
+
+    // Era ribbons: light the card's own era, step the rest back.
+    document.querySelectorAll('[data-active]').forEach(function (strip) {
+      var active = strip.dataset.active;
+      strip.querySelectorAll('[data-era]').forEach(function (seg) {
+        seg.classList.add(seg.dataset.era === active ? 'on' : 'off');
+      });
     });
   })();
 </script>
