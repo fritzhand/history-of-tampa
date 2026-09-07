@@ -5,7 +5,9 @@ multi-image post (LinkedIn keeps filename order) and paste the caption below,
 or post `downtown-tampa-carousel.pdf` as a single LinkedIn document.
 
 Every figure in the caption is CONFIRMED in `js/data.js` or countable from the
-repository itself.
+repository itself. The photographs on cards 01 and 02 are pulled from
+`mediaAssets` at render time, credit line included, so a card can never claim a
+rights status the media layer does not carry.
 
 ---
 
@@ -99,8 +101,8 @@ hidden.
 
 | # | File | What it does |
 |---|---|---|
-| 01 | `01-cover.png` | Title, era ribbon, the weekend framing |
-| 02 | `02-premise.png` | Why build it: a plaque versus 257 footnotes |
+| 01 | `01-cover.png` | Title, era ribbon, weekend framing, 1920s Franklin Street |
+| 02 | `02-premise.png` | A plaque versus 257 footnotes; 1926 and 2022 towers |
 | 03 | `03-receipts.png` | The citation standard, 168 / 42 / 47 |
 | 04 | `04-ledger.png` | $36.8M federal against $3B private, and the $100M of public money in the rebuild |
 | 05 | `05-inside.png` | What is in the repo, and the weekend's commit count |

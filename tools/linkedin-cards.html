@@ -128,6 +128,26 @@
   .wk-rule { display: block; width: 64px; height: 2px; background: var(--oxblood); flex: 0 0 auto; }
   .wk-text { font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--ink-2); line-height: 1; }
 
+  /* ---- archival photographs ----
+     Filled at load from js/data.js, never hand-typed: CONTENT_LICENSE.md
+     requires visible credit on every image, and a credit typed into a template
+     drifts away from the media layer the moment an asset is re-sourced. */
+  .shots { display: grid; gap: 22px; }
+  .shots.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shot { min-width: 0; margin: 0; }
+  .shot img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    background: #EDE9E1; border: 1px solid var(--rule);
+  }
+  .card.dark .shot img { background: #2A2724; border-color: #3A3733; }
+  .shot figcaption {
+    margin-top: 9px; font-size: 9.4px; font-weight: 500; line-height: 1.45;
+    color: var(--faint); letter-spacing: .04em; text-transform: uppercase;
+  }
+  .shot figcaption b { color: var(--muted); font-weight: 700; }
+  .shot.band img { height: 318px; }
+  .shot.pair img { height: 268px; }
+
   /* ---- era ribbon ---- */
   .era-span { display: flex; justify-content: space-between; align-items: baseline;
               font-size: 12px; font-weight: 600; text-transform: uppercase;
@@ -259,19 +279,23 @@
 
   <div>
     <div class="kicker t4">Two Hundred Years &nbsp;&middot;&nbsp; Fort Brooke to Water Street</div>
-    <h1 style="margin-top: 30px; margin-left: -12px; font-size: 176px;">Downtown<br />Tampa</h1>
-    <div class="deck" style="margin-top: 18px; margin-left: 4px; font-size: 72px;">A Civic Development Autopsy</div>
+    <h1 style="margin-top: 26px; margin-left: -10px; font-size: 132px;">Downtown Tampa</h1>
+    <div class="deck" style="margin-top: 12px; margin-left: 4px; font-size: 56px;">A Civic Development Autopsy</div>
   </div>
 
-  <p class="body" style="margin-top: 44px; max-width: 980px; font-size: 25px;">
+  <p class="body" style="margin-top: 30px; max-width: 980px; font-size: 22px;">
     An open-data scrollytelling history of how a fort at a river mouth became a cigar capital,
     then a cleared grid, then a $3&nbsp;billion waterfront. Every figure cited. Every photograph
     rights-cleared.
   </p>
 
-  <div class="weekend" style="margin-top: 40px;">
+  <div class="weekend" style="margin-top: 26px;">
     <span class="wk-rule"></span>
     <span class="wk-text t2">Built over one weekend &middot; 29 commits, Saturday night to Sunday afternoon</span>
+  </div>
+
+  <div class="shots" style="margin-top: 30px;">
+    <figure class="shot band" data-media="franklin-lafayette"></figure>
   </div>
 
   <div class="spacer"></div>
@@ -326,21 +350,21 @@
 
   <div>
     <div class="kicker t4">Why build this</div>
-    <h1 style="margin-top: 32px; margin-left: -10px; font-size: 104px;">Most civic history<br />is a plaque you<br />walk past.</h1>
-    <div class="deck" style="margin-top: 34px; margin-left: 4px; font-size: 58px;">This one has 257 footnotes.</div>
+    <h1 style="margin-top: 26px; margin-left: -10px; font-size: 88px;">Most civic history<br />is a plaque you<br />walk past.</h1>
+    <div class="deck" style="margin-top: 22px; margin-left: 4px; font-size: 50px;">This one has 257 footnotes.</div>
   </div>
 
-  <p class="body" style="margin-top: 52px; max-width: 1000px;">
+  <p class="body" style="margin-top: 34px; max-width: 1010px; font-size: 20px;">
     A city's development story usually arrives as a marker on a sidewalk or a paragraph in a
     strategic plan &mdash; a claim with nothing behind it you can check. This is the same story
     told the way a dataset is told: <b>every number carries the institution, the date and the
     URL it came from</b>, and says out loud how confident it is.
   </p>
 
-  <p class="body" style="max-width: 1000px;">
-    Scroll a map through eight eras. Drag a slider across two centuries. Read the citation
-    behind any figure that surprises you &mdash; and disagree with it, precisely.
-  </p>
+  <div class="shots two" style="margin-top: 32px;">
+    <figure class="shot pair" data-media="citizens-bank-1926"></figure>
+    <figure class="shot pair" data-media="heron-2022"></figure>
+  </div>
 
   <div class="spacer"></div>
 
@@ -638,5 +662,30 @@
   </div>
 </div>
 
+
+<script src="../js/data.js"></script>
+<script>
+  /* Every [data-media] figure names a mediaAssets id. Its image and its credit
+     line both come from that record, so the card cannot claim a rights status
+     the data layer does not carry. A missing id is left visibly empty rather
+     than silently skipped. */
+  (function () {
+    var assets = (window.tampaData && window.tampaData.mediaAssets) || [];
+    var byId = {};
+    assets.forEach(function (a) { byId[a.id] = a; });
+    document.querySelectorAll('[data-media]').forEach(function (fig) {
+      var a = byId[fig.dataset.media];
+      if (!a) { fig.innerHTML = '<figcaption>MISSING ASSET: ' + fig.dataset.media + '</figcaption>'; return; }
+      var img = document.createElement('img');
+      img.src = a.thumbUrl;
+      img.alt = a.title;
+      var cap = document.createElement('figcaption');
+      // creditLine carries HTML entities from the data layer, so assign as markup.
+      cap.innerHTML = '<b>' + a.year + '</b> &nbsp;' + a.title + ' &nbsp;&middot;&nbsp; ' + a.creditLine;
+      fig.appendChild(img);
+      fig.appendChild(cap);
+    });
+  })();
+</script>
 </body>
 </html>

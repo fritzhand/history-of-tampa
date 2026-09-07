@@ -50,7 +50,14 @@ await page.route('**/*', async r => {
 
 await page.goto('file://' + src, { waitUntil: 'domcontentloaded' });
 await page.evaluate(() => (document.fonts ? document.fonts.ready : null));
+// The cards hydrate their archival photographs from js/data.js, so wait for
+// the decode too — a half-loaded image would ship as a grey box.
+await page.evaluate(() => Promise.all(
+  Array.from(document.images).map(i => i.complete ? null : i.decode().catch(() => null))));
 await page.waitForTimeout(2500);
+const broken = await page.evaluate(() => Array.from(document.images)
+  .filter(i => !i.naturalWidth).map(i => i.currentSrc || i.src));
+if (broken.length) { console.error('images failed to load:'); broken.forEach(b => console.error('  ' + b)); process.exit(1); }
 
 const names = await page.$$eval('.card[data-card]', els => els.map(e => e.dataset.card));
 if (!names.length) { console.error('no .card[data-card] elements found in ' + src); process.exit(1); }
