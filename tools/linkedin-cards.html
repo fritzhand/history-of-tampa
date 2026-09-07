@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<!--
+  Source for assets/linkedin/*.png — the eight-card LinkedIn carousel.
+
+  Regenerate after editing:
+    node tools/render-linkedin.mjs
+  which screenshots each .card at 2x and downsamples to exactly 1200x1200,
+  LinkedIn's native square for a multi-image post.
+
+  Every figure printed here is CONFIRMED in js/data.js or countable from the
+  repository itself (git log, tools/validate-data.mjs). A number burned into a
+  PNG is the one claim a reader can never re-check, so nothing goes on a card
+  that the site cannot defend. The three DERIVED totals on card 04 say so on
+  the card.
+
+  Keep it self-contained: only the Google Fonts link may be remote.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Downtown Tampa — LinkedIn carousel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* One palette, lifted from tools/og-card.html so the carousel and the
+     unfurl card are visibly the same publication. */
+  :root {
+    --paper:  #FBFAF8;
+    --ink:    #1A1A1A;
+    --ink-2:  #2B2B2B;
+    --muted:  #6B6B6B;
+    --faint:  #9A9488;
+    --rule:   #E4E1DA;
+    --deck:   #3C3831;
+    --steel:  #326891;
+    --oxblood:#A61B1B;
+    --gold:   #8A6D1E;
+
+    --era-fortress:  #55636F;
+    --era-boomtown:  #8A6D1E;
+    --era-metropolis:#326891;
+    --era-depression:#6E6A62;
+    --era-suburban:  #8E5F30;
+    --era-renewal:   #A61B1B;
+    --era-revival:   #B07C1C;
+    --era-waterfront:#5B7C93;
+  }
+
+  body {
+    background: #55534E;
+    font-family: 'Work Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1;
+  }
+
+  /* One tracking scale, in em, instead of hand-nudged px values. */
+  .t1 { letter-spacing: .16em } .t2 { letter-spacing: .18em }
+  .t3 { letter-spacing: .20em } .t4 { letter-spacing: .22em }
+
+  .card {
+    width: 1200px; height: 1200px; overflow: hidden; position: relative;
+    background: var(--paper); color: var(--ink);
+    padding: 64px 78px 60px; display: flex; flex-direction: column;
+    margin: 0 auto 40px;
+  }
+  .card > * { flex: 0 0 auto; }
+  .card.dark { background: #1C1B19; color: #F4F1EA; }
+  .card.dark .imprint-name, .card.dark .fig-num, .card.dark h1 { color: #F4F1EA; }
+  .card.dark .rule-heavy { background: #F4F1EA; }
+  .card.dark .rule-hair, .card.dark .foot-rule { background: #3A3733; }
+  .card.dark .imprint-sub, .card.dark .fig-label, .card.dark .muted { color: #A8A296; }
+
+  /* ---- masthead, shared by all eight ---- */
+  .masthead { display: flex; align-items: center; justify-content: space-between; }
+  .imprint { display: flex; align-items: center; gap: 15px; }
+  .mark { width: 40px; height: 40px; flex-shrink: 0; display: block; }
+  .imprint-text { display: flex; flex-direction: column; gap: 5px; }
+  .imprint-name { font-size: 17px; font-weight: 600; text-transform: uppercase; line-height: 1; }
+  .imprint-sub  { font-size: 11px; font-weight: 500; text-transform: uppercase; color: var(--faint); line-height: 1; }
+  .pagenum { font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--muted); line-height: 1; }
+  .pagenum b { color: var(--ink); font-weight: 700; }
+  .card.dark .pagenum b { color: #F4F1EA; }
+
+  .rules { margin-top: 15px; }
+  .rule-heavy { height: 2px; background: var(--ink); }
+  .rule-hair  { height: 1px; background: var(--rule); margin-top: 5px; }
+
+  .spacer { flex: 1 1 auto !important; min-height: 8px; }
+  /* Top spacer is lighter than the bottom one, so the block settles just above
+     optical centre — top-aligned copy left ~200px of dead air over the footer. */
+  .spacer-top { flex: .58 1 auto !important; min-height: 0; }
+
+  /* ---- footer strip, shared ---- */
+  .foot-rule { height: 1px; background: var(--rule); }
+  .footline {
+    margin-top: 16px; display: flex; align-items: baseline; justify-content: space-between;
+    font-size: 13px; text-transform: uppercase; color: var(--muted); line-height: 1;
+  }
+  .footline .url { color: var(--steel); font-weight: 600; text-transform: none; letter-spacing: .05em; }
+  /* A provenance paragraph, not a label: sentence case and normal tracking. */
+  .footline .prov { text-transform: none; letter-spacing: .005em; font-size: 14px; line-height: 1.5; }
+  .card.dark .footline .url { color: #8FB4D4; }
+
+  /* ---- type ---- */
+  .kicker { font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--steel); line-height: 1; }
+  .kicker.ox { color: var(--oxblood); }
+  .card.dark .kicker { color: #8FB4D4; }
+  h1 {
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    font-weight: 600; line-height: .92; letter-spacing: -.024em; color: var(--ink);
+  }
+  .deck {
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    font-weight: 600; font-style: italic; line-height: 1.04;
+    letter-spacing: -.006em; color: var(--deck);
+  }
+  .card.dark .deck { color: #CFC7B8; }
+  .body { font-size: 22px; line-height: 1.55; color: var(--ink-2); }
+  .card.dark .body { color: #D8D2C6; }
+  .body + .body { margin-top: 18px; }
+  .body b { font-weight: 600; color: var(--ink); }
+  .card.dark .body b { color: #F4F1EA; }
+
+  .weekend { display: flex; align-items: center; gap: 20px; }
+  .wk-rule { display: block; width: 64px; height: 2px; background: var(--oxblood); flex: 0 0 auto; }
+  .wk-text { font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--ink-2); line-height: 1; }
+
+  /* ---- era ribbon ---- */
+  .era-span { display: flex; justify-content: space-between; align-items: baseline;
+              font-size: 12px; font-weight: 600; text-transform: uppercase;
+              color: var(--muted); line-height: 1; }
+  .era-span b { color: var(--ink); font-weight: 700; }
+  .era-bar { display: flex; height: 12px; width: 100%; margin-top: 9px; }
+  .era-bar span { display: block; height: 100%; }
+  .era-names { display: flex; width: 100%; margin-top: 8px; }
+  .era-names span {
+    font-size: 9.2px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .06em !important; color: var(--muted); line-height: 1;
+    white-space: nowrap; min-width: 0; overflow: hidden; padding-right: 13px;
+  }
+  .era-names span:last-child { padding-right: 0; text-align: right; }
+
+  /* ---- figure rails ---- */
+  .figures { display: grid; gap: 30px 34px; }
+  .figures.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .figures.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .fig-item { min-width: 0; }
+  .fig-num  { font-size: 54px; font-weight: 700; line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
+  .fig-num.sm { font-size: 42px; }
+  .fig-label { margin-top: 10px; font-size: 12.5px; font-weight: 500; text-transform: uppercase;
+               color: var(--muted); line-height: 1.35; }
+  .ox .fig-num { color: var(--oxblood); }
+  .steel .fig-num { color: var(--steel); }
+
+  /* ---- the citation-tier block on card 03 ---- */
+  .tiers { display: flex; flex-direction: column; gap: 26px; }
+  .tier { display: grid; grid-template-columns: 132px 1fr; gap: 26px; align-items: start; }
+  .tier-n { font-size: 52px; font-weight: 700; line-height: .9; letter-spacing: -.02em; text-align: right; }
+  .tier-name { font-size: 16px; font-weight: 700; text-transform: uppercase; line-height: 1; }
+  .tier-def { margin-top: 9px; font-size: 19px; line-height: 1.45; color: var(--ink-2); }
+  .tier-c .tier-n, .tier-c .tier-name { color: var(--steel); }
+  .tier-p .tier-n, .tier-p .tier-name { color: var(--gold); }
+  .tier-d .tier-n, .tier-d .tier-name { color: var(--muted); }
+
+  /* ---- the inventory list on card 06 ---- */
+  .inv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 40px; }
+  .inv-item { display: grid; grid-template-columns: 74px 1fr; gap: 18px; align-items: baseline; min-width: 0; }
+  .inv-n { font-size: 30px; font-weight: 700; line-height: 1; letter-spacing: -.02em; color: var(--steel); text-align: right; }
+  .inv-t { font-size: 17px; line-height: 1.35; color: var(--ink-2); }
+
+  /* ---- the ledger on card 05 ---- */
+  .ledger { display: grid; grid-template-columns: 1fr 92px 1fr; align-items: center; gap: 0; }
+  .led-side { min-width: 0; }
+  .led-era { font-size: 13px; font-weight: 700; text-transform: uppercase; line-height: 1; }
+  .led-amt { margin-top: 16px; font-size: 84px; font-weight: 700; line-height: .92; letter-spacing: -.03em; }
+  .led-what { margin-top: 14px; font-size: 17px; line-height: 1.45; color: var(--ink-2); }
+  .led-src { margin-top: 14px; font-size: 11.5px; font-weight: 500; text-transform: uppercase;
+             color: var(--faint); line-height: 1.4; }
+  .led-then .led-era, .led-then .led-amt { color: var(--oxblood); }
+  .led-now  .led-era, .led-now .led-amt  { color: var(--steel); }
+  .led-arrow { text-align: center; font-size: 40px; color: var(--rule); line-height: 1; }
+
+  /* ---- credit card 07 ---- */
+  .credit-quote {
+    font-family: 'Crimson Pro', Georgia, serif; font-size: 40px; font-style: italic;
+    font-weight: 400; line-height: 1.28; color: var(--deck); letter-spacing: -.005em;
+  }
+  .card.dark .credit-quote { color: #CFC7B8; }
+  .attrib { display: flex; flex-direction: column; gap: 12px; }
+  .attrib-name { font-family: 'Crimson Pro', Georgia, serif; font-size: 62px; font-weight: 600;
+                 line-height: 1; letter-spacing: -.02em; }
+  .attrib-role { font-size: 16px; font-weight: 600; text-transform: uppercase; color: var(--muted); line-height: 1.4; }
+  .attrib-url  { font-size: 20px; font-weight: 600; color: var(--steel); letter-spacing: .01em; }
+  .card.dark .attrib-url { color: #8FB4D4; }
+
+  /* ---- fork card 08 ---- */
+  .steps { display: flex; flex-direction: column; gap: 22px; }
+  .step { display: grid; grid-template-columns: 52px 1fr; gap: 22px; align-items: baseline; }
+  .step-n { font-size: 26px; font-weight: 700; color: var(--steel); line-height: 1.2; text-align: right; }
+  .card.dark .step-n { color: #8FB4D4; }
+  .step-t { font-size: 21px; line-height: 1.45; color: var(--ink-2); }
+  .card.dark .step-t { color: #D8D2C6; }
+  .step-t b { font-weight: 600; color: var(--ink); }
+  .card.dark .step-t b { color: #F4F1EA; }
+  .licence {
+    margin-top: 30px; align-self: flex-start; display: inline-flex; align-items: baseline; gap: 14px;
+    border: 2px solid var(--ink); padding: 14px 22px;
+    font-size: 14px; font-weight: 600; text-transform: uppercase; line-height: 1;
+  }
+  .card.dark .licence { border-color: #F4F1EA; }
+  .licence b { font-weight: 700; }
+  .licence .sep { color: var(--rule); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ 01 · COVER ══════════════════════ -->
+<div class="card" data-card="01-cover">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+        <rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+        <rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/>
+        <circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+      </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Downtown Tampa &middot; 1824&ndash;2024</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>01</b> / 08</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">Two Hundred Years &nbsp;&middot;&nbsp; Fort Brooke to Water Street</div>
+    <h1 style="margin-top: 30px; margin-left: -12px; font-size: 176px;">Downtown<br />Tampa</h1>
+    <div class="deck" style="margin-top: 18px; margin-left: 4px; font-size: 72px;">A Civic Development Autopsy</div>
+  </div>
+
+  <p class="body" style="margin-top: 44px; max-width: 980px; font-size: 25px;">
+    An open-data scrollytelling history of how a fort at a river mouth became a cigar capital,
+    then a cleared grid, then a $3&nbsp;billion waterfront. Every figure cited. Every photograph
+    rights-cleared.
+  </p>
+
+  <div class="weekend" style="margin-top: 40px;">
+    <span class="wk-rule"></span>
+    <span class="wk-text t2">Built over one weekend &middot; 29 commits, Saturday night to Sunday afternoon</span>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1824</b> Fort Brooke</span><span>Water Street <b>2024</b></span></div>
+  <div class="era-bar">
+    <span style="flex:60;background:var(--era-fortress)"></span>
+    <span style="flex:31;background:var(--era-boomtown)"></span>
+    <span style="flex:14;background:var(--era-metropolis)"></span>
+    <span style="flex:16;background:var(--era-depression)"></span>
+    <span style="flex:18;background:var(--era-suburban)"></span>
+    <span style="flex:23;background:var(--era-renewal)"></span>
+    <span style="flex:23;background:var(--era-revival)"></span>
+    <span style="flex:16;background:var(--era-waterfront)"></span>
+  </div>
+  <div class="era-names t1">
+    <span style="flex:60">Fortress</span><span style="flex:31">Boomtown</span>
+    <span style="flex:14">Metropolis</span><span style="flex:16">Depression</span>
+    <span style="flex:18">Suburban</span><span style="flex:23">Renewal</span>
+    <span style="flex:23">Revival</span><span style="flex:16">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 34px;" class="foot-rule"></div>
+  <div class="footline t1">
+    <span>By Jeremy Fritzhand &middot; Open source, CC0</span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
+  </div>
+</div>
+
+<!-- ══════════════════════ 02 · THE PREMISE ══════════════════════ -->
+<div class="card" data-card="02-premise">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+      </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">The premise</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>02</b> / 08</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">Why build this</div>
+    <h1 style="margin-top: 32px; margin-left: -10px; font-size: 104px;">Most civic history<br />is a plaque you<br />walk past.</h1>
+    <div class="deck" style="margin-top: 34px; margin-left: 4px; font-size: 58px;">This one has 257 footnotes.</div>
+  </div>
+
+  <p class="body" style="margin-top: 52px; max-width: 1000px;">
+    A city's development story usually arrives as a marker on a sidewalk or a paragraph in a
+    strategic plan &mdash; a claim with nothing behind it you can check. This is the same story
+    told the way a dataset is told: <b>every number carries the institution, the date and the
+    URL it came from</b>, and says out loud how confident it is.
+  </p>
+
+  <p class="body" style="max-width: 1000px;">
+    Scroll a map through eight eras. Drag a slider across two centuries. Read the citation
+    behind any figure that surprises you &mdash; and disagree with it, precisely.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="foot-rule"></div>
+  <div class="figures c3" style="margin-top: 26px;">
+    <div class="fig-item"><div class="fig-num">26</div><div class="fig-label t1">Mapped events,<br />each with a source</div></div>
+    <div class="fig-item"><div class="fig-num">15</div><div class="fig-label t1">Narrative steps<br />over a sticky map</div></div>
+    <div class="fig-item"><div class="fig-num">42</div><div class="fig-label t1">Archival photographs,<br />rights-cleared &amp; credited</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ 03 · THE RECEIPTS ══════════════════════ -->
+<div class="card" data-card="03-receipts">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+      </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">The citation standard</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>03</b> / 08</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">The part I actually care about</div>
+    <h1 style="margin-top: 28px; margin-left: -8px; font-size: 92px;">Every figure<br />declares how<br />much to trust it.</h1>
+  </div>
+
+  <p class="body" style="margin-top: 38px; max-width: 1010px; font-size: 21px;">
+    Data projects fail quietly: a confident number, no provenance, and no way to tell a
+    census table from a guess. So every source object here carries a verification status,
+    and the site prints the running count of each.
+  </p>
+
+  <div class="tiers" style="margin-top: 52px;">
+    <div class="tier tier-c">
+      <div class="tier-n">168</div>
+      <div>
+        <div class="tier-name t2">Confirmed</div>
+        <div class="tier-def">The cited page states the figure. Hero and footer numbers are this tier only.</div>
+      </div>
+    </div>
+    <div class="tier tier-p">
+      <div class="tier-n">42</div>
+      <div>
+        <div class="tier-name t2">Pending</div>
+        <div class="tier-def">The institution is right; the figure was not read there. Still visible, still flagged.</div>
+      </div>
+    </div>
+    <div class="tier tier-d">
+      <div class="tier-n">47</div>
+      <div>
+        <div class="tier-name t2">Derived</div>
+        <div class="tier-def">An editorial reconstruction. Its note names every input it was built from.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>257 sources &middot; audited live on the page &middot; <span style="text-transform:none;letter-spacing:.05em">node tools/validate-data.mjs</span></span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
+  </div>
+</div>
+
+<!-- ══════════════════════ 04 · WHAT CLEARANCE COST ══════════════════════ -->
+<div class="card dark" data-card="04-clearance">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#8FB4D4" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/>
+        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#C64B4B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#C64B4B"/>
+      </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Urban renewal &middot; 1957&ndash;1974</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>04</b> / 08</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4" style="color:#E0736F">What the redevelopment cost</div>
+    <h1 style="margin-top: 30px; margin-left: -8px; font-size: 98px;">A downtown is<br />also a record of<br />what was removed.</h1>
+  </div>
+
+  <p class="body" style="margin-top: 38px; max-width: 1010px; font-size: 21px;">
+    Three federal urban renewal projects &mdash; Maryland Avenue (the Scrub), Riverfront
+    (Roberts City) and Ybor City. The site prints the losses next to the gains, because a
+    development story that only counts what got built is not a development story.
+  </p>
+
+  <div class="figures c2" style="margin-top: 56px; gap: 44px 40px;">
+    <div class="fig-item ox"><div class="fig-num" style="color:#E0736F">1,242</div>
+      <div class="fig-label t1" style="color:#A8A296">Families displaced &mdash; <b style="color:#E0736F">1,139 of them<br />(91.7%) recorded as non-white</b></div></div>
+    <div class="fig-item ox"><div class="fig-num" style="color:#E0736F">2,223</div>
+      <div class="fig-label t1" style="color:#A8A296">Dwellings demolished<br />across the three project areas</div></div>
+    <div class="fig-item ox"><div class="fig-num" style="color:#E0736F">309.6</div>
+      <div class="fig-label t1" style="color:#A8A296">Acres cleared<br />of federal proposed reuse</div></div>
+    <div class="fig-item ox"><div class="fig-num" style="color:#E0736F">236</div>
+      <div class="fig-label t1" style="color:#A8A296">Businesses displaced, plus six<br />institutions &mdash; Ybor's were never tallied</div></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="foot-rule"></div>
+  <div class="footline t1" style="align-items:flex-start">
+    <span class="prov" style="max-width:900px;color:#A8A296">
+      <b style="color:#F4F1EA">DERIVED</b> &mdash; the three federal project rows summed. Sources: HUD Urban Renewal
+      Project Characteristics &amp; Urban Renewal Directory via the University of Richmond Digital
+      Scholarship Lab, cross-checked against Kerstein (1997). Each row's caveats are on the site.
+    </span>
+  </div>
+</div>
+
+<!-- ══════════════════════ 05 · THE LEDGER ══════════════════════ -->
+<div class="card" data-card="05-ledger">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+      </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">The same ground, sixty years apart</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>05</b> / 08</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">One comparison the data makes on its own</div>
+    <h1 style="margin-top: 28px; margin-left: -8px; font-size: 96px;">Public money<br />cleared it. Private<br />money rebuilt it.</h1>
+  </div>
+
+  <div class="ledger" style="margin-top: 66px;">
+    <div class="led-side led-then">
+      <div class="led-era t2">1957 &ndash; 1974 &middot; Federal</div>
+      <div class="led-amt">$36.8M</div>
+      <div class="led-what">In urban renewal grants approved for Tampa. <b>$28.2M</b> of it was actually disbursed.</div>
+      <div class="led-src t1">HUD Urban Renewal Directory, June 1974<br />via U. of Richmond DSL</div>
+    </div>
+    <div class="led-arrow">&rarr;</div>
+    <div class="led-side led-now">
+      <div class="led-era t2">2019 &middot; Private</div>
+      <div class="led-amt">$3B</div>
+      <div class="led-what">Announced private investment in Water Street Tampa, on the waterfront edge of the same core.</div>
+      <div class="led-src t1">Strategic Property Partners, 9 July 2019<br />&ldquo;over $3 billion in private investment&rdquo;</div>
+    </div>
+  </div>
+
+  <p class="body" style="margin-top: 56px; max-width: 1010px; font-size: 20px; color: var(--muted);">
+    The site does not average these, editorialise them, or convert them to constant dollars &mdash;
+    it prints both in nominal dollars, names the document each came from, and lets the
+    sixty-year gap between them speak.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Downtown Tampa: A Civic Development Autopsy</span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
+  </div>
+</div>
+
+<!-- ══════════════════════ 06 · WHAT'S INSIDE ══════════════════════ -->
+<div class="card" data-card="06-inside">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+      </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">What is in the box</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>06</b> / 08</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">Static site &middot; no build step &middot; no backend</div>
+    <h1 style="margin-top: 28px; margin-left: -8px; font-size: 100px;">Three files do<br />all of it.</h1>
+  </div>
+
+  <p class="body" style="margin-top: 32px; max-width: 1010px; font-size: 21px;">
+    <b>index.html</b>, <b>js/data.js</b> and <b>js/app.js</b>. Open the folder, run a static server,
+    and it works. Swap the data layer and it is a different city.
+  </p>
+
+  <div class="inv" style="margin-top: 50px;">
+    <div class="inv-item"><div class="inv-n">01</div><div class="inv-t">A scrollytelling Leaflet map that moves through eight named eras</div></div>
+    <div class="inv-item"><div class="inv-n">02</div><div class="inv-t">A 1824&ndash;2024 year slider with six live metrics</div></div>
+    <div class="inv-item"><div class="inv-n">03</div><div class="inv-t">Charts for population, port, cigars, capital and land use</div></div>
+    <div class="inv-item"><div class="inv-n">04</div><div class="inv-t">Hand-built SVG sankeys: the 1925 economy against 2023</div></div>
+    <div class="inv-item"><div class="inv-n">05</div><div class="inv-t">A nine-district impact matrix of wins, losses and rebuilds</div></div>
+    <div class="inv-item"><div class="inv-n">06</div><div class="inv-t">42 rights-cleared archival photographs, 1837&ndash;2024</div></div>
+    <div class="inv-item"><div class="inv-n">07</div><div class="inv-t">A live source audit &mdash; every institution and its status</div></div>
+    <div class="inv-item"><div class="inv-n">08</div><div class="inv-t">A link checker that requests all 257 source URLs</div></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="foot-rule"></div>
+  <div class="figures c3" style="margin-top: 26px;">
+    <div class="fig-item steel"><div class="fig-num sm">29</div><div class="fig-label t1">Commits, Saturday night<br />to Sunday afternoon</div></div>
+    <div class="fig-item steel"><div class="fig-num sm">0</div><div class="fig-label t1">npm dependencies<br />in the site itself</div></div>
+    <div class="fig-item steel"><div class="fig-num sm">CC0</div><div class="fig-label t1">Code licence &middot; data CC BY 4.0<br />take it and go</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ 07 · CREDIT ══════════════════════ -->
+<div class="card dark" data-card="07-credit">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#8FB4D4" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/>
+        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#C64B4B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#C64B4B"/>
+      </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Where the format came from</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>07</b> / 08</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4" style="color:#8FB4D4">Credit where it is owed</div>
+    <h1 style="margin-top: 30px; margin-left: -8px; font-size: 106px;">I did not<br />invent this<br />format.</h1>
+  </div>
+
+  <p class="credit-quote" style="margin-top: 48px; max-width: 1010px;">
+    Downtown Tampa is a domain fork of &ldquo;The 2026 Iran War: A Geoeconomic Autopsy&rdquo; &mdash;
+    same architecture, same citation standard, a different subject.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="foot-rule"></div>
+
+  <div class="attrib" style="margin-top: 34px;">
+    <div class="attrib-role t2">The original</div>
+    <div class="attrib-name">Sahasrik Ragani</div>
+    <div class="attrib-role t2">Ahmedabad University &middot; Stepwell Centre for Asian Futures</div>
+    <div class="attrib-url">chromadharma.github.io/iranwar</div>
+  </div>
+</div>
+
+<!-- ══════════════════════ 08 · FORK IT ══════════════════════ -->
+<div class="card" data-card="08-fork">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+      </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Your turn</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>08</b> / 08</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">The whole point of putting it in the open</div>
+    <h1 style="margin-top: 28px; margin-left: -10px; font-size: 128px;">Fork it.<br />Do your city.</h1>
+  </div>
+
+  <p class="body" style="margin-top: 36px; max-width: 1010px; font-size: 22px;">
+    Tampa is not special here &mdash; the structure is. Every city has a clearance decade, a
+    highway that went through somebody, and a waterfront somebody is selling. Swap the data
+    layer and the machine runs on your archive.
+  </p>
+
+  <div class="steps" style="margin-top: 48px;">
+    <div class="step"><div class="step-n">1</div>
+      <div class="step-t">Fork the repo. Keep <b>index.html</b> and <b>js/app.js</b> as they are.</div></div>
+    <div class="step"><div class="step-n">2</div>
+      <div class="step-t">Rewrite <b>js/data.js</b> with your city's eras, events and series &mdash; one source object per figure.</div></div>
+    <div class="step"><div class="step-n">3</div>
+      <div class="step-t">Run <b>node tools/validate-data.mjs</b> and <b>tools/check-links.mjs</b>. They fail you honestly.</div></div>
+    <div class="step"><div class="step-n">4</div>
+      <div class="step-t">Publish on GitHub Pages. Send me the link &mdash; I want to read it.</div></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="licence">
+    <span>Code <b>CC0 1.0</b></span><span class="sep">&middot;</span>
+    <span>Data <b>CC BY 4.0</b></span><span class="sep">&middot;</span>
+    <span>No attribution required, but welcome</span>
+  </div>
+
+  <div style="margin-top: 30px;" class="foot-rule"></div>
+  <div class="footline t1">
+    <span>github.com/fritzhand/history-of-tampa</span>
+    <span class="url">fritzhand.github.io/history-of-tampa</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -24,6 +24,7 @@ project subpath.
 | Live source audit | Every institution, its data points, and their verification status |
 | Light / dark theme | Toggle in the nav, remembered between visits |
 | Share metadata | Open Graph, Twitter Card and schema.org Article, with a rendered 1200×630 card |
+| Promo carousel | Eight 1200×1200 LinkedIn cards rendered from the same design tokens |
 | Scroll assist | Floating arrows that walk the page, and the map narrative step by step |
 | Section drawer | A hamburger table of contents built from the page's own sections |
 | About | What the project is, how the evidence is graded, and how to reuse it |
@@ -53,7 +54,10 @@ tools/media-roll.mjs                # regenerates the CONTENT_LICENSE media tabl
 tools/check-meta.mjs                # social + structured metadata check
 tools/og-card.html                  # source of the 1200×630 share card
 tools/render-card.mjs               # renders that card to assets/og-image.png
+tools/linkedin-cards.html           # source of the eight 1200×1200 promo cards
+tools/render-linkedin.mjs           # renders those to assets/linkedin/*.png
 assets/                             # og-image, favicons, author portrait
+assets/linkedin/                    # the promo carousel + CAPTION.md
 tools/migrate-sources.py            # one-off schema migration (kept for reference)
 DOWNTOWN_TAMPA_PLAN.md              # Implementation strategy, schema, phases, checklist
 ARCHIVAL_RESEARCH_PROMPT_TAMPA.md   # Tampa source-hunting brief (canonical)
@@ -73,11 +77,27 @@ node tools/media-roll.mjs                          # regenerate the media roll
 node tools/check-meta.mjs                          # Open Graph / Twitter / JSON-LD
 node tools/check-meta.mjs --live                   # ...and fetch the deployed page as a crawler
 node tools/render-card.mjs                         # rebuild assets/og-image.png from tools/og-card.html
+node tools/render-linkedin.mjs                     # rebuild the eight assets/linkedin/*.png cards
 ```
 
 The link checker separates dead links from hosts that merely refuse
 automated clients (Florida Memory and loc.gov item pages answer browsers
 fine) and from Wikimedia's rate limit.
+
+## Promo collateral
+
+`assets/linkedin/` holds an eight-card carousel at LinkedIn's native 1200×1200,
+plus [`CAPTION.md`](./assets/linkedin/CAPTION.md) with the post copy and the
+card order. The cards are generated, not hand-drawn: `tools/linkedin-cards.html`
+is the source and `node tools/render-linkedin.mjs` renders it, so the carousel
+and the Open Graph card share one palette and one type scale.
+
+Every figure on a card is `CONFIRMED` in `js/data.js`, countable from the
+repository (commit counts, `tools/validate-data.mjs`), or a `DERIVED` total that
+says so on the card itself. A number burned into a PNG is the one claim a reader
+can never re-check, so nothing goes on a card the site cannot defend. The
+renderer fails if a card overflows its 1200×1200 box, because clipped copy would
+otherwise ship silently.
 
 ## Historical arc (phases)
 
