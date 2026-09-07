@@ -132,21 +132,30 @@
      Filled at load from js/data.js, never hand-typed: CONTENT_LICENSE.md
      requires visible credit on every image, and a credit typed into a template
      drifts away from the media layer the moment an asset is re-sourced. */
-  .shots { display: grid; gap: 22px; }
-  .shots.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* NEVER object-fit: cover here. These are archival photographs composed to
+     their edges: a 0.79-aspect portrait of a whole tower forced into a 1.91
+     landscape box loses the roofline and the crowd at its base and becomes a
+     wall of windows. Every image is shown whole, and the frame is sized to the
+     picture instead of the picture cropped to the frame. Constrain ONE axis:
+       .band  full column width, height follows -> needs a genuinely wide picture
+       .pair  fixed height, width follows       -> unequal shapes still share a baseline
+     tools/render-linkedin.mjs fails the build if a rendered box drifts from its
+     image's natural aspect, so this cannot silently regress. */
+  .shots { display: flex; gap: 26px; align-items: flex-start; }
   .shot { min-width: 0; margin: 0; }
-  .shot img {
-    display: block; width: 100%; height: 100%; object-fit: cover;
-    background: #EDE9E1; border: 1px solid var(--rule);
-  }
+  .shot img { display: block; background: #EDE9E1; border: 1px solid var(--rule); }
   .card.dark .shot img { background: #2A2724; border-color: #3A3733; }
   .shot figcaption {
     margin-top: 9px; font-size: 9.4px; font-weight: 500; line-height: 1.45;
     color: var(--faint); letter-spacing: .04em; text-transform: uppercase;
   }
   .shot figcaption b { color: var(--muted); font-weight: 700; }
-  .shot.band img { height: 318px; }
-  .shot.pair img { height: 268px; }
+
+  .shot.band { width: 100%; margin-bottom: 20px; }
+  .shot.band img { width: 100%; height: auto; }
+
+  .shots.row { justify-content: space-between; }
+  .shot.row img { width: 100%; height: auto; }
 
   /* ---- era ribbon ---- */
   .era-span { display: flex; justify-content: space-between; align-items: baseline;
@@ -279,23 +288,23 @@
 
   <div>
     <div class="kicker t4">Two Hundred Years &nbsp;&middot;&nbsp; Fort Brooke to Water Street</div>
-    <h1 style="margin-top: 26px; margin-left: -10px; font-size: 132px;">Downtown Tampa</h1>
-    <div class="deck" style="margin-top: 12px; margin-left: 4px; font-size: 56px;">A Civic Development Autopsy</div>
+    <h1 style="margin-top: 26px; margin-left: -10px; font-size: 124px;">Downtown Tampa</h1>
+    <div class="deck" style="margin-top: 10px; margin-left: 4px; font-size: 52px;">A Civic Development Autopsy</div>
   </div>
 
-  <p class="body" style="margin-top: 30px; max-width: 980px; font-size: 22px;">
+  <p class="body" style="margin-top: 26px; max-width: 980px; font-size: 21px;">
     An open-data scrollytelling history of how a fort at a river mouth became a cigar capital,
     then a cleared grid, then a $3&nbsp;billion waterfront. Every figure cited. Every photograph
     rights-cleared.
   </p>
 
-  <div class="weekend" style="margin-top: 26px;">
+  <div class="weekend" style="margin-top: 22px;">
     <span class="wk-rule"></span>
     <span class="wk-text t2">Built over one weekend &middot; 29 commits, Saturday night to Sunday afternoon</span>
   </div>
 
-  <div class="shots" style="margin-top: 30px;">
-    <figure class="shot band" data-media="franklin-lafayette"></figure>
+  <div class="shots" style="margin-top: 20px;">
+    <figure class="shot band" data-media="panorama-2013"></figure>
   </div>
 
   <div class="spacer"></div>
@@ -354,16 +363,17 @@
     <div class="deck" style="margin-top: 22px; margin-left: 4px; font-size: 50px;">This one has 257 footnotes.</div>
   </div>
 
-  <p class="body" style="margin-top: 34px; max-width: 1010px; font-size: 20px;">
+  <p class="body" style="margin-top: 26px; max-width: 1010px; font-size: 20px;">
     A city's development story usually arrives as a marker on a sidewalk or a paragraph in a
     strategic plan &mdash; a claim with nothing behind it you can check. This is the same story
     told the way a dataset is told: <b>every number carries the institution, the date and the
     URL it came from</b>, and says out loud how confident it is.
   </p>
 
-  <div class="shots two" style="margin-top: 32px;">
-    <figure class="shot pair" data-media="citizens-bank-1926"></figure>
-    <figure class="shot pair" data-media="heron-2022"></figure>
+  <div class="shots row" data-h="282" style="margin-top: 26px;">
+    <figure class="shot row" data-media="franklin-lafayette"></figure>
+    <figure class="shot row" data-media="citizens-bank-1926"></figure>
+    <figure class="shot row" data-media="heron-2022"></figure>
   </div>
 
   <div class="spacer"></div>
@@ -684,6 +694,19 @@
       cap.innerHTML = '<b>' + a.year + '</b> &nbsp;' + a.title + ' &nbsp;&middot;&nbsp; ' + a.creditLine;
       fig.appendChild(img);
       fig.appendChild(cap);
+      // A .row figure is widened to exactly this picture's aspect at the row's
+      // target height. The figure then equals the image, so the credit wraps to
+      // the picture's own width and nothing is ever cropped to fit a column.
+      var row = fig.closest('.shots[data-h]');
+      if (row && fig.classList.contains('row')) {
+        var h = parseFloat(row.dataset.h);
+        img.addEventListener('load', function () {
+          fig.style.width = (h * (img.naturalWidth / img.naturalHeight)) + 'px';
+        });
+        if (img.complete && img.naturalWidth) {
+          fig.style.width = (h * (img.naturalWidth / img.naturalHeight)) + 'px';
+        }
+      }
     });
   })();
 </script>

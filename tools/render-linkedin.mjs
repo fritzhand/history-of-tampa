@@ -59,6 +59,24 @@ const broken = await page.evaluate(() => Array.from(document.images)
   .filter(i => !i.naturalWidth).map(i => i.currentSrc || i.src));
 if (broken.length) { console.error('images failed to load:'); broken.forEach(b => console.error('  ' + b)); process.exit(1); }
 
+// A displayed box that disagrees with the file's own aspect ratio is a crop.
+// Archival photographs are composed to their edges, so a crop here silently
+// destroys the subject -- fail loudly rather than ship it.
+const cropped = await page.evaluate(() => Array.from(document.images).map(i => {
+  const r = i.getBoundingClientRect();
+  const natural = i.naturalWidth / i.naturalHeight;
+  const shown = r.width / r.height;
+  return { src: (i.currentSrc || i.src).split('/').pop(), natural, shown,
+           drift: Math.abs(shown - natural) / natural };
+}).filter(x => x.drift > 0.02));
+if (cropped.length) {
+  console.error('\nCROPPED — displayed box does not match the image aspect:');
+  for (const c of cropped) {
+    console.error(`  ${c.src}: natural ${c.natural.toFixed(2)}, shown ${c.shown.toFixed(2)} (${(c.drift * 100).toFixed(0)}% off)`);
+  }
+  process.exit(1);
+}
+
 const names = await page.$$eval('.card[data-card]', els => els.map(e => e.dataset.card));
 if (!names.length) { console.error('no .card[data-card] elements found in ' + src); process.exit(1); }
 
