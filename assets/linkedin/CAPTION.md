@@ -105,7 +105,7 @@ hidden.
 | 02 | `02-premise.png` | Why build it: a plaque versus 257 footnotes |
 | 03 | `03-receipts.png` | The citation standard, 168 / 42 / 47 |
 | 04 | `04-clearance.png` | What urban renewal removed |
-| 05 | `05-ledger.png` | $36.8M federal, 1957-74, against $3B private, 2019 |
+| 05 | `05-ledger.png` | $36.8M federal against $3B private, and the $100M of public money in the rebuild |
 | 06 | `06-inside.png` | What is in the repo, and the weekend's commit count |
 | 07 | `07-credit.png` | Sahasrik Ragani and the original project |
 | 08 | `08-fork.png` | Fork it, do your city, four steps |
