@@ -24,7 +24,7 @@ project subpath.
 | Live source audit | Every institution, its data points, and their verification status |
 | Light / dark theme | Toggle in the nav, remembered between visits |
 | Share metadata | Open Graph, Twitter Card and schema.org Article, with a rendered 1200×630 card |
-| Promo carousel | Eight 1200×1200 LinkedIn cards rendered from the same design tokens |
+| Promo carousel | Seven 1200×1200 LinkedIn cards, plus a vector PDF edition |
 | Scroll assist | Floating arrows that walk the page, and the map narrative step by step |
 | Section drawer | A hamburger table of contents built from the page's own sections |
 | About | What the project is, how the evidence is graded, and how to reuse it |
@@ -54,8 +54,9 @@ tools/media-roll.mjs                # regenerates the CONTENT_LICENSE media tabl
 tools/check-meta.mjs                # social + structured metadata check
 tools/og-card.html                  # source of the 1200×630 share card
 tools/render-card.mjs               # renders that card to assets/og-image.png
-tools/linkedin-cards.html           # source of the eight 1200×1200 promo cards
+tools/linkedin-cards.html           # source of the seven 1200×1200 promo cards
 tools/render-linkedin.mjs           # renders those to assets/linkedin/*.png
+tools/render-linkedin-pdf.mjs       # renders the same cards to a vector PDF
 assets/                             # og-image, favicons, author portrait
 assets/linkedin/                    # the promo carousel + CAPTION.md
 tools/migrate-sources.py            # one-off schema migration (kept for reference)
@@ -77,7 +78,8 @@ node tools/media-roll.mjs                          # regenerate the media roll
 node tools/check-meta.mjs                          # Open Graph / Twitter / JSON-LD
 node tools/check-meta.mjs --live                   # ...and fetch the deployed page as a crawler
 node tools/render-card.mjs                         # rebuild assets/og-image.png from tools/og-card.html
-node tools/render-linkedin.mjs                     # rebuild the eight assets/linkedin/*.png cards
+node tools/render-linkedin.mjs                     # rebuild the assets/linkedin/*.png cards
+node tools/render-linkedin-pdf.mjs                 # rebuild the carousel PDF from the same source
 ```
 
 The link checker separates dead links from hosts that merely refuse
@@ -86,7 +88,8 @@ fine) and from Wikimedia's rate limit.
 
 ## Promo collateral
 
-`assets/linkedin/` holds an eight-card carousel at LinkedIn's native 1200×1200,
+`assets/linkedin/` holds a seven-card carousel at LinkedIn's native 1200×1200,
+as both PNGs and a vector PDF for a document post,
 plus [`CAPTION.md`](./assets/linkedin/CAPTION.md) with the post copy and the
 card order. The cards are generated, not hand-drawn: `tools/linkedin-cards.html`
 is the source and `node tools/render-linkedin.mjs` renders it, so the carousel

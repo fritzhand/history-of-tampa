@@ -1,12 +1,11 @@
 # LinkedIn post -- Downtown Tampa
 
-Eight cards in `assets/linkedin/`, numbered in reading order. Upload as a
-multi-image post (LinkedIn keeps filename order) and paste the caption below.
+Seven cards in `assets/linkedin/`, numbered in reading order. Upload as a
+multi-image post (LinkedIn keeps filename order) and paste the caption below,
+or post `downtown-tampa-carousel.pdf` as a single LinkedIn document.
 
-Every figure in the caption is CONFIRMED or DERIVED in `js/data.js`, or
-countable from the repository itself. The three displacement totals are the
-site's DERIVED sum of three CONFIRMED federal project rows; card 04 says so
-on the card.
+Every figure in the caption is CONFIRMED in `js/data.js` or countable from the
+repository itself.
 
 ---
 
@@ -27,11 +26,10 @@ page declares how much you should trust it:
 - 42 PENDING. The institution is right, the figure was not read there.
 - 47 DERIVED. An editorial reconstruction, with its inputs named.
 
-So when the site says three federal urban renewal projects cleared 309.6
-acres, demolished 2,223 dwellings and displaced 1,242 families, 91.7 percent
-of them recorded as non-white, you can click through to the HUD records and
-check me. Most civic history is a plaque you walk past. This one has
-footnotes.
+So when the site says streetcar ridership went from 424,302 in its last full
+year with fares to 878,343 in its first fare-free year, you can click through
+to the federal National Transit Database and check me. Most civic history is a
+plaque you walk past. This one has footnotes.
 
 Credit where it is owed. I did not invent this format. It is a domain fork of
 "The 2026 Iran War: A Geoeconomic Autopsy" by Sahasrik Ragani at Ahmedabad
@@ -65,9 +63,9 @@ Street today.
 fritzhand.github.io/history-of-tampa
 
 Every figure on the page declares how much you should trust it. 168
-CONFIRMED, 42 PENDING, 47 DERIVED. So when it says urban renewal displaced
-1,242 families, 91.7 percent of them recorded as non-white, you can click
-through to the HUD records and check me.
+CONFIRMED, 42 PENDING, 47 DERIVED. So when it says streetcar ridership more
+than doubled the year the fare went away, from 424,302 to 878,343, you can
+click through to the federal transit records and check me.
 
 I did not invent this format. It is a domain fork of "The 2026 Iran War: A
 Geoeconomic Autopsy" by Sahasrik Ragani at Ahmedabad University. Go read the
@@ -104,8 +102,10 @@ hidden.
 | 01 | `01-cover.png` | Title, era ribbon, the weekend framing |
 | 02 | `02-premise.png` | Why build it: a plaque versus 257 footnotes |
 | 03 | `03-receipts.png` | The citation standard, 168 / 42 / 47 |
-| 04 | `04-clearance.png` | What urban renewal removed |
-| 05 | `05-ledger.png` | $36.8M federal against $3B private, and the $100M of public money in the rebuild |
-| 06 | `06-inside.png` | What is in the repo, and the weekend's commit count |
-| 07 | `07-credit.png` | Sahasrik Ragani and the original project |
-| 08 | `08-fork.png` | Fork it, do your city, four steps |
+| 04 | `04-ledger.png` | $36.8M federal against $3B private, and the $100M of public money in the rebuild |
+| 05 | `05-inside.png` | What is in the repo, and the weekend's commit count |
+| 06 | `06-credit.png` | Sahasrik Ragani and the original project |
+| 07 | `07-fork.png` | Fork it, do your city, four steps |
+
+Single-file alternative: `downtown-tampa-carousel.pdf`, seven 1200x1200 pages,
+vector text. LinkedIn renders it as a swipeable document post.

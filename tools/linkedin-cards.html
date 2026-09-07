@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Source for assets/linkedin/*.png — the eight-card LinkedIn carousel.
+  Source for assets/linkedin/*.png — the seven-card LinkedIn carousel.
 
   Regenerate after editing:
     node tools/render-linkedin.mjs
@@ -143,6 +143,16 @@
   }
   .era-names span:last-child { padding-right: 0; text-align: right; }
 
+  /* Print/PDF: one card per page at its own size, no gutter, no scaled paper.
+     tools/render-linkedin-pdf.mjs sets the same 1200x1200 page box, so the
+     carousel exports as vector rather than eight flattened screenshots. */
+  @page { size: 1200px 1200px; margin: 0; }
+  @media print {
+    body { background: #FBFAF8; }
+    .card { margin: 0; break-after: page; page-break-after: always; }
+    .card:last-child { break-after: auto; page-break-after: auto; }
+  }
+
   /* ---- figure rails ---- */
   .figures { display: grid; gap: 30px 34px; }
   .figures.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -240,7 +250,7 @@
         <div class="imprint-sub t2">Downtown Tampa &middot; 1824&ndash;2024</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>01</b> / 08</div>
+    <div class="pagenum t2"><b>01</b> / 07</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -307,7 +317,7 @@
         <div class="imprint-sub t2">The premise</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>02</b> / 08</div>
+    <div class="pagenum t2"><b>02</b> / 07</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -358,7 +368,7 @@
         <div class="imprint-sub t2">The citation standard</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>03</b> / 08</div>
+    <div class="pagenum t2"><b>03</b> / 07</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -409,65 +419,8 @@
   </div>
 </div>
 
-<!-- ══════════════════════ 04 · WHAT CLEARANCE COST ══════════════════════ -->
-<div class="card dark" data-card="04-clearance">
-  <header class="masthead">
-    <div class="imprint">
-      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#8FB4D4" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/>
-        <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
-        <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
-        <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#C64B4B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#C64B4B"/>
-      </svg>
-      <div class="imprint-text">
-        <div class="imprint-name t3">Open Civic Archive</div>
-        <div class="imprint-sub t2">Urban renewal &middot; 1957&ndash;1974</div>
-      </div>
-    </div>
-    <div class="pagenum t2"><b>04</b> / 08</div>
-  </header>
-
-  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
-
-  <div class="spacer-top"></div>
-
-  <div>
-    <div class="kicker t4" style="color:#E0736F">What the redevelopment cost</div>
-    <h1 style="margin-top: 30px; margin-left: -8px; font-size: 98px;">A downtown is<br />also a record of<br />what was removed.</h1>
-  </div>
-
-  <p class="body" style="margin-top: 38px; max-width: 1010px; font-size: 21px;">
-    Three federal urban renewal projects &mdash; Maryland Avenue (the Scrub), Riverfront
-    (Roberts City) and Ybor City. The site prints the losses next to the gains, because a
-    development story that only counts what got built is not a development story.
-  </p>
-
-  <div class="figures c2" style="margin-top: 56px; gap: 44px 40px;">
-    <div class="fig-item ox"><div class="fig-num" style="color:#E0736F">1,242</div>
-      <div class="fig-label t1" style="color:#A8A296">Families displaced &mdash; <b style="color:#E0736F">1,139 of them<br />(91.7%) recorded as non-white</b></div></div>
-    <div class="fig-item ox"><div class="fig-num" style="color:#E0736F">2,223</div>
-      <div class="fig-label t1" style="color:#A8A296">Dwellings demolished<br />across the three project areas</div></div>
-    <div class="fig-item ox"><div class="fig-num" style="color:#E0736F">309.6</div>
-      <div class="fig-label t1" style="color:#A8A296">Acres cleared<br />of federal proposed reuse</div></div>
-    <div class="fig-item ox"><div class="fig-num" style="color:#E0736F">236</div>
-      <div class="fig-label t1" style="color:#A8A296">Businesses displaced, plus six<br />institutions &mdash; Ybor's were never tallied</div></div>
-  </div>
-
-  <div class="spacer"></div>
-
-  <div class="foot-rule"></div>
-  <div class="footline t1" style="align-items:flex-start">
-    <span class="prov" style="max-width:900px;color:#A8A296">
-      <b style="color:#F4F1EA">DERIVED</b> &mdash; the three federal project rows summed. Sources: HUD Urban Renewal
-      Project Characteristics &amp; Urban Renewal Directory via the University of Richmond Digital
-      Scholarship Lab, cross-checked against Kerstein (1997). Each row's caveats are on the site.
-    </span>
-  </div>
-</div>
-
 <!-- ══════════════════════ 05 · THE LEDGER ══════════════════════ -->
-<div class="card" data-card="05-ledger">
+<div class="card" data-card="04-ledger">
   <header class="masthead">
     <div class="imprint">
       <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -482,7 +435,7 @@
         <div class="imprint-sub t2">The same ground, sixty years apart</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>05</b> / 08</div>
+    <div class="pagenum t2"><b>04</b> / 07</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -527,7 +480,7 @@
 </div>
 
 <!-- ══════════════════════ 06 · WHAT'S INSIDE ══════════════════════ -->
-<div class="card" data-card="06-inside">
+<div class="card" data-card="05-inside">
   <header class="masthead">
     <div class="imprint">
       <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -542,7 +495,7 @@
         <div class="imprint-sub t2">What is in the box</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>06</b> / 08</div>
+    <div class="pagenum t2"><b>05</b> / 07</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -581,7 +534,7 @@
 </div>
 
 <!-- ══════════════════════ 07 · CREDIT ══════════════════════ -->
-<div class="card dark" data-card="07-credit">
+<div class="card dark" data-card="06-credit">
   <header class="masthead">
     <div class="imprint">
       <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -596,7 +549,7 @@
         <div class="imprint-sub t2">Where the format came from</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>07</b> / 08</div>
+    <div class="pagenum t2"><b>06</b> / 07</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
@@ -626,7 +579,7 @@
 </div>
 
 <!-- ══════════════════════ 08 · FORK IT ══════════════════════ -->
-<div class="card" data-card="08-fork">
+<div class="card" data-card="07-fork">
   <header class="masthead">
     <div class="imprint">
       <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -641,7 +594,7 @@
         <div class="imprint-sub t2">Your turn</div>
       </div>
     </div>
-    <div class="pagenum t2"><b>08</b> / 08</div>
+    <div class="pagenum t2"><b>07</b> / 07</div>
   </header>
 
   <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
