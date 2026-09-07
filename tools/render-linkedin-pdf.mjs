@@ -5,7 +5,16 @@
  *
  *   node tools/render-linkedin-pdf.mjs
  *
- * Eight 1200x1200 pages, one per card, for a LinkedIn document post. The text
+ * Seven 1080x1350 pages, one per card, for a LinkedIn document post.
+ *
+ * A note on the page box: 1350 CSS px is 1012.5pt, and Chromium's PDF export
+ * rounds the media box to whole points, so pages measure 810 x 1013pt
+ * (1080 x 1350.7px, a ratio of 0.7996 against 4:5's 0.8000). Declaring the
+ * @page in points does not help -- it rounds that too. The 0.05 per cent is
+ * invisible: the card paints its own background to the last row, checked on
+ * the dark card. The PNGs from render-linkedin.mjs are exactly 1080x1350.
+ *
+ * The text
  * is printed as vector from the same source the PNGs come from, not stitched
  * from those PNGs, so it stays sharp at any zoom and the file stays small.
  *
@@ -20,13 +29,13 @@ import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(new URL('.', import.meta.url)));
 const src  = path.join(root, 'tools', 'linkedin-cards.html');
 const out  = path.join(root, 'assets', 'linkedin', 'downtown-tampa-carousel.pdf');
-const S = 1200;
+const W = 1080, H = 1350;   // LinkedIn 4:5 portrait
 
 fs.mkdirSync(path.dirname(out), { recursive: true });
 
 const launch = process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {};
 const browser = await chromium.launch(launch);
-const ctx = await browser.newContext({ viewport: { width: S, height: S } });
+const ctx = await browser.newContext({ viewport: { width: W, height: H } });
 const page = await ctx.newPage();
 
 await page.route('**/*', async r => {
@@ -57,8 +66,8 @@ const cards = await page.$$eval('.card[data-card]', els => els.length);
 await page.emulateMedia({ media: 'print' });
 await page.pdf({
   path: out,
-  width: `${S}px`,
-  height: `${S}px`,
+  width: `${W}px`,
+  height: `${H}px`,
   printBackground: true,
   margin: { top: '0', right: '0', bottom: '0', left: '0' },
   preferCSSPageSize: true,
@@ -66,4 +75,4 @@ await page.pdf({
 await browser.close();
 
 const kb = (fs.statSync(out).size / 1024).toFixed(0);
-console.log(`wrote ${path.relative(root, out)}  ${S}x${S}  ${cards} cards  ${kb} KB`);
+console.log(`wrote ${path.relative(root, out)}  ${W}x${H}  ${cards} cards  ${kb} KB`);

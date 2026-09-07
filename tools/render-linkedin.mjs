@@ -5,9 +5,9 @@
  *   node tools/render-linkedin.mjs
  *
  * Renders every `.card[data-card]` in the source at 2x (so the type is crisp),
- * then downsamples each to exactly 1200x1200 — LinkedIn's native square for a
- * multi-image post. Files are named `<NN>-<slug>.png` from the data-card
- * attribute, so the upload order is the reading order.
+ * then downsamples each to exactly 1080x1350 — LinkedIn's 4:5 portrait, the
+ * tallest slot the feed gives an image post. Files are named `<NN>-<slug>.png`
+ * from the data-card attribute, so the upload order is the reading order.
  *
  * Needs playwright and sharp available to node, same as tools/render-card.mjs.
  * Set CHROME_PATH if playwright's bundled Chromium is not the one installed.
@@ -20,20 +20,20 @@ import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(new URL('.', import.meta.url)));
 const src  = path.join(root, 'tools', 'linkedin-cards.html');
 const dir  = path.join(root, 'assets', 'linkedin');
-const S = 1200;
+const W = 1080, H = 1350;   // LinkedIn 4:5 portrait
 
 fs.mkdirSync(dir, { recursive: true });
 
 let sharp;
 try { sharp = (await import('sharp')).default; } catch {
-  console.error('sharp is required so the 2x render can be downsampled to 1200x1200.');
+  console.error('sharp is required so the 2x render can be downsampled to 1080x1350.');
   console.error('Install it (npm i sharp) and re-run.');
   process.exit(1);
 }
 
 const launch = process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {};
 const browser = await chromium.launch(launch);
-const ctx = await browser.newContext({ viewport: { width: S, height: S }, deviceScaleFactor: 2 });
+const ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 2 });
 const page = await ctx.newPage();
 
 // Same affordance as render-card.mjs: in a sandbox without direct egress every
@@ -80,27 +80,27 @@ if (cropped.length) {
 const names = await page.$$eval('.card[data-card]', els => els.map(e => e.dataset.card));
 if (!names.length) { console.error('no .card[data-card] elements found in ' + src); process.exit(1); }
 
-// A card that overflows its 1200x1200 box would ship as silently clipped copy,
+// A card that overflows its 1080x1350 box would ship as silently clipped copy,
 // so measure before screenshotting and fail loudly instead.
 const overflow = await page.$$eval('.card[data-card]', els => els
   .map(e => ({ card: e.dataset.card, h: e.scrollHeight, w: e.scrollWidth }))
-  .filter(x => x.h > 1200 || x.w > 1200));
+  .filter(x => x.h > 1350 || x.w > 1080));
 
 let n = 0;
 for (const name of names) {
   const el = await page.$(`.card[data-card="${name}"]`);
   const big = await el.screenshot();
   const out = path.join(dir, `${name}.png`);
-  await sharp(big).resize(S, S, { kernel: 'lanczos3' }).png({ compressionLevel: 9 }).toFile(out);
-  console.log(`  ${path.relative(root, out)}  ${S}x${S}  ${(fs.statSync(out).size / 1024).toFixed(0)} KB`);
+  await sharp(big).resize(W, H, { kernel: 'lanczos3' }).png({ compressionLevel: 9 }).toFile(out);
+  console.log(`  ${path.relative(root, out)}  ${W}x${H}  ${(fs.statSync(out).size / 1024).toFixed(0)} KB`);
   n++;
 }
 await browser.close();
 
 console.log(`\nwrote ${n} cards to ${path.relative(root, dir)}/`);
 if (overflow.length) {
-  console.error('\nCLIPPED — these cards are taller or wider than 1200x1200:');
+  console.error('\nCLIPPED — these cards are taller or wider than 1080x1350:');
   for (const o of overflow) console.error(`  ${o.card}: ${o.w}x${o.h}`);
   process.exit(1);
 }
-console.log('no card overflows its 1200x1200 box.');
+console.log('no card overflows its 1080x1350 box.');

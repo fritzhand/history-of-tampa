@@ -1,6 +1,6 @@
 # LinkedIn post -- Downtown Tampa
 
-Seven cards in `assets/linkedin/`, numbered in reading order. Upload as a
+Seven cards in `assets/linkedin/` at 1080×1350 (4:5), numbered in reading order. Upload as a
 multi-image post (LinkedIn keeps filename order) and paste the caption below,
 or post `downtown-tampa-carousel.pdf` as a single LinkedIn document.
 
@@ -101,13 +101,13 @@ hidden.
 
 | # | File | What it does |
 |---|---|---|
-| 01 | `01-cover.png` | Title, era ribbon, weekend framing, 1920s Franklin Street |
-| 02 | `02-premise.png` | A plaque versus 257 footnotes; 1926 and 2022 towers |
+| 01 | `01-cover.png` | Title, era ribbon, weekend framing, a 1925 streetcar |
+| 02 | `02-premise.png` | A plaque versus 257 footnotes; 1920s street, 1926 and 2022 towers |
 | 03 | `03-receipts.png` | The citation standard, 168 / 42 / 47 |
 | 04 | `04-ledger.png` | $36.8M federal against $3B private, and the $100M of public money in the rebuild |
 | 05 | `05-inside.png` | What is in the repo, and the weekend's commit count |
 | 06 | `06-credit.png` | Sahasrik Ragani and the original project |
 | 07 | `07-fork.png` | Fork it, do your city, four steps |
 
-Single-file alternative: `downtown-tampa-carousel.pdf`, seven 1200x1200 pages,
+Single-file alternative: `downtown-tampa-carousel.pdf`, seven 1080×1350 pages,
 vector text. LinkedIn renders it as a swipeable document post.

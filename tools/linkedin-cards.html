@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!--
-  Source for assets/linkedin/*.png — the seven-card LinkedIn carousel.
+  Source for assets/linkedin/*.png — the seven-card LinkedIn carousel, 1080x1350.
 
   Regenerate after editing:
     node tools/render-linkedin.mjs
-  which screenshots each .card at 2x and downsamples to exactly 1200x1200,
-  LinkedIn's native square for a multi-image post.
+  which screenshots each .card at 2x and downsamples to exactly 1080x1350,
+  LinkedIn's 4:5 portrait -- the tallest slot the feed gives an image post.
 
   Every figure printed here is CONFIRMED in js/data.js or countable from the
   repository itself (git log, tools/validate-data.mjs). A number burned into a
@@ -60,10 +60,13 @@
   .t1 { letter-spacing: .16em } .t2 { letter-spacing: .18em }
   .t3 { letter-spacing: .20em } .t4 { letter-spacing: .22em }
 
+  /* 1080x1350 -- LinkedIn's 4:5 portrait, the tallest slot the feed gives a
+     document or an image post. 120px narrower than the old square box and
+     150px taller, so display type came down a step and the pictures grew. */
   .card {
-    width: 1200px; height: 1200px; overflow: hidden; position: relative;
+    width: 1080px; height: 1350px; overflow: hidden; position: relative;
     background: var(--paper); color: var(--ink);
-    padding: 64px 78px 60px; display: flex; flex-direction: column;
+    padding: 62px 70px 58px; display: flex; flex-direction: column;
     margin: 0 auto 40px;
   }
   .card > * { flex: 0 0 auto; }
@@ -172,10 +175,10 @@
   }
   .era-names span:last-child { padding-right: 0; text-align: right; }
 
-  /* Print/PDF: one card per page at its own size, no gutter, no scaled paper.
-     tools/render-linkedin-pdf.mjs sets the same 1200x1200 page box, so the
+  /* Print/PDF: one card per page at 1080x1350, no gutter, no scaled paper.
+     tools/render-linkedin-pdf.mjs sets the same 1080x1350 page box, so the
      carousel exports as vector rather than eight flattened screenshots. */
-  @page { size: 1200px 1200px; margin: 0; }
+  @page { size: 1080px 1350px; margin: 0; }
   @media print {
     body { background: #FBFAF8; }
     .card { margin: 0; break-after: page; page-break-after: always; }
@@ -288,7 +291,7 @@
 
   <div>
     <div class="kicker t4">Two Hundred Years &nbsp;&middot;&nbsp; Fort Brooke to Water Street</div>
-    <h1 style="margin-top: 26px; margin-left: -10px; font-size: 124px;">Downtown Tampa</h1>
+    <h1 style="margin-top: 26px; margin-left: -10px; font-size: 112px;">Downtown Tampa</h1>
     <div class="deck" style="margin-top: 10px; margin-left: 4px; font-size: 52px;">A Civic Development Autopsy</div>
   </div>
 
@@ -304,7 +307,7 @@
   </div>
 
   <div class="shots" style="margin-top: 20px;">
-    <figure class="shot band" data-media="panorama-2013"></figure>
+    <figure class="shot band" data-media="streetcar-1925"></figure>
   </div>
 
   <div class="spacer"></div>
@@ -370,7 +373,7 @@
     URL it came from</b>, and says out loud how confident it is.
   </p>
 
-  <div class="shots row" data-h="282" style="margin-top: 26px;">
+  <div class="shots row" data-h="300" style="margin-top: 26px;">
     <figure class="shot row" data-media="franklin-lafayette"></figure>
     <figure class="shot row" data-media="citizens-bank-1926"></figure>
     <figure class="shot row" data-media="heron-2022"></figure>
@@ -538,7 +541,7 @@
 
   <div>
     <div class="kicker t4">Static site &middot; no build step &middot; no backend</div>
-    <h1 style="margin-top: 28px; margin-left: -8px; font-size: 100px;">Three files do<br />all of it.</h1>
+    <h1 style="margin-top: 28px; margin-left: -8px; font-size: 94px;">Three files do<br />all of it.</h1>
   </div>
 
   <p class="body" style="margin-top: 32px; max-width: 1010px; font-size: 21px;">
@@ -592,7 +595,7 @@
 
   <div>
     <div class="kicker t4" style="color:#8FB4D4">Credit where it is owed</div>
-    <h1 style="margin-top: 30px; margin-left: -8px; font-size: 106px;">I did not<br />invent this<br />format.</h1>
+    <h1 style="margin-top: 30px; margin-left: -8px; font-size: 100px;">I did not<br />invent this<br />format.</h1>
   </div>
 
   <p class="credit-quote" style="margin-top: 48px; max-width: 1010px;">
@@ -637,7 +640,7 @@
 
   <div>
     <div class="kicker t4">The whole point of putting it in the open</div>
-    <h1 style="margin-top: 28px; margin-left: -10px; font-size: 128px;">Fork it.<br />Do your city.</h1>
+    <h1 style="margin-top: 28px; margin-left: -10px; font-size: 118px;">Fork it.<br />Do your city.</h1>
   </div>
 
   <p class="body" style="margin-top: 36px; max-width: 1010px; font-size: 22px;">
