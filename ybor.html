@@ -306,6 +306,82 @@
 
 
 
+  <!-- SECTION 2: POPULATION & ERA -->
+  <section id="population" class="chart-section-bg">
+    <div class="section-wrapper">
+      <p class="section-eyebrow">Who Came, and How Fast</p>
+      <h2 class="section-title">A Town of Seven Hundred, and What Arrived</h2>
+
+      <div class="chart-card reveal-on-scroll">
+        <div class="chart-card-title">
+          <span class="icon" style="background:var(--v5)"></span>
+          City of Tampa Population — Decennial Census (1850–2020)
+        </div>
+        <p class="chart-desc">Tampa counted about seven hundred people in 1880. Within two years of the first cigar factories opening it was three thousand, and by 1890 between 5,500 and 6,000 &mdash; the two figures come from two National Park Service documents that disagree, and both are recorded rather than averaged. These count the <strong>city of Tampa</strong>, not the district.</p>
+        <div class="canvas-wrap" style="height:300px"><canvas id="chart-city-pop"></canvas></div>
+        <p class="chart-source">Sources: <a href="https://www2.census.gov/library/publications/decennial/1960/population-volume-1/vol-01-11-c.pdf" target="_blank">1960 Census Vol. I Pt. 11, Table 5 (1870–1960)</a> · <a href="https://www.census.gov/library/working-papers/1998/demo/POP-twps0027.html" target="_blank">Gibson, POP-WP027 (1930–1990)</a> · <a href="https://data.census.gov/table/DECENNIALPL2020.P1?g=160XX00US1271000" target="_blank">data.census.gov, 2020 P1</a> · 1850: Seventh Census, Statistics of Florida</p>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-card reveal-on-scroll">
+          
+          
+          <div class="canvas-wrap" style="height:260px"><canvas id="chart-dt-residents"></canvas></div>
+          
+        </div>
+        <div class="chart-card reveal-on-scroll">
+          <div class="chart-card-title">Era Durations — 200 Years of Civic Phases</div>
+          <p class="chart-desc">Fortress and suburban/renewal stretches are long; the classical metropolis peak is brief. Waterfront recovery is still young.</p>
+          <div class="canvas-wrap" style="height:260px"><canvas id="chart-eras"></canvas></div>
+          <p class="chart-source" id="eras-source"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: INDUSTRY & COMMERCE -->
+  <section id="industry">
+    <div class="section-wrapper">
+      <p class="section-eyebrow">The Trade the Factories Pulled In</p>
+      <h2 class="section-title">What the Cigar Industry Did to Tampa&rsquo;s Customs House</h2>
+
+      <div class="chart-card reveal-on-scroll">
+        <div class="chart-card-title">
+          <span class="icon" style="background:var(--v9)"></span>
+          Port Activity Index vs Cigar Production
+        </div>
+        <p class="chart-desc">Import-export duty collected by Tampa port officials went from <strong>$683.08</strong> in 1885 to <strong>$871,000</strong> in 1900. It is a proxy for the trade the factories pulled in, not a measure of cigar output &mdash; the site has no sourced output series for Ybor City and does not invent one.</p>
+        <div class="canvas-wrap" style="height:300px"><canvas id="chart-port-cigar"></canvas></div>
+        <p class="chart-source"><a href="https://npgallery.nps.gov/NRHP/GetAsset/NHLS/74000641_text" target="_blank">NPS, Ybor City NHL nomination</a> · <a href="https://www.porttb.com/" target="_blank">Port Tampa Bay</a> · <a href="https://www.floridamemory.com/" target="_blank">Florida Memory</a> · both series PENDING verification</p>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-card reveal-on-scroll">
+          <div class="chart-card-title">Commercial Intensity Index (100 = 1925 peak)</div>
+          <p class="chart-desc">Franklin Street's classical peak, suburban siphon, renewal trough, and waterfront-era rebound.</p>
+          <div class="canvas-wrap" style="height:260px"><canvas id="chart-commercial"></canvas></div>
+          <p class="chart-source">Sanborn / LOC · TDP histories · local commercial literature</p>
+        </div>
+        <div class="chart-card reveal-on-scroll">
+          <div class="chart-card-title">Downtown Hotel Room Stock</div>
+          <p class="chart-desc">Named-hotel lower bounds: the 511-room Tampa Bay Hotel (1891), the land-boom Floridan (1927), the convention-era Marriott Waterside and Hyatt Regency (2000), and today's 3,000-plus walkable convention inventory. No institutional downtown room census exists before 2023.</p>
+          <div class="canvas-wrap" style="height:260px"><canvas id="chart-hotels"></canvas></div>
+          <p class="chart-source"><a href="https://www.plantmuseum.com/about/history" target="_blank">Henry B. Plant Museum</a> · <a href="https://tourtampabayarchitecture.com/page_23-html/" target="_blank">AIA Tampa Bay</a> · <a href="https://www.tampabay.com/archive/2000/01/10/making-room-for-an-inn/" target="_blank">Tampa Bay Times, 2000</a> · <a href="https://www.visittampabay.com/meeting-planners/convention-center/" target="_blank">Visit Tampa Bay</a></p>
+        </div>
+      </div>
+
+      <div class="chart-card reveal-on-scroll" id="transit-card" hidden>
+        <div class="chart-card-title">
+          <span class="icon" style="background:var(--v4)"></span>
+          TECO Line Streetcar — Annual Boardings, FY2003–FY2025
+        </div>
+        <p class="chart-desc" id="streetcar-chart-desc">Fiscal-year boardings on the TECO Line, from the National Transit Database. The line opened in October 2002, sagged through the 2010s, and more than doubled after fares were dropped in October 2018. Read the step at October 2017 as a federal counting change, not an event on the street. For scale, the streetcars this line commemorates carried about 24 million riders in 1926 and stopped in August 1946.</p>
+        <div class="canvas-wrap" style="height:280px"><canvas id="chart-streetcar"></canvas></div>
+        <p class="chart-source" id="streetcar-chart-source"></p>
+      </div>
+    </div>
+  </section>
+
   <!-- SECTION 7: PHOTO ARCHIVE -->
   <section id="archive">
     <div class="section-wrapper">
