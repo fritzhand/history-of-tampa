@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<!--
+  Source for assets/linkedin-ybor/*.png — the Ybor City carousel, 1080x1350.
+
+  Regenerate after editing:
+    node tools/render-linkedin.mjs ybor
+  which screenshots each .card at 2x and downsamples to exactly 1080x1350,
+  LinkedIn's 4:5 portrait -- the tallest slot the feed gives an image post.
+
+  Every figure printed here is CONFIRMED in js/data.js or countable from the
+  repository itself (git log, tools/validate-data.mjs). A number burned into a
+  PNG is the one claim a reader can never re-check, so nothing goes on a card
+  that the site cannot defend. The three DERIVED totals on card 04 say so on
+  the card.
+
+  Keep it self-contained: only the Google Fonts link may be remote.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Ybor City — LinkedIn carousel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* One palette, lifted from tools/og-card.html so the carousel and the
+     unfurl card are visibly the same publication. */
+  :root {
+    --paper:  #FBFAF8;
+    --ink:    #1A1A1A;
+    --ink-2:  #2B2B2B;
+    --muted:  #6B6B6B;
+    --faint:  #9A9488;
+    --rule:   #E4E1DA;
+    --deck:   #3C3831;
+    --steel:  #326891;
+    --oxblood:#A61B1B;
+    --gold:   #8A6D1E;
+
+    --era-fortress:  #55636F;
+    --era-boomtown:  #8A6D1E;
+    --era-metropolis:#326891;
+    --era-depression:#6E6A62;
+    --era-suburban:  #8E5F30;
+    --era-renewal:   #A61B1B;
+    --era-revival:   #B07C1C;
+    --era-waterfront:#5B7C93;
+  }
+
+  body {
+    background: #55534E;
+    font-family: 'Work Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1;
+  }
+
+  /* One tracking scale, in em, instead of hand-nudged px values. */
+  .t1 { letter-spacing: .16em } .t2 { letter-spacing: .18em }
+  .t3 { letter-spacing: .20em } .t4 { letter-spacing: .22em }
+
+  /* 1080x1350 -- LinkedIn's 4:5 portrait, the tallest slot the feed gives a
+     document or an image post. 120px narrower than the old square box and
+     150px taller, so display type came down a step and the pictures grew. */
+  .card {
+    width: 1080px; height: 1350px; overflow: hidden; position: relative;
+    background: var(--paper); color: var(--ink);
+    padding: 62px 70px 58px; display: flex; flex-direction: column;
+    margin: 0 auto 40px;
+  }
+  .card > * { flex: 0 0 auto; }
+  .card.dark { background: #1C1B19; color: #F4F1EA; }
+  .card.dark .imprint-name, .card.dark .fig-num, .card.dark h1 { color: #F4F1EA; }
+  .card.dark .rule-heavy { background: #F4F1EA; }
+  .card.dark .rule-hair, .card.dark .foot-rule { background: #3A3733; }
+  .card.dark .imprint-sub, .card.dark .fig-label, .card.dark .muted { color: #A8A296; }
+
+  /* ---- masthead, shared by all eight ---- */
+  .masthead { display: flex; align-items: center; justify-content: space-between; }
+  .imprint { display: flex; align-items: center; gap: 15px; }
+  .mark { width: 40px; height: 40px; flex-shrink: 0; display: block; }
+  .imprint-text { display: flex; flex-direction: column; gap: 5px; }
+  .imprint-name { font-size: 17px; font-weight: 600; text-transform: uppercase; line-height: 1; }
+  .imprint-sub  { font-size: 11px; font-weight: 500; text-transform: uppercase; color: var(--faint); line-height: 1; }
+  .pagenum { font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--muted); line-height: 1; }
+  .pagenum b { color: var(--ink); font-weight: 700; }
+  .card.dark .pagenum b { color: #F4F1EA; }
+
+  .rules { margin-top: 15px; }
+  .rule-heavy { height: 2px; background: var(--ink); }
+  .rule-hair  { height: 1px; background: var(--rule); margin-top: 5px; }
+
+  .spacer { flex: 1 1 auto !important; min-height: 8px; }
+  /* Top spacer is lighter than the bottom one, so the block settles just above
+     optical centre — top-aligned copy left ~200px of dead air over the footer. */
+  .spacer-top { flex: .58 1 auto !important; min-height: 0; }
+
+  /* ---- footer strip, shared ---- */
+  .foot-rule { height: 1px; background: var(--rule); }
+  .footline {
+    margin-top: 16px; display: flex; align-items: baseline; justify-content: space-between;
+    font-size: 13px; text-transform: uppercase; color: var(--muted); line-height: 1;
+  }
+  .footline .url { color: var(--steel); font-weight: 600; text-transform: none; letter-spacing: .05em; }
+  /* A provenance paragraph, not a label: sentence case and normal tracking. */
+  .footline .prov { text-transform: none; letter-spacing: .005em; font-size: 14px; line-height: 1.5; }
+  .card.dark .footline .url { color: #8FB4D4; }
+
+  /* ---- type ---- */
+  .kicker { font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--steel); line-height: 1; }
+  .kicker.ox { color: var(--oxblood); }
+  .card.dark .kicker { color: #8FB4D4; }
+  h1 {
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    font-weight: 600; line-height: .92; letter-spacing: -.024em; color: var(--ink);
+  }
+  .deck {
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    font-weight: 600; font-style: italic; line-height: 1.04;
+    letter-spacing: -.006em; color: var(--deck);
+  }
+  .card.dark .deck { color: #CFC7B8; }
+  .body { font-size: 22px; line-height: 1.55; color: var(--ink-2); }
+  .card.dark .body { color: #D8D2C6; }
+  .body + .body { margin-top: 18px; }
+  .body b { font-weight: 600; color: var(--ink); }
+  .card.dark .body b { color: #F4F1EA; }
+
+  .weekend { display: flex; align-items: center; gap: 20px; }
+  .wk-rule { display: block; width: 64px; height: 2px; background: var(--oxblood); flex: 0 0 auto; }
+  .wk-text { font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--ink-2); line-height: 1; }
+
+  /* ---- archival photographs ----
+     Filled at load from js/data.js, never hand-typed: CONTENT_LICENSE.md
+     requires visible credit on every image, and a credit typed into a template
+     drifts away from the media layer the moment an asset is re-sourced. */
+  /* NEVER object-fit: cover here. These are archival photographs composed to
+     their edges: a 0.79-aspect portrait of a whole tower forced into a 1.91
+     landscape box loses the roofline and the crowd at its base and becomes a
+     wall of windows. Every image is shown whole, and the frame is sized to the
+     picture instead of the picture cropped to the frame. Constrain ONE axis:
+       .band  full column width, height follows -> needs a genuinely wide picture
+       .pair  fixed height, width follows       -> unequal shapes still share a baseline
+     tools/render-linkedin.mjs fails the build if a rendered box drifts from its
+     image's natural aspect, so this cannot silently regress. */
+  .shots { display: flex; gap: 26px; align-items: flex-start; }
+  .shot { min-width: 0; margin: 0; }
+  .shot img { display: block; background: #EDE9E1; border: 1px solid var(--rule); }
+  .card.dark .shot img { background: #2A2724; border-color: #3A3733; }
+  .shot figcaption {
+    margin-top: 9px; font-size: 9.4px; font-weight: 500; line-height: 1.45;
+    color: var(--faint); letter-spacing: .04em; text-transform: uppercase;
+  }
+  .shot figcaption b { color: var(--muted); font-weight: 700; }
+
+  .shot.band { width: 100%; margin-bottom: 20px; }
+  .shot.band img { width: 100%; height: auto; }
+
+  .shots.row { justify-content: space-between; }
+  .shot.row img { width: 100%; height: auto; }
+
+  /* ---- era ribbon ---- */
+  .era-span { display: flex; justify-content: space-between; align-items: baseline;
+              font-size: 12px; font-weight: 600; text-transform: uppercase;
+              color: var(--muted); line-height: 1; }
+  .era-span b { color: var(--ink); font-weight: 700; }
+  .era-bar { display: flex; height: 12px; width: 100%; margin-top: 9px; }
+  .era-bar span { display: block; height: 100%; }
+  .era-names { display: flex; width: 100%; margin-top: 8px; }
+  .era-names span {
+    font-size: 9.2px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .06em !important; color: var(--muted); line-height: 1;
+    white-space: nowrap; min-width: 0; overflow: hidden; padding-right: 13px;
+  }
+  .era-names span:last-child { padding-right: 0; text-align: right; }
+  /* On an era card the ribbon stops being decoration and becomes a position
+     marker: the era in question stays lit, the other seven step back. */
+  .era-bar[data-active] span.off   { opacity: .22; }
+  .era-names[data-active] span.off { opacity: .38; }
+  .era-names[data-active] span.on  { color: var(--ink); font-weight: 700; }
+
+  /* Print/PDF: one card per page at 1080x1350, no gutter, no scaled paper.
+     tools/render-linkedin-pdf.mjs sets the same 1080x1350 page box, so the
+     carousel exports as vector rather than eight flattened screenshots. */
+  @page { size: 1080px 1350px; margin: 0; }
+  @media print {
+    body { background: #FBFAF8; }
+    .card { margin: 0; break-after: page; page-break-after: always; }
+    .card:last-child { break-after: auto; page-break-after: auto; }
+  }
+
+
+
+
+
+  /* ---- credit card 07 ---- */
+  .credit-quote {
+    font-family: 'Crimson Pro', Georgia, serif; font-size: 40px; font-style: italic;
+    font-weight: 400; line-height: 1.28; color: var(--deck); letter-spacing: -.005em;
+  }
+  .card.dark .credit-quote { color: #CFC7B8; }
+  .attrib { display: flex; flex-direction: column; gap: 12px; }
+  .attrib-name { font-family: 'Crimson Pro', Georgia, serif; font-size: 62px; font-weight: 600;
+                 line-height: 1; letter-spacing: -.02em; }
+  .attrib-role { font-size: 16px; font-weight: 600; text-transform: uppercase; color: var(--muted); line-height: 1.4; }
+  .attrib-url  { font-size: 20px; font-weight: 600; color: var(--steel); letter-spacing: .01em; }
+  .card.dark .attrib-url { color: #8FB4D4; }
+
+  /* ---- fork card 08 ---- */
+  .licence {
+    margin-top: 30px; align-self: flex-start; display: inline-flex; align-items: baseline; gap: 14px;
+    border: 2px solid var(--ink); padding: 14px 22px;
+    font-size: 14px; font-weight: 600; text-transform: uppercase; line-height: 1;
+  }
+  .card.dark .licence { border-color: #F4F1EA; }
+  .licence b { font-weight: 700; }
+  .licence .sep { color: var(--rule); }
+</style>
+</head>
+<body>
+
+<div class="card" data-card="01-cover">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Ybor City &middot; 1885&ndash;2026</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>01</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">A Company Town &nbsp;&middot;&nbsp; Built on Purpose</div>
+    <h1 style="margin-top: 26px; margin-left: -10px; font-size: 150px;">Ybor City</h1>
+    <div class="deck" style="margin-top: 10px; margin-left: 4px; font-size: 46px;">A company town that outlived its industry</div>
+  </div>
+
+  <p class="body" style="margin-top: 24px; max-width: 940px; font-size: 21px;">
+    In October 1885 a cigar manufacturer signed a contract with the booster club of a Florida town
+    of about seven hundred people, bought forty acres of scrub north-east of it, and built a city
+    there for one trade.
+  </p>
+
+  <div class="shots row" data-h="570" style="margin-top: 20px;">
+    <figure class="shot row" data-media="streetcar-and-buildings-in-ybor-city-flo-7"></figure>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1885</b> Forty acres</span><span>Ybor today <b>2026</b></span></div>
+  <div class="era-bar">
+    <span style="flex:30;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:15;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:17;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:17;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1">
+    <span style="flex:30" data-era="boomtown">Boomtown</span>
+    <span style="flex:15" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:17" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:17" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 26px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>By Jeremy Fritzhand &middot; Free to read and reuse</span>
+    <span class="url">fritzhand.github.io/history-of-tampa/ybor.html</span>
+  </div>
+</div>
+
+<div class="card" data-card="02-founding">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Era one</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>02</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1885 &ndash; 1914</div>
+    <h1 style="margin-top: 18px; margin-left: -8px; font-size: 76px;">Boomtown</h1>
+  </div>
+
+  <div class="shots row" data-h="520" style="margin-top: 24px;">
+    <figure class="shot row" data-media="jos-mart-in-ybor-city-9"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 22px; max-width: 940px; font-size: 20px;">
+    Vicente Mart&iacute;nez-Ybor contracted with the Tampa Board of Trade on 5 October 1885. Workmen felled trees and filled in alligator holes; Gavino Gutierrez laid out a grid of 200-by-350-foot blocks. Ignacio Haya&rsquo;s factory reached production first, in March 1886. By the end of that year Ybor alone had built 176 worker houses and bought a streetcar line into Tampa. The town was annexed in June 1887 and kept its own languages anyway.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1885</b> Forty acres</span><span>Ybor today <b>2026</b></span></div>
+  <div class="era-bar" data-active="boomtown">
+    <span style="flex:30;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:15;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:17;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:17;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="boomtown">
+    <span style="flex:30" data-era="boomtown">Boomtown</span>
+    <span style="flex:15" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:17" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:17" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 24px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Ybor City: A Company Town That Outlived Its Industry</span>
+    <span class="url">fritzhand.github.io/history-of-tampa/ybor.html</span>
+  </div>
+</div>
+
+<div class="card" data-card="03-factory-floor">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">The work itself</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>03</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1886 &ndash; 1931</div>
+    <h1 style="margin-top: 18px; margin-left: -8px; font-size: 76px;">The factory floor</h1>
+  </div>
+
+  <div class="shots row" data-h="520" style="margin-top: 24px;">
+    <figure class="shot row" data-media="interior-of-a-large-cigar-factory-with-l-6"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 22px; max-width: 940px; font-size: 20px;">
+    Cigars were rolled by hand at long benches. At its peak the industry here employed twenty thousand people, making cigars in thirty-six sizes and shapes. On a platform at the front sat the <em>lector</em> &mdash; a reader the rollers paid out of their own wages to read newspapers and novels aloud across the floor all day.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1885</b> Forty acres</span><span>Ybor today <b>2026</b></span></div>
+  <div class="era-bar" data-active="boomtown">
+    <span style="flex:30;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:15;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:17;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:17;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="boomtown">
+    <span style="flex:30" data-era="boomtown">Boomtown</span>
+    <span style="flex:15" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:17" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:17" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 24px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Ybor City: A Company Town That Outlived Its Industry</span>
+    <span class="url">fritzhand.github.io/history-of-tampa/ybor.html</span>
+  </div>
+</div>
+
+<div class="card" data-card="04-societies">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">The mutual aid societies</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>04</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1891 &ndash; 1904</div>
+    <h1 style="margin-top: 18px; margin-left: -8px; font-size: 76px;">What they built for themselves</h1>
+  </div>
+
+  <div class="shots row" data-h="500" style="margin-top: 24px;">
+    <figure class="shot row" data-media="centro-espa-ol-de-tampa-ybor-city-florid-10"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 22px; max-width: 940px; font-size: 20px;">
+    Six mutual aid societies were founded in thirteen years: El Centro Espa&ntilde;ol in 1891, L&rsquo;Unione Italiana in 1894, El C&iacute;rculo Cubano in 1899, Los Libres Pensadores Mart&iacute;-Maceo in 1900, Centro Asturiano in 1902 and La Uni&oacute;n Mart&iacute;-Maceo in 1904. They sold prepaid medical care and built clubhouses, theatres and hospitals. The Centro Espa&ntilde;ol sanatorium of 1906 was likely the most modern hospital in the region.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1885</b> Forty acres</span><span>Ybor today <b>2026</b></span></div>
+  <div class="era-bar" data-active="boomtown">
+    <span style="flex:30;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:15;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:17;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:17;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="boomtown">
+    <span style="flex:30" data-era="boomtown">Boomtown</span>
+    <span style="flex:15" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:17" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:17" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 24px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Ybor City: A Company Town That Outlived Its Industry</span>
+    <span class="url">fritzhand.github.io/history-of-tampa/ybor.html</span>
+  </div>
+</div>
+
+<div class="card" data-card="05-metropolis">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Era two</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>05</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1915 &ndash; 1929</div>
+    <h1 style="margin-top: 18px; margin-left: -8px; font-size: 76px;">Metropolis</h1>
+  </div>
+
+  <div class="shots row" data-h="500" style="margin-top: 24px;">
+    <figure class="shot row" data-media="lector-reading-at-the-cuesta-rey-cigar-c-11"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 22px; max-width: 940px; font-size: 20px;">
+    The great clubhouses went up in this period &mdash; Centro Asturiano with its 1,062-seat theatre in 1913, the C&iacute;rculo Cubano in 1917, the Italian Club in 1918. It was also the decade the trade peaked, and the last one before the machines.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1885</b> Forty acres</span><span>Ybor today <b>2026</b></span></div>
+  <div class="era-bar" data-active="metropolis">
+    <span style="flex:30;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:15;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:17;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:17;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="metropolis">
+    <span style="flex:30" data-era="boomtown">Boomtown</span>
+    <span style="flex:15" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:17" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:17" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 24px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Ybor City: A Company Town That Outlived Its Industry</span>
+    <span class="url">fritzhand.github.io/history-of-tampa/ybor.html</span>
+  </div>
+</div>
+
+<div class="card" data-card="06-depression">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Era three</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>06</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1930 &ndash; 1945</div>
+    <h1 style="margin-top: 18px; margin-left: -8px; font-size: 76px;">Depression</h1>
+  </div>
+
+  <div class="shots row" data-h="500" style="margin-top: 24px;">
+    <figure class="shot row" data-media="centro-espanol-entrance-spanish-casino-s-23"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 22px; max-width: 940px; font-size: 20px;">
+    Cigarette consumption and cigar machinery undercut hand-rolling, and the Depression cut demand further. The 1931 strike ended the lector system. Through that decade a quarter of the foreign-born white population left the district.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1885</b> Forty acres</span><span>Ybor today <b>2026</b></span></div>
+  <div class="era-bar" data-active="depression">
+    <span style="flex:30;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:15;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:17;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:17;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="depression">
+    <span style="flex:30" data-era="boomtown">Boomtown</span>
+    <span style="flex:15" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:17" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:17" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 24px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Ybor City: A Company Town That Outlived Its Industry</span>
+    <span class="url">fritzhand.github.io/history-of-tampa/ybor.html</span>
+  </div>
+</div>
+
+<div class="card" data-card="07-postwar">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Eras four and five</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>07</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1946 &ndash; 1985</div>
+    <h1 style="margin-top: 18px; margin-left: -8px; font-size: 76px;">Postwar</h1>
+  </div>
+
+  <div class="shots row" data-h="500" style="margin-top: 24px;">
+    <figure class="shot row" data-media="cuban-cigar-makers-at-work-ybor-city-flo-14"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 22px; max-width: 940px; font-size: 20px;">
+    The big factories left one by one &mdash; American Cigar in 1954 after fifty-three years in the Ybor complex, Hav-A-Tampa in 1972, General Cigar in 1976. Urban renewal cleared acreage in the 1960s and Interstate 4 was driven through. Some hands kept rolling regardless.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1885</b> Forty acres</span><span>Ybor today <b>2026</b></span></div>
+  <div class="era-bar" data-active="suburban">
+    <span style="flex:30;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:15;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:17;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:17;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="suburban">
+    <span style="flex:30" data-era="boomtown">Boomtown</span>
+    <span style="flex:15" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:17" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:17" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 24px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Ybor City: A Company Town That Outlived Its Industry</span>
+    <span class="url">fritzhand.github.io/history-of-tampa/ybor.html</span>
+  </div>
+</div>
+
+<div class="card" data-card="08-today">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">What was kept</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>08</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">1974 &ndash; 2026</div>
+    <h1 style="margin-top: 18px; margin-left: -8px; font-size: 76px;">Ybor City today</h1>
+  </div>
+
+  <div class="shots row" data-h="500" style="margin-top: 24px;">
+    <figure class="shot row" data-media="east-7th-avenue-ybor-city-19"></figure>
+  </div>
+
+  <p class="body" style="margin-top: 22px; max-width: 940px; font-size: 20px;">
+    The district was listed on the National Register in 1974 and is now one of only three National Historic Landmark districts in Florida. It became a 133.1-acre redevelopment area in 1988, a streetcar line reconnected it to downtown in 2002, and a six-million-square-foot development is rising on its western edge.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="era-span t1"><span><b>1885</b> Forty acres</span><span>Ybor today <b>2026</b></span></div>
+  <div class="era-bar" data-active="waterfront">
+    <span style="flex:30;background:var(--era-boomtown)" data-era="boomtown"></span>
+    <span style="flex:15;background:var(--era-metropolis)" data-era="metropolis"></span>
+    <span style="flex:16;background:var(--era-depression)" data-era="depression"></span>
+    <span style="flex:17;background:var(--era-suburban)" data-era="suburban"></span>
+    <span style="flex:23;background:var(--era-renewal)" data-era="renewal"></span>
+    <span style="flex:23;background:var(--era-revival)" data-era="revival"></span>
+    <span style="flex:17;background:var(--era-waterfront)" data-era="waterfront"></span>
+  </div>
+  <div class="era-names t1" data-active="waterfront">
+    <span style="flex:30" data-era="boomtown">Boomtown</span>
+    <span style="flex:15" data-era="metropolis">Metropolis</span>
+    <span style="flex:16" data-era="depression">Depression</span>
+    <span style="flex:17" data-era="suburban">Suburban</span>
+    <span style="flex:23" data-era="renewal">Renewal</span>
+    <span style="flex:23" data-era="revival">Revival</span>
+    <span style="flex:17" data-era="waterfront">Waterfront</span>
+  </div>
+
+  <div style="margin-top: 24px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>Ybor City: A Company Town That Outlived Its Industry</span>
+    <span class="url">fritzhand.github.io/history-of-tampa/ybor.html</span>
+  </div>
+</div>
+
+<div class="card dark" data-card="09-credit">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#8FB4D4" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#6E6A62"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#C64B4B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#C64B4B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Where the format came from</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>09</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">Credit where it is owed</div>
+    <h1 style="margin-top: 26px; margin-left: -8px; font-size: 100px;">I did not<br />invent this<br />format.</h1>
+  </div>
+
+  <p class="credit-quote" style="margin-top: 40px; max-width: 940px;">
+    Ybor City and its companion study of downtown Tampa are domain forks of &ldquo;The 2026 Iran War:
+    A Geoeconomic Autopsy&rdquo; &mdash; same architecture, a different subject.
+  </p>
+
+  <div class="spacer"></div>
+
+  <div class="foot-rule"></div>
+
+  <div class="attrib" style="margin-top: 32px;">
+    <div class="attrib-role t2">The original</div>
+    <div class="attrib-name">Sahasrik Ragani</div>
+    <div class="attrib-role t2">Ahmedabad University &middot; Stepwell Centre for Asian Futures</div>
+    <div class="attrib-url">chromadharma.github.io/iranwar</div>
+  </div>
+</div>
+
+<div class="card" data-card="10-explore">
+  <header class="masthead">
+    <div class="imprint">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 1.5 C 7.5 9, 8 15, 11.5 21 C 14 25.5, 19 28.5, 30.5 28.5" stroke="#326891" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <rect x="15.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="21" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/><rect x="26.5" y="5.5" width="4.5" height="4.5" rx="0.9" fill="#7A7367"/>
+          <rect x="15.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="21" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/><rect x="26.5" y="11" width="4.5" height="4.5" rx="0.9" fill="#9A7B3C"/>
+          <rect x="15.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="21" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/><rect x="26.5" y="16.5" width="4.5" height="4.5" rx="0.9" fill="#B87333"/>
+          <rect x="2.8" y="8" width="2.8" height="11" rx="0.7" fill="#A61B1B"/><circle cx="4.2" cy="6.4" r="2.3" fill="#A61B1B"/>
+        </svg>
+      <div class="imprint-text">
+        <div class="imprint-name t3">Open Civic Archive</div>
+        <div class="imprint-sub t2">Two studies, one archive</div>
+      </div>
+    </div>
+    <div class="pagenum t2"><b>10</b> / 10</div>
+  </header>
+
+  <div class="rules"><div class="rule-heavy"></div><div class="rule-hair"></div></div>
+
+  <div class="spacer-top"></div>
+
+  <div>
+    <div class="kicker t4">Open source, open archive</div>
+    <h1 style="margin-top: 22px; margin-left: -10px; font-size: 104px;">Two ways<br />to read<br />one city.</h1>
+  </div>
+
+  <p class="body" style="margin-top: 28px; max-width: 940px; font-size: 21px;">
+    The archive now holds two studies: the civic core from a fort to a waterfront district, and this
+    one &mdash; a single square mile planned, built and populated for one industry. Every date on both
+    is cited, and every photograph is public domain or openly licensed and credited.
+  </p>
+
+  <div class="shots row" data-h="300" style="margin-top: 26px;">
+    <figure class="shot row" data-media="ybor-square-the-former-ybor-cigar-factor-16"></figure>
+    <figure class="shot row" data-media="j-c-newman-cigar-co-building-ybor-city-20"></figure>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="licence">
+    <span>Photographs <b>public domain or CC</b></span><span class="sep">&middot;</span>
+    <span>Credited on every image</span>
+  </div>
+
+  <div style="margin-top: 24px;"></div>
+  <div class="foot-rule"></div>
+  <div class="footline t1">
+    <span>github.com/fritzhand/history-of-tampa</span>
+    <span class="url">fritzhand.github.io/history-of-tampa/ybor.html</span>
+  </div>
+</div>
+
+<script src="../js/ybor-data.js"></script>
+<script>
+  /* Every [data-media] figure names a mediaAssets id. Its image and its credit
+     line both come from that record, so the card cannot claim a rights status
+     the data layer does not carry. A missing id is left visibly empty rather
+     than silently skipped. */
+  (function () {
+    var assets = (window.tampaData && window.tampaData.mediaAssets) || [];
+    var byId = {};
+    assets.forEach(function (a) { byId[a.id] = a; });
+    document.querySelectorAll('[data-media]').forEach(function (fig) {
+      var a = byId[fig.dataset.media];
+      if (!a) { fig.innerHTML = '<figcaption>MISSING ASSET: ' + fig.dataset.media + '</figcaption>'; return; }
+      var img = document.createElement('img');
+      img.src = a.thumbUrl;
+      img.alt = a.title;
+      var cap = document.createElement('figcaption');
+      // creditLine carries HTML entities from the data layer, so assign as markup.
+      cap.innerHTML = '<b>' + a.year + '</b> &nbsp;' + a.title + ' &nbsp;&middot;&nbsp; ' + a.creditLine;
+      fig.appendChild(img);
+      fig.appendChild(cap);
+      // A .row figure is widened to exactly this picture's aspect at the row's
+      // target height. The figure then equals the image, so the credit wraps to
+      // the picture's own width and nothing is ever cropped to fit a column.
+      var row = fig.closest('.shots[data-h]');
+      if (row && fig.classList.contains('row')) {
+        var h = parseFloat(row.dataset.h);
+        img.addEventListener('load', function () {
+          fig.style.width = (h * (img.naturalWidth / img.naturalHeight)) + 'px';
+        });
+        if (img.complete && img.naturalWidth) {
+          fig.style.width = (h * (img.naturalWidth / img.naturalHeight)) + 'px';
+        }
+      }
+    });
+
+    // Era ribbons: light the card's own era, step the rest back.
+    document.querySelectorAll('[data-active]').forEach(function (strip) {
+      var active = strip.dataset.active;
+      strip.querySelectorAll('[data-era]').forEach(function (seg) {
+        seg.classList.add(seg.dataset.era === active ? 'on' : 'off');
+      });
+    });
+  })();
+</script>
+</body>
+</html>
