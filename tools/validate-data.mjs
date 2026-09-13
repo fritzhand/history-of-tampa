@@ -1,27 +1,67 @@
 #!/usr/bin/env node
 /**
- * validate-data.mjs — schema and sanity checks for js/data.js.
+ * validate-data.mjs — schema and sanity checks for a cited data layer.
  *
- *   node tools/validate-data.mjs        # exit 1 on errors
+ *   node tools/validate-data.mjs                  # js/data.js (downtown)
+ *   node tools/validate-data.mjs js/ybor-data.js  # any other dataset
+ *   node tools/validate-data.mjs --all            # every dataset in js/
  *
  * Checks every `source` object for the citation fields the plan requires,
- * map coordinates against the downtown Tampa study area, scroll-step and
+ * map coordinates against the dataset's OWN study area, scroll-step and
  * event cross-references, media license policy, and the hero-stat rule
  * (hero numbers must be CONFIRMED).
+ *
+ * The study-area box and the set of valid era slugs are read from the data
+ * itself (`meta.studyArea.boundingBox`, `eraMilestones`), so a second study
+ * of a different place is checked against its own geography rather than
+ * against downtown Tampa's.
  */
 import fs from 'node:fs';
+import path from 'node:path';
 
-const src = fs.readFileSync(new URL('../js/data.js', import.meta.url), 'utf8');
+const DEFAULT_DATASET = 'js/data.js';
+const root = new URL('../', import.meta.url);
+const argv = process.argv.slice(2);
+const datasets = argv.includes('--all')
+  ? fs.readdirSync(new URL('js/', root)).filter(f => /(^|-)data\.js$/.test(f)).sort().map(f => 'js/' + f)
+  : (argv.filter(a => !a.startsWith('--')).length ? argv.filter(a => !a.startsWith('--')) : [DEFAULT_DATASET]);
+
+let failed = 0;
+for (const rel of datasets) {
+  if (datasets.length > 1) console.log(`\n── ${rel} ${'─'.repeat(Math.max(0, 60 - rel.length))}`);
+  failed += checkDataset(rel) ? 0 : 1;
+}
+process.exit(failed ? 1 : 0);
+
+function checkDataset(rel) {
+const src = fs.readFileSync(new URL(rel, root), 'utf8');
 const win = {};
 new Function('window', src)(win);
 const d = win.tampaData;
+if (!d) { console.log(`ERROR ${rel}: does not define window.tampaData`); return false; }
 
 const errors = [], warnings = [];
 const STATUS = new Set(['CONFIRMED', 'PENDING', 'DERIVED']);
 const ACCESS = new Set(['FREE', 'REGISTRATION', 'PAYWALL', 'API']);
-const PHASES = new Set(['fortress', 'boomtown', 'metropolis', 'depression', 'suburban', 'renewal', 'revival', 'waterfront']);
+// Era slugs: a dataset may declare them outright in meta.eraSlugs. Otherwise
+// they are derived from the eraMilestones labels, which carry the display name
+// and the span ("Depression/War\n1929-1945"). Only the leading word is the
+// slug, because records key on `depression`, not `depression-war`.
+const eraSlug = e => String(e || '').split(/[\s/\n]/)[0].trim().toLowerCase().replace(/[^a-z0-9]+/g, '');
+const declaredEras = (d.meta && Array.isArray(d.meta.eraSlugs) && d.meta.eraSlugs.length)
+  ? d.meta.eraSlugs
+  : (d.eraMilestones || []).map(m => eraSlug(m.era)).filter(Boolean);
+const PHASES = new Set(declaredEras.length ? declaredEras
+  : ['fortress', 'boomtown', 'metropolis', 'depression', 'suburban', 'renewal', 'revival', 'waterfront']);
 const LICENSES = /^(PD|Public domain|PD-US|PD-USGov|CC0|CC BY( \d\.\d)?|CC BY-SA( \d\.\d)?|CC-BY(-SA)?( \d\.\d)?)/i;
-const BBOX = { latMin: 27.90, latMax: 28.00, lngMin: -82.52, lngMax: -82.40 };
+// The study area is the dataset's own, declared in meta. Falling back to the
+// downtown box for a dataset that does not declare one would silently check a
+// second study against the first one's geography.
+const bb = (d.meta && d.meta.studyArea && d.meta.studyArea.boundingBox) || null;
+const PAD = 0.02;   // events just outside a tight study box warn, not error
+const BBOX = bb
+  ? { latMin: bb.south - PAD, latMax: bb.north + PAD, lngMin: bb.west - PAD, lngMax: bb.east + PAD }
+  : { latMin: 27.90, latMax: 28.00, lngMin: -82.52, lngMax: -82.40 };
 const inBox = (lat, lng) => lat >= BBOX.latMin && lat <= BBOX.latMax && lng >= BBOX.lngMin && lng <= BBOX.lngMax;
 
 const statusCounts = { CONFIRMED: 0, PENDING: 0, DERIVED: 0 };
@@ -91,7 +131,9 @@ const ids = new Set();
 });
 
 console.log(`sections: ${Object.keys(d).length} · sources by status: ${JSON.stringify(statusCounts)} · mapEvents: ${(d.mapEvents || []).length} · scrollSteps: ${(d.scrollSteps || []).length} · mediaAssets: ${(d.mediaAssets || []).length}`);
+if (PHASES.size) console.log(`eras: ${[...PHASES].join(', ')}`);
 warnings.forEach(w => console.log('WARN  ' + w));
 errors.forEach(e => console.log('ERROR ' + e));
 console.log(`\n${errors.length} errors, ${warnings.length} warnings`);
-process.exit(errors.length ? 1 : 0);
+return errors.length === 0;
+}

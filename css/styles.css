@@ -348,6 +348,76 @@ a:hover { color: var(--v7); }
 }
 
 /* ─── PHASE LEGEND ─── */
+/* ─── Pathway chooser ────────────────────────────────────────────────────────
+   The archive now holds two studies of the same city. Rather than bury the
+   second behind a nav link, both are offered as equal doors directly under the
+   hero: the one you are reading is marked, the other is a card you can enter.
+   Colour comes from the era ramp, so each path reads as the period it covers. */
+#pathways {
+  background: var(--bg-surface);
+  border-block: 1px solid var(--border);
+}
+.pathways-inner {
+  max-width: 1180px; margin: 0 auto; padding: 46px 24px 52px;
+}
+.pathways-kicker {
+  font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-secondary); margin: 0 0 8px;
+}
+.pathways-lede {
+  font-size: 17px; line-height: 1.6; color: var(--text-soft);
+  margin: 0 0 28px; max-width: 60ch;
+}
+.pathways-grid {
+  display: grid; gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+.pathway {
+  position: relative; display: flex; flex-direction: column; min-width: 0;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-top: 3px solid var(--path-accent, var(--v5));
+  padding: 26px 26px 24px; text-decoration: none; color: inherit;
+  transition: border-color .18s ease, background .18s ease, transform .18s ease;
+}
+a.pathway:hover, a.pathway:focus-visible {
+  background: var(--bg-elevated); border-color: var(--path-accent, var(--v5));
+  border-top-color: var(--path-accent, var(--v5)); transform: translateY(-2px);
+}
+.pathway-span {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--path-accent, var(--v5)); margin: 0 0 10px;
+}
+.pathway-title {
+  font-family: var(--font-display, inherit);
+  font-size: 30px; line-height: 1.12; letter-spacing: -.02em;
+  color: var(--text-primary); margin: 0 0 6px;
+}
+.pathway-sub {
+  font-size: 14px; font-style: italic; color: var(--text-secondary); margin: 0 0 14px;
+}
+.pathway-body {
+  font-size: 15px; line-height: 1.6; color: var(--text-soft); margin: 0 0 18px;
+}
+.pathway-foot {
+  margin-top: auto; display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+.pathway-go { color: var(--path-accent, var(--v5)); font-weight: 700; }
+/* The card for the page you are already on: same shape, no invitation. */
+.pathway.is-current { background: var(--bg-surface); }
+.pathway.is-current .pathway-go { color: var(--text-muted); font-weight: 600; }
+.pathway-here {
+  display: inline-block; padding: 3px 8px; border: 1px solid var(--border);
+  border-radius: 2px; font-size: 10.5px; letter-spacing: .14em;
+  color: var(--text-secondary); background: var(--bg-base);
+}
+@media (max-width: 560px) {
+  .pathways-inner { padding: 34px 18px 38px; }
+  .pathway { padding: 22px 20px 20px; }
+  .pathway-title { font-size: 25px; }
+}
+
 #phase-legend {
   position: -webkit-sticky;
   position: sticky;
