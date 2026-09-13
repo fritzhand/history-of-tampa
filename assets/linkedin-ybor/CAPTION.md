@@ -2,104 +2,75 @@
 
 Ten cards in `assets/linkedin-ybor/` at 1080x1350 (4:5), numbered in reading
 order. Upload as a multi-image post, or post `ybor-city-carousel.pdf` as a
-single document.
+document.
 
-Photographs are pulled from `js/ybor-data.js` at render time with their credit
-lines, so a card cannot claim a rights status the media layer does not carry.
-Every date on a card is cited in that file.
-
----
-
-## Caption -- full version
-
-Second weekend project, same archive: a history of Ybor City.
-
-fritzhand.github.io/history-of-tampa/ybor.html
-
-Most neighbourhoods grow outward from a crossroads. This one was contracted
-for. On 5 October 1885 a cigar manufacturer worn down by labour conflict in Key
-West signed a deal with the Tampa Board of Trade, bought forty acres of scrub
-north-east of a town of about seven hundred people, and built a city there for
-one trade.
-
-What happened next, in order:
-
-- Workmen cleared underbrush and filled in alligator holes. Gavino Gutierrez
-laid out a grid of 200 by 350 foot blocks that Ybor City still uses.
-- Ignacio Haya's factory reached production first, in March 1886. Ybor had
-trouble with workers and tobacco and came second.
-- By the end of that first year Ybor alone had built 176 worker houses and
-bought a streetcar line into Tampa. Tampa annexed the place in June 1887.
-- Tampa's population went from about 700 in 1880 to between 5,500 and 6,000 by
-1890. Customs duty collected at the port went from $683.08 in 1885 to $871,000
-in 1900.
-- At its peak the industry employed 20,000 people, making cigars in thirty-six
-sizes and shapes.
-
-The part I find hardest to forget is the lector. On a platform at the front of
-the factory floor sat a reader, paid by the rollers out of their own wages, who
-read newspapers and novels aloud all day while they worked. The 1931 strike
-ended it.
-
-Six mutual aid societies were founded between 1891 and 1904, Spanish, Italian,
-Cuban, Asturian and Afro-Cuban. They sold prepaid medical care and built
-clubhouses, theatres and hospitals. Several of those buildings are still
-standing on 7th Avenue.
-
-This is the companion to the downtown Tampa study in the same archive, and both
-share an era spine so you can read them against each other. The front page now
-offers both paths.
-
-Credit where it is owed. I did not invent this format. Both are domain forks of
-"The 2026 Iran War: A Geoeconomic Autopsy" by Sahasrik Ragani at Ahmedabad
-University. Go read the original, it is genuinely excellent:
-chromadharma.github.io/iranwar
-
-Have a look and tell me what you think. Tampa people, tell me what I got wrong.
-
-github.com/fritzhand/history-of-tampa
-
-#Tampa #YborCity #LocalHistory #OpenSource #Photography
+Written as a SEQUEL to the downtown Tampa post, matching how that one was
+actually written: short, hyphens rather than em dashes, links held back for the
+first comment, Sahasrik tagged with a real LinkedIn mention rather than a bare
+URL.
 
 ---
 
-## Caption -- short version
+## Caption -- post this
 
-A history of Ybor City, open source, in the same archive as the downtown study.
+Second one. Last week I posted 200 years of downtown Tampa. This is Ybor City,
+the square mile next door - and the difference is that somebody decided to
+build it. A cigar manufacturer signed a contract with the Tampa Board of Trade
+in October 1885, bought 40 acres of scrub, and put a city on it for one trade.
+At its peak it employed 20,000 people.
 
-fritzhand.github.io/history-of-tampa/ybor.html
+The detail I can't stop thinking about: a lector sat at the front of the
+factory floor, paid by the cigar rollers out of their own wages, reading
+newspapers and novels aloud all day while they worked. The 1931 strike ended it.
 
-On 5 October 1885 a cigar manufacturer contracted with the Tampa Board of
-Trade, bought forty acres of scrub north-east of a town of seven hundred
-people, and built a city there for one trade. Haya's factory reached production
-in March 1886. By year end there were 176 worker houses and a streetcar line.
-At its peak the industry employed 20,000 people.
+Same format, same credit - adapted from the project by @Sahasrik Ragani, a
+student researcher at Ahmedabad University. Fork it and build one for your own
+city.
 
-On a platform at the front of each factory floor sat a lector, paid by the
-rollers themselves, reading newspapers and novels aloud all day. The 1931
-strike ended it.
-
-Same format as before, and the same credit: a domain fork of "The 2026 Iran
-War: A Geoeconomic Autopsy" by Sahasrik Ragani at Ahmedabad University.
-chromadharma.github.io/iranwar
-
-Have a look and tell me what you think.
-
-github.com/fritzhand/history-of-tampa
+Links to both studies, the original, and the repo are in the comments!
 
 ---
 
-## A note on the sourcing, if anyone asks
+## First comment -- post immediately after
+
+Ybor City: fritzhand.github.io/history-of-tampa/ybor.html
+Downtown Tampa: fritzhand.github.io/history-of-tampa
+The original, by Sahasrik Ragani: chromadharma.github.io/iranwar
+Repo, fork away: github.com/fritzhand/history-of-tampa
+
+Both studies share an era spine, so they can be read against each other decade
+by decade. The front page now offers either path.
+
+---
+
+## Second comment -- optional, if someone asks about sourcing
+
+Every date on the page is cited to the institution that holds it, and the page
+prints a live audit of which ones and how many.
 
 Two National Park Service documents disagree about Tampa's 1890 population,
-5,500 against about 6,000. Both are on the page and neither is averaged. They
-also disagree about when Gutierrez first talked Ybor into looking at Tampa.
-That disagreement is printed too.
+5,500 against about 6,000. Both are on the page and neither is averaged.
 
-The figure you will see everywhere, that Ybor City rolled 500 million cigars in
-1929, is not on the site. I could not find it stated on the page of any
-institution that holds the record, so it is not there. The sourced peak figure
+The figure you'll see in almost every retelling - that Ybor City rolled 500
+million cigars in 1929 - is not on the site. I couldn't find it stated on the
+page of any institution holding the record, so it isn't there. The sourced peak
 is 20,000 people employed.
+
+---
+
+## If you'd rather lead with the lector
+
+Some caption variants bury the best thing. If this one underperforms, the
+lector is the stronger opening:
+
+> In the cigar factories of Ybor City, the rollers paid a man out of their own
+> wages to sit on a platform and read to them. Newspapers in the morning,
+> novels in the afternoon, all day while they worked. He was called the lector.
+> The 1931 strike ended it.
+>
+> That's one detail from the second study in an open archive I've been building:
+> Ybor City, the square mile northeast of downtown Tampa that a cigar
+> manufacturer bought in 1885 and built a city on for a single trade.
 
 ---
 
@@ -118,5 +89,15 @@ is 20,000 people employed.
 | 09 | `09-credit.png` | Sahasrik Ragani and the original project |
 | 10 | `10-explore.png` | Two studies, one archive |
 
-Single-file alternative: `ybor-city-carousel.pdf`, ten 1080x1350 pages,
-vector text.
+Single-file alternative: `ybor-city-carousel.pdf`, ten 1080x1350 pages.
+
+---
+
+## Two fixes for the downtown post, which is still live
+
+It credits Sahasrik by name and carries two typos in that sentence:
+
+- "a student reseaecher" -> researcher
+- "adapted directly from the a project" -> drop the stray "a"
+
+Editing the text keeps the reactions and comments.
