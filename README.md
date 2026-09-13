@@ -1,4 +1,4 @@
-# Downtown Tampa: A Civic Development Autopsy
+# Downtown Tampa: A Civic Development Autopsy.
 
 An open-data, scrollytelling data-journalism site on **200 years of downtown Tampa** — from Fort Brooke (1824) to the Water Street era. It is a domain fork of [`fritzhand/iranwar`](https://github.com/fritzhand/iranwar) (*The 2026 Iran War: A Geoeconomic Autopsy*): same architecture, same citation standard, different subject.
 
