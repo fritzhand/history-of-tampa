@@ -61,8 +61,11 @@ function paint(c, fallback) {
   return c;
 }
 
-const BASE_YEAR = 1824;
-const MAX_OFFSET = 200; // 1824–2024
+/* The scrubber's span belongs to the dataset, not to the engine. Downtown runs
+   1824–2024; a study of a place founded later would otherwise open on a
+   hundred years of empty slider. Falls back to downtown's span. */
+const BASE_YEAR  = (D().meta && D().meta.baseYear)  || 1824;
+const MAX_OFFSET = (D().meta && D().meta.spanYears) || 200;
 
 function yearOfOffset(offset) {
   return BASE_YEAR + offset;
