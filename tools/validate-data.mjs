@@ -118,6 +118,33 @@ const ids = new Set();
   if (a.thumbUrl && !/^https:\/\//.test(a.thumbUrl)) errors.push(`${w}: thumbUrl must be https`);
 });
 
+// Renderer contract. js/app.js interpolates these straight into the template
+// with no guard, so a record missing one puts the literal string "undefined" on
+// the page. The schema checks above all passed while the live Ybor page showed
+// 40 of them, because they check citations, not what the renderer reads.
+const REQUIRED = {
+  scrollSteps: ['date', 'phase', 'headline', 'narrative', 'metric_pop', 'metric_port'],
+  mapEvents:   ['id', 'date', 'phase', 'title', 'body'],
+  heroStats:   ['value', 'label'],
+  footerStats: ['value', 'label'],
+};
+for (const [key, fields] of Object.entries(REQUIRED)) {
+  (d[key] || []).forEach((row, i) => {
+    for (const f of fields) {
+      if (row[f] === undefined || row[f] === null || row[f] === '') {
+        errors.push(`${key}[${i}]${row.id ? ` (${row.id})` : ''}: missing "${f}" — app.js renders this unguarded, so the page would print "undefined"`);
+      }
+    }
+  });
+}
+// Steps point at events and at media by id; a dangling reference renders empty.
+const eventIds = new Set((d.mapEvents || []).map(e => e.id));
+const mediaIds = new Set((d.mediaAssets || []).map(a => a.id));
+(d.scrollSteps || []).forEach((st, i) => {
+  if (st.eventId && !eventIds.has(st.eventId)) errors.push(`scrollSteps[${i}]: eventId "${st.eventId}" matches no mapEvent`);
+  (st.media || []).forEach(m => { if (!mediaIds.has(m)) errors.push(`scrollSteps[${i}]: media id "${m}" matches no mediaAsset`); });
+});
+
 // hero rule
 (d.heroStats || []).forEach((s, i) => {
   const st = s.source && s.source.verificationStatus;
