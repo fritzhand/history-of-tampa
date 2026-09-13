@@ -3,7 +3,8 @@
  * render-linkedin-pdf.mjs — build assets/linkedin/downtown-tampa-carousel.pdf
  * from tools/linkedin-cards.html.
  *
- *   node tools/render-linkedin-pdf.mjs
+ *   node tools/render-linkedin-pdf.mjs          # the downtown deck
+ *   node tools/render-linkedin-pdf.mjs ybor     # the Ybor deck
  *
  * Seven 1080x1350 pages, one per card, for a LinkedIn document post.
  *
@@ -27,8 +28,20 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(fileURLToPath(new URL('.', import.meta.url)));
-const src  = path.join(root, 'tools', 'linkedin-cards.html');
-const out  = path.join(root, 'assets', 'linkedin', 'downtown-tampa-carousel.pdf');
+
+const DECKS = {
+  downtown: { src: 'tools/linkedin-cards.html',      out: 'assets/linkedin/downtown-tampa-carousel.pdf' },
+  ybor:     { src: 'tools/ybor-linkedin-cards.html', out: 'assets/linkedin-ybor/ybor-city-carousel.pdf' },
+};
+const deckName = process.argv[2] || 'downtown';
+const deck = DECKS[deckName];
+if (!deck) {
+  console.error(`unknown deck "${deckName}". Known decks: ${Object.keys(DECKS).join(', ')}`);
+  process.exit(1);
+}
+const src = path.join(root, deck.src);
+const out = path.join(root, deck.out);
+if (!fs.existsSync(src)) { console.error(`no card source at ${deck.src}`); process.exit(1); }
 const W = 1080, H = 1350;   // LinkedIn 4:5 portrait
 
 fs.mkdirSync(path.dirname(out), { recursive: true });

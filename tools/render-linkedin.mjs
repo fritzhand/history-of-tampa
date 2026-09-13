@@ -2,7 +2,8 @@
 /**
  * render-linkedin.mjs — regenerate assets/linkedin/*.png from tools/linkedin-cards.html.
  *
- *   node tools/render-linkedin.mjs
+ *   node tools/render-linkedin.mjs              # the downtown deck
+ *   node tools/render-linkedin.mjs ybor         # the Ybor deck
  *
  * Renders every `.card[data-card]` in the source at 2x (so the type is crisp),
  * then downsamples each to exactly 1080x1350 — LinkedIn's 4:5 portrait, the
@@ -18,8 +19,24 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(fileURLToPath(new URL('.', import.meta.url)));
-const src  = path.join(root, 'tools', 'linkedin-cards.html');
-const dir  = path.join(root, 'assets', 'linkedin');
+
+/* One pipeline, one deck per study. A deck is a card source in tools/ and an
+   output folder under assets/; naming them here keeps the two studies from
+   growing two copies of this renderer. */
+const DECKS = {
+  downtown: { src: 'tools/linkedin-cards.html',      out: 'assets/linkedin' },
+  ybor:     { src: 'tools/ybor-linkedin-cards.html', out: 'assets/linkedin-ybor' },
+};
+const deckName = process.argv[2] || 'downtown';
+const deck = DECKS[deckName];
+if (!deck) {
+  console.error(`unknown deck "${deckName}". Known decks: ${Object.keys(DECKS).join(', ')}`);
+  process.exit(1);
+}
+const src = path.join(root, deck.src);
+const dir = path.join(root, deck.out);
+if (!fs.existsSync(src)) { console.error(`no card source at ${deck.src}`); process.exit(1); }
+console.log(`deck: ${deckName}  (${deck.src} -> ${deck.out}/)`);
 const W = 1080, H = 1350;   // LinkedIn 4:5 portrait
 
 fs.mkdirSync(dir, { recursive: true });
